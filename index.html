@@ -1263,183 +1263,1403 @@
       outline: none;
     }
 
-    /* AI Assistant CSS */
-    .ai-fab {
+    /* ══════════════════════════════════════════════════════════════════
+       ADVANCED FEATURES CSS
+       ══════════════════════════════════════════════════════════════════ */
+
+    /* ── Dark Mode ────────────────────────────────────────────────────── */
+    body.dark-mode {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #21262d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #3fb950;
+      --accent2: #58a6ff;
+      --border: #30363d;
+      --code-bg: #161b22;
+    }
+
+    body.dark-mode .site-header {
+      background: var(--surface);
+    }
+
+    body.dark-mode nav {
+      background: var(--surface);
+    }
+
+    body.dark-mode main {
+      background: var(--bg);
+    }
+
+    body.dark-mode .card {
+      background: var(--surface);
+    }
+
+    body.dark-mode .cheat-card {
+      background: var(--surface2);
+      border-color: var(--border);
+    }
+
+    body.dark-mode .right-sidebar {
+      background: var(--surface);
+    }
+
+    body.dark-mode code {
+      background: rgba(110, 118, 129, 0.4);
+    }
+
+    body.dark-mode .mock-question,
+    body.dark-mode .playground-scenario {
+      background: var(--surface);
+      border-color: var(--border);
+    }
+
+    body.dark-mode .diagram {
+      background: var(--surface);
+    }
+
+    body.dark-mode .diagram svg text {
+      fill: var(--text) !important;
+    }
+
+    body.dark-mode .diagram svg rect[fill='#f6f8fa'],
+    body.dark-mode .diagram svg rect[fill='#eaeef2'] {
+      fill: var(--surface2) !important;
+    }
+
+    body.dark-mode .site-footer {
+      background: var(--surface);
+      color: var(--text-muted);
+    }
+
+    body.dark-mode .icon-btn {
+      border-color: var(--border);
+      color: var(--text-muted);
+    }
+
+    body.dark-mode .icon-btn:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    body.dark-mode .term-container {
+      background: #010409;
+      border-color: #30363d;
+    }
+
+    body.dark-mode .solution-toggle,
+    body.dark-mode .playground-toggle {
+      background: var(--surface2);
+      border-color: var(--border);
+    }
+
+    body.dark-mode .nav-sub-link {
+      color: var(--text-muted) !important;
+    }
+
+    body.dark-mode .icon-btn.active-toggle {
+      background: rgba(88, 166, 255, 0.15);
+      color: var(--accent2);
+    }
+
+    /* ── Reading Progress Bar ─────────────────────────────────────────── */
+    #reading-progress {
       position: fixed;
-      bottom: 2rem;
-      right: 6.5rem;
-      /* Left of terminal button */
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: white;
-      color: var(--accent);
-      border: 2px solid var(--accent);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      font-size: 1.8rem;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
+      z-index: 9999;
+      transition: width 0.1s linear;
+      border-radius: 0 2px 2px 0;
+      box-shadow: 0 0 8px rgba(26, 127, 55, 0.5);
+    }
+
+    /* ── Search Modal ─────────────────────────────────────────────────── */
+    #search-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 10vh;
+    }
+
+    #search-overlay.open {
+      display: flex;
+      animation: fadeOverlay 0.15s ease;
+    }
+
+    @keyframes fadeOverlay {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    #search-box {
+      width: min(680px, 90vw);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 32px 64px rgba(0, 0, 0, 0.35);
+    }
+
+    #search-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #search-input-wrap svg {
+      flex-shrink: 0;
+      color: var(--text-muted);
+    }
+
+    #search-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 1.05rem;
+      color: var(--text);
+      outline: none;
+    }
+
+    #search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    #search-shortcut-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding: 0.2em 0.45em;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    #search-results {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 0.5rem;
+    }
+
+    .search-result-item {
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
       cursor: pointer;
-      z-index: 1000;
+      transition: background 0.15s;
+    }
+
+    .search-result-item:hover,
+    .search-result-item.is-selected {
+      background: var(--surface2);
+    }
+
+    .search-result-item .res-title {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+
+    .search-result-item .res-snippet {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .search-result-item .res-snippet mark,
+    .search-result-item .res-title mark {
+      background: rgba(255, 213, 0, 0.35);
+      color: inherit;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    #search-empty {
+      padding: 3rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    #search-footer {
+      padding: 0.65rem 1.25rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    #search-footer kbd {
+      display: inline-block;
+      padding: 0.1em 0.4em;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+    }
+
+    /* ── Progress Tracker ─────────────────────────────────────────────── */
+    .nav-progress-bar-wrap {
+      margin: 0 0 1.25rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface2);
+      border-radius: 8px;
+    }
+
+    .nav-progress-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.45rem;
+    }
+
+    .nav-progress-label span {
+      color: var(--accent);
+      font-size: 0.78rem;
+    }
+
+    .nav-progress-track {
+      background: var(--border);
+      border-radius: 4px;
+      height: 5px;
+      overflow: hidden;
+    }
+
+    .nav-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 4px;
+      transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .nav-item-wrap {
+      position: relative;
+    }
+
+    .nav-check {
+      position: absolute;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.2s;
+      flex-shrink: 0;
+      z-index: 1;
     }
 
-    .ai-fab:hover {
-      transform: scale(1.1);
+    .nav-check:hover {
+      border-color: var(--accent);
     }
 
-    .ai-container {
+    .nav-check.done {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .nav-check.done::after {
+      content: '✓';
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    /* ── Notes Panel ──────────────────────────────────────────────────── */
+    #notes-panel {
       position: fixed;
-      bottom: 2rem;
-      right: 6.5rem;
-      width: 350px;
-      height: 500px;
-      background: var(--surface);
-      border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-      z-index: 1002;
-      display: none;
+      right: -420px;
+      top: var(--header-h);
+      width: 380px;
+      height: calc(100vh - var(--header-h));
+      background: var(--bg);
+      border-left: 1px solid var(--border);
+      box-shadow: -8px 0 32px rgba(0, 0, 0, 0.12);
+      z-index: 5000;
+      display: flex;
       flex-direction: column;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      font-family: var(--font-sans);
+      transition: right 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    .ai-container.open {
-      display: flex;
+    #notes-panel.open {
+      right: 0;
     }
 
-    .ai-header {
-      background: var(--surface2);
-      padding: 1rem;
+    #notes-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    #notes-header h3 {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    #notes-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.3rem;
+      line-height: 1;
+      padding: 0.25rem;
+      border-radius: 4px;
+    }
+
+    #notes-close:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    #notes-section-name {
+      padding: 0.5rem 1.25rem;
+      font-size: 0.78rem;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent2);
+      background: var(--surface);
       border-bottom: 1px solid var(--border);
     }
 
-    .ai-controls span {
-      margin-left: 0.8rem;
-      cursor: pointer;
-      opacity: 0.6;
-    }
-
-    .ai-controls span:hover {
-      opacity: 1;
-    }
-
-    .ai-body {
+    #notes-textarea {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .ai-welcome {
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .api-key-input-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-
-    #api-key-input {
-      padding: 0.5rem;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-    }
-
-    #save-api-key {
-      padding: 0.5rem;
-      background: var(--accent);
-      color: white;
       border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .ai-chat-view {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
+      outline: none;
+      resize: none;
+      padding: 1.25rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text);
       background: var(--bg);
     }
 
-    .message {
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      max-width: 85%;
-      font-size: 0.9rem;
+    #notes-footer {
+      padding: 0.75rem 1.25rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    #notes-save-btn {
+      padding: 0.35rem 0.85rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      font-family: inherit;
+      transition: opacity 0.2s;
+    }
+
+    #notes-save-btn:hover {
+      opacity: 0.85;
+    }
+
+    /* ── Pomodoro Timer ───────────────────────────────────────────────── */
+    #pomodoro-fab {
+      position: fixed;
+      bottom: 6rem;
+      right: 2rem;
+      z-index: 1000;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: none;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: all 0.2s;
+    }
+
+    #pomodoro-fab:hover {
+      transform: scale(1.1);
+    }
+
+    #pomodoro-widget {
+      display: none;
+      position: fixed;
+      bottom: 11rem;
+      right: 2rem;
+      width: 230px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      z-index: 1002;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+      text-align: center;
+    }
+
+    #pomodoro-widget.open {
+      display: block;
+      animation: popIn 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.85);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    #pomo-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    #pomo-time {
+      font-size: 2.4rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    #pomo-time.pomo-break {
+      color: var(--accent);
+    }
+
+    /* ── Pomodoro Timer (header-anchored) ───────────────────────────── */
+    .pomo-wrap {
+      position: relative;
+    }
+
+    #pomo-header-btn {
+      position: relative;
+    }
+
+    #pomo-header-btn .pomo-tick {
+      font-size: 0.55rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      background: var(--accent2);
+      color: white;
+      border-radius: 3px;
+      padding: 0 2px;
+      display: none;
       line-height: 1.5;
     }
 
-    .message.bot {
+    #pomo-header-btn.running .pomo-tick {
+      display: block;
+    }
+
+    #pomodoro-widget {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 240px;
       background: var(--surface);
       border: 1px solid var(--border);
-      align-self: flex-start;
-      border-bottom-left-radius: 0;
+      border-radius: 16px;
+      padding: 1.25rem;
+      z-index: 9000;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+      text-align: center;
     }
 
-    .message.user {
-      background: var(--accent);
-      color: white;
-      align-self: flex-end;
-      border-bottom-right-radius: 0;
+    #pomodoro-widget.open {
+      display: block;
+      animation: popIn 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    .chat-input-area {
-      padding: 0.75rem;
-      border-top: 1px solid var(--border);
+    .pomo-ring {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 0.75rem;
+    }
+
+    #pomo-progress-circle {
+      transition: stroke-dashoffset 0.5s linear;
+    }
+
+    .pomo-btns {
       display: flex;
       gap: 0.5rem;
-      background: var(--surface);
+      justify-content: center;
+      margin-bottom: 0.5rem;
     }
 
-    #chat-input {
-      flex: 1;
-      padding: 0.5rem;
+    .pomo-btn {
+      padding: 0.4rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface2);
+      color: var(--text);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .pomo-btn:hover {
+      background: var(--border);
+    }
+
+    .pomo-btn.primary {
+      background: var(--accent2);
+      color: white;
+      border-color: var(--accent2);
+    }
+
+    .pomo-btn.primary:hover {
+      opacity: 0.85;
+    }
+
+    #pomo-sessions {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+
+    /* ── Study Streak ───────────────────────────────────────────────────── */
+    #streak-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #ff6b35, #f7c59f);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: default;
+      user-select: none;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(255, 107, 53, 0.35);
+    }
+
+    /* Force header visibility when not in Zen mode */
+    body:not(.zen-mode) .site-header {
+      opacity: 1 !important;
+      transform: none !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
+    }
+
+    .dark #streak-badge {
+      box-shadow: 0 2px 8px rgba(255, 107, 53, 0.5);
+    }
+
+    /* ── Copy Code Button ───────────────────────────────────────────────── */
+    .code-wrap {
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 0.45rem;
+      right: 0.45rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.22rem 0.55rem;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s, background 0.15s, color 0.15s;
+      z-index: 2;
+    }
+
+    .code-wrap:hover .copy-btn {
+      opacity: 1;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent2);
+      color: white;
+      border-color: var(--accent2);
+    }
+
+    .copy-btn.copied {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      opacity: 1;
+    }
+
+    /* ── Zen / Focus Mode ───────────────────────────────────────────────── */
+    body.zen-mode .site-header {
+      /* opacity: 0; */
+      /* pointer-events: none; */
+      /* transform: translateY(-100%); */
+      transition: all 0.4s ease;
+    }
+
+    body.zen-mode:hover .site-header {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    body.zen-mode #nav {
+      display: none;
+    }
+
+    body.zen-mode .right-sidebar {
+      display: none;
+    }
+
+    body.zen-mode main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+    }
+
+    body.zen-mode .content-block {
+      max-width: 100%;
+    }
+
+    #zen-btn.active {
+      background: var(--accent2);
+      color: white;
+    }
+
+    #zen-hint {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 20px;
-      outline: none;
+      padding: 0.4rem 1rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      white-space: nowrap;
     }
 
-    #send-btn {
+    body.zen-mode #zen-hint {
+      opacity: 1;
+    }
+
+    /* ── Text Highlighter ───────────────────────────────────────────────── */
+    #highlight-toolbar {
+      position: fixed;
+      display: none;
+      flex-direction: column;
+      gap: 0.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.4rem 0.5rem;
+      z-index: 9999;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      align-items: center;
+    }
+
+    #highlight-toolbar.visible {
+      display: flex;
+    }
+
+    #highlight-toolbar .hl-row {
+      display: flex;
+      gap: 0.3rem;
+      align-items: center;
+    }
+
+    #highlight-toolbar .hl-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .hl-swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .hl-swatch:hover {
+      transform: scale(1.25);
+      border-color: var(--border);
+    }
+
+    .hl-clear {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.4rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--surface2);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .hl-clear:hover {
+      background: #ef4444;
+      color: white;
+      border-color: #ef4444;
+    }
+
+    mark.hl-yellow {
+      background: rgba(255, 220, 0, 0.45);
+      color: inherit;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+
+    mark.hl-green {
+      background: rgba(34, 197, 94, 0.35);
+      color: inherit;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+
+    mark.hl-pink {
+      background: rgba(244, 114, 182, 0.35);
+      color: inherit;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+
+    mark.hl-blue {
+      background: rgba(59, 130, 246, 0.35);
+      color: inherit;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+
+    /* ── Mini Section TOC ───────────────────────────────────────────────── */
+    #mini-toc {
+      position: fixed;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 200px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem 0.6rem;
+      z-index: 800;
+      font-size: 0.76rem;
+      display: none;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+      backdrop-filter: blur(4px);
+    }
+
+    .layout:not(.sidebar-hidden) #mini-toc {
+      right: calc(var(--sidebar-w, 240px) + 1rem);
+    }
+
+    #mini-toc.visible {
+      display: block;
+    }
+
+    #mini-toc-title {
+      font-weight: 700;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #mini-toc ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    #mini-toc ul li a {
+      display: block;
+      padding: 0.22rem 0.45rem;
+      border-radius: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+      line-height: 1.35;
+      border-left: 2px solid transparent;
+    }
+
+    #mini-toc ul li a:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    #mini-toc ul li a.toc-active {
+      color: var(--accent2);
+      border-left-color: var(--accent2);
+      background: rgba(99, 102, 241, 0.08);
+      font-weight: 600;
+    }
+
+    #mini-toc-toggle {
+      position: fixed;
+      right: 1rem;
+      bottom: 5rem;
+      z-index: 900;
+      display: none;
+    }
+
+    #mini-toc-toggle.show {
+      display: flex;
+    }
+
+    /* ── Export Notes CTA ───────────────────────────────────────────────── */
+    #notes-export-btn {
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface2);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    #notes-export-btn:hover {
+      background: var(--accent2);
+      color: white;
+      border-color: var(--accent2);
+    }
+
+    /* ── Flashcard Quiz Mode ────────────────────────────────────────────── */
+    #quiz-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 10001;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+    }
+
+    #quiz-overlay.open {
+      display: flex;
+      animation: fadeOverlay 0.2s ease;
+    }
+
+    #quiz-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: min(680px, 94vw);
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 2rem;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    #quiz-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    #quiz-header h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    #quiz-close {
       background: none;
       border: none;
-      color: var(--accent);
-      font-size: 1.2rem;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      line-height: 1;
+      padding: 0.2rem 0.4rem;
+    }
+
+    #quiz-progress-bar {
+      height: 4px;
+      background: var(--surface2);
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    #quiz-progress-fill {
+      height: 100%;
+      background: var(--accent2);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    #quiz-question {
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      margin-bottom: 1.2rem;
+      color: var(--text);
+    }
+
+    .quiz-option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.6rem;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quiz-option:hover:not(:disabled) {
+      border-color: var(--accent2);
+      background: rgba(99, 102, 241, 0.08);
+    }
+
+    .quiz-option.correct {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.15);
+      color: #16a34a;
+      font-weight: 600;
+    }
+
+    .quiz-option.wrong {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.12);
+      color: #dc2626;
+    }
+
+    #quiz-explanation {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      background: var(--surface2);
+      border-left: 3px solid var(--accent2);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    #quiz-explanation.show {
+      display: block;
+    }
+
+    #quiz-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.25rem;
+    }
+
+    #quiz-score {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    #quiz-next {
+      padding: 0.5rem 1.3rem;
+      border-radius: 8px;
+      border: none;
+      background: var(--accent2);
+      color: white;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: none;
+      transition: opacity 0.2s;
+    }
+
+    #quiz-next:hover {
+      opacity: 0.85;
+    }
+
+    #quiz-results {
+      text-align: center;
+      display: none;
+    }
+
+    #quiz-results .result-score {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 1rem 0 0.5rem;
+    }
+
+    #quiz-results p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    #quiz-restart {
+      padding: 0.6rem 1.6rem;
+      border-radius: 8px;
+      border: none;
+      background: var(--accent2);
+      color: white;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
     }
 
-    @media (max-width: 640px) {
-      .ai-container {
-        width: 100%;
-        height: 60vh;
-        bottom: 0;
-        right: 0;
-        border-radius: 12px 12px 0 0;
+    /* ── Keyboard Shortcuts Panel ─────────────────────────────────────── */
+    #shortcuts-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 10001;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #shortcuts-overlay.open {
+      display: flex;
+    }
+
+    #shortcuts-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      width: min(560px, 90vw);
+      box-shadow: 0 32px 64px rgba(0, 0, 0, 0.3);
+    }
+
+    #shortcuts-box h2 {
+      margin: 0 0 1.25rem;
+      font-size: 1.1rem;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .shortcut-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 1.5rem;
+    }
+
+    .shortcut-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--surface2);
+    }
+
+    .shortcut-row .sc-desc {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .shortcut-row .sc-keys {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .sc-key {
+      display: inline-block;
+      padding: 0.15em 0.5em;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text);
+      border-bottom-width: 2px;
+    }
+
+    #shortcuts-close-hint {
+      margin-top: 1.25rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Font Size Controls ───────────────────────────────────────────── */
+    .font-size-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .font-size-controls button {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .font-size-controls button:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    /* ── Bookmark Button on code blocks ──────────────────────────────── */
+    .bookmark-section-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.7rem;
+      margin-left: 0.5rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .bookmark-section-btn:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    .bookmark-section-btn.bookmarked {
+      color: #f0883e;
+      border-color: #f0883e;
+      background: rgba(240, 136, 62, 0.08);
+    }
+
+    #bookmarks-list {
+      margin-top: 0.5rem;
+    }
+
+    #bookmarks-list li {
+      background: transparent;
+      border: none;
+      padding: 0.25rem 0.5rem;
+    }
+
+    #bookmarks-list a {
+      color: var(--accent2);
+      font-size: 0.82rem;
+    }
+
+    .bookmarks-empty {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 0.5rem 0.5rem;
+    }
+
+    /* ── Toast Notifications ─────────────────────────────────────────── */
+    #toast-container {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      pointer-events: none;
+    }
+
+    .toast {
+      padding: 0.6rem 1.2rem;
+      background: var(--text);
+      color: var(--bg);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      animation: toastIn 0.2s ease, toastOut 0.3s ease 2s forwards;
+      white-space: nowrap;
+    }
+
+    @keyframes toastIn {
+      from {
+        transform: translateY(12px);
+        opacity: 0;
       }
 
-      .ai-fab {
-        bottom: 1.5rem;
-        right: 1.5rem;
+      to {
+        transform: translateY(0);
+        opacity: 1;
       }
+    }
+
+    @keyframes toastOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+    }
+
+    /* ── Nav Note Indicator ──────────────────────────────────────────── */
+    .nav-note-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent2);
+      margin-left: 0.4rem;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    /* ── Section Action Bar ──────────────────────────────────────────── */
+    .section-action-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      padding: 0.6rem 0.9rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      flex-wrap: wrap;
+    }
+
+    .section-action-bar .sab-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+    }
+
+    .sab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.28rem 0.65rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-family: inherit;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .sab-btn:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    .sab-btn.active {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(26, 127, 55, 0.08);
+    }
+
+    .reading-time {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      white-space: nowrap;
     }
   </style>
   <script type="application/ld+json">
@@ -1476,13 +2696,121 @@
     <div class="header-controls">
       <!-- Challenge Mode Toggle -->
       <div class="challenge-toggle-wrapper" title="Hide answers to test yourself">
-        <span class="challenge-label"
-          style="display: none; @media (min-width: 768px) { display: inline; }">Challenge</span>
+        <span class="challenge-label" style="display: none;">Challenge</span>
         <label class="toggle-switch">
           <input type="checkbox" id="challenge-toggle">
           <span class="slider"></span>
         </label>
       </div>
+
+      <!-- Font Size Controls -->
+      <div class="font-size-controls" title="Font size">
+        <button id="font-decrease" title="Decrease font size">A-</button>
+        <button id="font-increase" title="Increase font size">A+</button>
+      </div>
+
+      <!-- Search Button -->
+      <button type="button" class="icon-btn" id="search-btn" title="Search (Ctrl+K)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+
+      <!-- Notes Button -->
+      <button type="button" class="icon-btn" id="notes-btn" title="Section Notes (N)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+      </button>
+
+      <!-- Dark Mode -->
+      <button type="button" class="icon-btn" id="dark-mode-btn" title="Toggle Dark Mode (D)">
+        <svg id="dm-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg id="dm-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+
+      <!-- Keyboard Shortcuts -->
+      <button type="button" class="icon-btn" id="shortcuts-btn" title="Keyboard Shortcuts (?)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+          <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"></path>
+        </svg>
+      </button>
+
+      <!-- Pomodoro Timer -->
+      <div class="pomo-wrap">
+        <button type="button" class="icon-btn" id="pomo-header-btn" title="Pomodoro Timer (T)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="13" r="8"></circle>
+            <path d="M12 9v4l2 2"></path>
+            <path d="M5 3L2 6"></path>
+            <path d="M22 6l-3-3"></path>
+          </svg>
+          <span class="pomo-tick" id="pomo-header-tick">25:00</span>
+        </button>
+        <div id="pomodoro-widget">
+          <div id="pomo-label">🎯 Focus Session</div>
+          <svg class="pomo-ring" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="34" fill="none" stroke="var(--surface2)" stroke-width="6" />
+            <circle id="pomo-progress-circle" cx="40" cy="40" r="34" fill="none" stroke="var(--accent2)"
+              stroke-width="6" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="0"
+              transform="rotate(-90 40 40)" />
+          </svg>
+          <div id="pomo-time">25:00</div>
+          <div class="pomo-btns">
+            <button class="pomo-btn primary" id="pomo-start">Start</button>
+            <button class="pomo-btn" id="pomo-reset">Reset</button>
+          </div>
+          <div id="pomo-sessions">Sessions today: <strong id="pomo-session-count">0</strong></div>
+        </div>
+      </div>
+
+
+      <!-- Study Streak -->
+      <div id="streak-badge" title="Study streak — days in a row studied">🔥 <span id="streak-count">1</span> day streak
+      </div>
+
+      <!-- Zen Mode -->
+      <button type="button" class="icon-btn" id="zen-btn" title="Zen / Focus Mode (Z)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M8 12a4 4 0 0 1 8 0"></path>
+          <line x1="12" y1="8" x2="12" y2="8.01"></line>
+        </svg>
+      </button>
+
+      <!-- Quiz / Flashcards -->
+      <button type="button" class="icon-btn" id="quiz-btn" title="CKA Quiz Mode (Q)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"></path>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+        </svg>
+      </button>
 
       <button type="button" class="icon-btn" id="toggle-right" title="Toggle Sidebar">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1655,7 +2983,8 @@ crictl inspect &lt;container-id&gt;       # deep dive into container status</cod
 
           <!-- Control Plane -->
           <rect x="40" y="50" width="620" height="110" rx="8" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1.5" />
-          <text x="350" y="75" fill="#1a7f37" font-size="15" font-weight="700" text-anchor="middle">CONTROL PLANE</text>
+          <text x="350" y="75" fill="#1a7f37" font-size="15" font-weight="700" text-anchor="middle">CONTROL
+            PLANE</text>
 
           <!-- Components -->
           <rect x="70" y="90" width="100" height="50" rx="6" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5" />
@@ -1738,7 +3067,8 @@ kubectl get deploy,rs,po</code></pre>
       </p>
 
       <h3>Imperative commands — exam speed reference</h3>
-      <p>In the CKA exam, speed matters. Use imperative commands with <code>--dry-run=client -o yaml</code> to generate
+      <p>In the CKA exam, speed matters. Use imperative commands with <code>--dry-run=client -o yaml</code> to
+        generate
         YAML quickly, then edit as needed.</p>
       <div class="snippet-label">Generate YAML templates fast</div>
       <pre><code># Pod
@@ -1885,54 +3215,67 @@ curl http://&lt;node-ip&gt;:30008   # for NodePort</code></pre>
       </figure>
 
       <!-- 03 Scheduling -->
-      <h2 id="section-03">03 — Scheduling</h2>
-      <h3>How scheduling works</h3>
-      <p>The scheduler watches for pods with no <code>nodeName</code>. It picks a node (filtering + scoring), then
-        either sets <code>spec.nodeName</code> or creates a <strong>Binding</strong> object. The
-        <strong>kubelet</strong> on that node then creates the pod. Without a scheduler, you can set
-        <code>nodeName</code> yourself to force a node.
-      </p>
+      <h2 id="section-03">03 &mdash; Scheduling</h2>
+      <h3>How Scheduling Works</h3>
+      <p>The kube-scheduler watches for newly created pods with no <code>nodeName</code>. It selects a node through two
+        phases:</p>
+      <ul>
+        <li><strong>Filtering:</strong> Eliminates nodes that cannot satisfy the pod requirements (insufficient
+          CPU/memory, taint mismatch, affinity rules).</li>
+        <li><strong>Scoring:</strong> Ranks remaining nodes using plugins (LeastAllocated, ImageLocality, etc.) and
+          picks the highest score.</li>
+      </ul>
+      <p>It then creates a <strong>Binding</strong> object setting <code>spec.nodeName</code> on the pod. The kubelet on
+        that node pulls the image and starts the containers.</p>
       <figure class="diagram">
-        <svg viewBox="0 0 480 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-          <rect x="24" y="24" width="88" height="52" rx="6" fill="#eaeef2" stroke="#0969da" />
-          <text x="68" y="52" fill="#1f2328" font-size="14" text-anchor="middle">Pod created</text>
-          <path d="M112 50 L136 50" stroke="#1a7f37" stroke-width="2" />
-          <rect x="136" y="24" width="88" height="52" rx="6" fill="#eaeef2" stroke="#0969da" />
-          <text x="180" y="50" fill="#1f2328" font-size="14" text-anchor="middle">Scheduler</text>
-          <text x="180" y="66" fill="#656d76" font-size="12" text-anchor="middle">picks node</text>
-          <path d="M224 50 L248 50" stroke="#1a7f37" stroke-width="2" />
-          <rect x="248" y="24" width="88" height="52" rx="6" fill="#eaeef2" stroke="#0969da" />
-          <text x="292" y="52" fill="#1f2328" font-size="14" text-anchor="middle">nodeName set</text>
-          <path d="M336 50 L360 50" stroke="#1a7f37" stroke-width="2" />
-          <rect x="360" y="24" width="88" height="52" rx="6" fill="#eaeef2" stroke="#1a7f37" />
-          <text x="404" y="50" fill="#1f2328" font-size="14" text-anchor="middle">Kubelet</text>
-          <text x="404" y="66" fill="#656d76" font-size="12" text-anchor="middle">runs pod</text>
+        <svg viewBox="0 0 560 110" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="110" height="56" rx="6" fill="#eaeef2" stroke="#0969da" />
+          <text x="65" y="46" fill="#1f2328" font-size="13" text-anchor="middle">Pod created</text>
+          <text x="65" y="62" fill="#656d76" font-size="11" text-anchor="middle">(nodeName empty)</text>
+          <path d="M120 48 L148 48" stroke="#1a7f37" stroke-width="2" />
+          <rect x="148" y="20" width="120" height="56" rx="6" fill="#eaeef2" stroke="#0969da" />
+          <text x="208" y="44" fill="#1f2328" font-size="13" text-anchor="middle">Scheduler</text>
+          <text x="208" y="60" fill="#656d76" font-size="11" text-anchor="middle">Filter &rarr; Score</text>
+          <path d="M268 48 L296 48" stroke="#1a7f37" stroke-width="2" />
+          <rect x="296" y="20" width="120" height="56" rx="6" fill="#eaeef2" stroke="#0969da" />
+          <text x="356" y="44" fill="#1f2328" font-size="13" text-anchor="middle">Binding obj</text>
+          <text x="356" y="60" fill="#656d76" font-size="11" text-anchor="middle">nodeName = node01</text>
+          <path d="M416 48 L444 48" stroke="#1a7f37" stroke-width="2" />
+          <rect x="444" y="20" width="100" height="56" rx="6" fill="#eaeef2" stroke="#1a7f37" />
+          <text x="494" y="44" fill="#1f2328" font-size="13" text-anchor="middle">Kubelet</text>
+          <text x="494" y="60" fill="#656d76" font-size="11" text-anchor="middle">runs pod</text>
         </svg>
-        <figcaption>Pod scheduling flow: scheduler assigns node, kubelet runs the pod.</figcaption>
+        <figcaption>Scheduling flow: Filter + Score &rarr; Binding object &rarr; kubelet starts the pod.</figcaption>
       </figure>
-      <h4>Manual scheduling (no scheduler or override)</h4>
-      <p>Set <code>nodeName</code> in the pod spec to pin a pod to a specific node. Kubernetes will not change it.</p>
+
+      <h3>Manual Scheduling (nodeName)</h3>
+      <p>Pin a pod to a specific node by setting <code>spec.nodeName</code>. This bypasses the scheduler entirely. Only
+        works at <em>creation time</em>. To reschedule an existing pod, delete and recreate it.</p>
+      <div class="snippet-label">Pod with hardcoded nodeName</div>
       <pre><code>apiVersion: v1
 kind: Pod
 metadata:
   name: nginx
-  labels:
-    name: nginx
 spec:
   containers:
   - name: nginx
     image: nginx
     ports:
-    - containerPort: 8080
-  nodeName: node02</code></pre>
-      <p>Alternatively create a <strong>Binding</strong> object (target = node) and POST it to
-        <code>/api/v1/namespaces/&lt;ns&gt;/pods/&lt;name&gt;/binding</code>; the pod spec stays without nodeName until
-        the binding is processed.
-      </p>
+    - containerPort: 80
+  nodeName: node02        # bypasses scheduler</code></pre>
+      <div class="snippet-label">Binding object (alternative &mdash; POST to API)</div>
+      <pre><code>apiVersion: v1
+kind: Binding
+metadata:
+  name: nginx
+target:
+  apiVersion: v1
+  kind: Node
+  name: node02</code></pre>
 
-      <h3>Labels and selectors</h3>
-      <p>Labels are key-value pairs on objects. Selectors filter by labels. Services and ReplicaSets use selectors to
-        target pods.</p>
+      <h3>Labels and Selectors</h3>
+      <p>Labels are key-value pairs on Kubernetes objects. Selectors filter objects by label. ReplicaSets, Services and
+        Deployments use <code>selector.matchLabels</code> to target pods.</p>
       <div class="snippet-label">Pod with labels</div>
       <pre><code>apiVersion: v1
 kind: Pod
@@ -1940,21 +3283,41 @@ metadata:
   name: simple-webapp
   labels:
     app: App1
-    function: Front-end
+    env: production
+    tier: frontend
 spec:
   containers:
   - name: simple-webapp
     image: simple-webapp
     ports:
     - containerPort: 8080</code></pre>
-      <pre><code>kubectl get pods --selector app=App1</code></pre>
-      <p>Annotations (e.g. <code>buildversion: 1.34</code>) go under <code>metadata.annotations</code> for
-        non-identifying info.</p>
+      <pre><code># Filter by single label
+kubectl get pods --selector app=App1
 
-      <h3>Taints and tolerations</h3>
-      <p>Taints restrict which pods can be scheduled on a node. Only pods with matching tolerations can run there.
-        Effects: <code>NoSchedule</code>, <code>PreferNoSchedule</code>, <code>NoExecute</code>.</p>
-      <pre><code>kubectl taint nodes node1 app=blue:NoSchedule</code></pre>
+# Filter by multiple labels (AND logic)
+kubectl get pods --selector app=App1,env=production
+
+# All resource types matching a label
+kubectl get all --selector env=production</code></pre>
+      <p><strong>Annotations</strong> (under <code>metadata.annotations</code>) store non-identifying info like build
+        version &mdash; NOT used for selection.</p>
+
+      <h3>Taints and Tolerations</h3>
+      <p>Taints on <strong>nodes</strong> repel pods. Tolerations on <strong>pods</strong> allow them onto tainted
+        nodes. <em>Tolerations do NOT guarantee placement &mdash; use Node Affinity for that.</em></p>
+      <ul>
+        <li><strong>NoSchedule:</strong> New pods without matching toleration will not be scheduled here.</li>
+        <li><strong>PreferNoSchedule:</strong> Scheduler avoids placing pods here but it&rsquo;s not guaranteed.</li>
+        <li><strong>NoExecute:</strong> New pods blocked AND existing pods evicted if they lack the toleration.</li>
+      </ul>
+      <pre><code># Apply a taint to a node
+kubectl taint nodes node01 app=blue:NoSchedule
+
+# Check taints on a node
+kubectl describe node node01 | grep -i taint
+
+# Remove a taint (trailing minus removes it)
+kubectl taint nodes node01 app=blue:NoSchedule-</code></pre>
       <div class="snippet-label">Pod with toleration</div>
       <pre><code>apiVersion: v1
 kind: Pod
@@ -1966,92 +3329,52 @@ spec:
     image: nginx
   tolerations:
   - key: "app"
-    operator: "Equal"
+    operator: "Equal"     # use "Exists" to match any value for the key
     value: "blue"
     effect: "NoSchedule"</code></pre>
-      <pre><code>kubectl describe node kubemaster | grep Taint</code></pre>
-
-      <h3>Taints and Tolerations</h3>
-      <p>A mechanism to <strong>restrict</strong> what pods can be placed on what nodes. Taints are set on
-        <strong>Nodes</strong> (to repel pods). Tolerations are set on <strong>Pods</strong> (to tolerate the
-        repulsion).
+      <p><strong>Control-plane taint:</strong> Master nodes automatically get
+        <code>node-role.kubernetes.io/control-plane:NoSchedule</code> so workload pods are never placed there.
       </p>
-      <ul>
-        <li><strong>Effect - NoSchedule:</strong> Pod will not be scheduled on the node.</li>
-        <li><strong>Effect - PreferNoSchedule:</strong> System will try to avoid placing the pod on the node, but it's
-          not guaranteed.</li>
-        <li><strong>Effect - NoExecute:</strong> New pods won't be scheduled, and <em>existing</em> pods on the node
-          will be evicted if they don't tolerate the taint.</li>
-      </ul>
-      <pre><code>kubectl taint nodes node1 gpu=true:NoSchedule       # Apply Taint
-kubectl describe node node1 | grep Taint             # Check Taint
-kubectl taint nodes node1 gpu=true:NoSchedule-      # Remove Taint</code></pre>
 
-      <div class="snippet-label">Pod Toleration</div>
-      <pre><code>spec:
-  tolerations:
-  - key: "gpu"
-    operator: "Equal"
-    value: "true"
-    effect: "NoSchedule"</code></pre>
+      <h3>nodeSelector</h3>
+      <p>The simplest node selection. Label a node, then reference it with <code>nodeSelector</code>. Limitation:
+        equality matching only &mdash; no OR, no NOT. Use Node Affinity for complex rules.</p>
+      <pre><code># Label a node
+kubectl label nodes node01 size=Large
+
+# Verify the label
+kubectl get nodes --show-labels | grep size</code></pre>
+      <div class="snippet-label">Pod with nodeSelector</div>
+      <pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: data-processor
+spec:
+  containers:
+  - name: data-processor
+    image: data-processor
+  nodeSelector:
+    size: Large       # only scheduled on nodes with this label</code></pre>
 
       <h3>Node Affinity</h3>
-      <p>Allows you to constrain which nodes your pod is eligible to be scheduled on, based on labels on the node.
-        Conceptually similar to <code>nodeSelector</code> but more expressive.</p>
+      <p>More expressive than <code>nodeSelector</code>. Supports <code>In</code>, <code>NotIn</code>,
+        <code>Exists</code>, <code>DoesNotExist</code> operators and both hard and soft rules.
+      </p>
       <ul>
-        <li><strong>requiredDuringSchedulingIgnoredDuringExecution:</strong> Hard rule. Must match.</li>
-        <li><strong>preferredDuringSchedulingIgnoredDuringExecution:</strong> Soft rule. Will try to match, but can
-          schedule elsewhere if needed.</li>
+        <li><strong>requiredDuringSchedulingIgnoredDuringExecution:</strong> Hard rule. Pod stays Pending if no node
+          matches. Running pods are NOT evicted if node labels change later.</li>
+        <li><strong>preferredDuringSchedulingIgnoredDuringExecution:</strong> Soft rule. Scheduler tries to match but
+          places pod elsewhere if needed.</li>
       </ul>
-
-      <h3>Static Pods</h3>
-      <p>Pods managed <strong>directly by the kubelet</strong> on a specific node, without the API server observing
-        them. The kubelet watches a directory (usually <code>/etc/kubernetes/manifests</code>) and creates pods from
-        files there.
-        <br><em>Use Case:</em> Bootstrapping the control plane components (etcd, apiserver) itself.
-      </p>
-
-      <h3>Resource Requirements</h3>
-      <p><strong>Requests:</strong> The amount of CPU/Memory guaranteed to a container. The Scheduler uses this to find
-        a node.
-        <br><strong>Limits:</strong> The maximum amount a container can use. If it exceeds memory limit ->
-        <strong>OOMKilled</strong>. If it exceeds CPU limit -> <strong>Throttled</strong>.
-      </p>
-
-      <h3>DaemonSets</h3>
-      <p>Ensures that <strong>one copy</strong> of a Pod runs on <strong>all</strong> (or a subset of) nodes.
-        <br><em>Use Case:</em> Cluster storage daemons (glusterd), log collectors (fluentd), node monitoring
-        (node-exporter).
-      </p>
-      <pre><code>apiVersion: apps/v1
-kind: DaemonSet
+      <div class="snippet-label">Node Affinity YAML</div>
+      <pre><code>apiVersion: v1
+kind: Pod
 metadata:
-  name: monitoring-daemon
-  labels:
-    app: nginx
+  name: data-processor
 spec:
-  selector:
-    matchLabels:
-      app: monitoring-agent
-  template:
-    metadata:
-      labels:
-        app: monitoring-agent
-    spec:
-      containers:
-      - name: monitoring-agent
-        image: monitoring-agent</code></pre>
-      <pre><code>kubectl create -f daemon-set-definition.yaml
-kubectl get daemonsets
-kubectl describe daemonsets monitoring-daemon</code></pre>
-
-      <h3>Node affinity</h3>
-      <p>Like nodeSelector but with expressive rules. Types: <code>requiredDuringSchedulingIgnoredDuringExecution</code>
-        (hard requirement), <code>preferredDuringSchedulingIgnoredDuringExecution</code> (soft). Use
-        <code>matchExpressions</code> with operators <code>In</code>, <code>NotIn</code>, <code>Exists</code>,
-        <code>DoesNotExist</code>.
-      </p>
-      <pre><code>spec:
+  containers:
+  - name: data-processor
+    image: data-processor
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
@@ -2059,20 +3382,252 @@ kubectl describe daemonsets monitoring-daemon</code></pre>
         - matchExpressions:
           - key: size
             operator: In
-            values: [Large, Medium]
-      # preferredDuringSchedulingIgnoredDuringExecution for soft preference</code></pre>
+            values:
+            - Large
+            - Medium
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 50               # 1-100; higher = more preferred
+        preference:
+          matchExpressions:
+          - key: disktype
+            operator: In
+            values:
+            - ssd</code></pre>
+      <p><strong>Tip:</strong> Use Taints+Tolerations <em>together</em> with Node Affinity to fully dedicate nodes:
+        taints repel unwanted pods; affinity attracts your pods to those nodes.</p>
 
-      <h3>Multiple schedulers</h3>
-      <p>You can run a custom scheduler (e.g. <code>my-custom-scheduler</code>) alongside the default. In the pod spec
-        set <code>schedulerName: my-custom-scheduler</code>. Only that scheduler will assign that pod. View events:
-        <code>kubectl get events</code>.
+      <h3>Resource Requirements and Limits</h3>
+      <p><strong>Requests</strong> &mdash; guaranteed allocation used by scheduler to pick a suitable node.<br>
+        <strong>Limits</strong> &mdash; maximum a container can consume at runtime.
       </p>
+      <ul>
+        <li>CPU exceeds limit &rarr; <strong>throttled</strong> (never killed for CPU)</li>
+        <li>Memory exceeds limit &rarr; container is <strong>OOMKilled</strong> and restarted</li>
+        <li>No requests set &rarr; scheduler treats it as 0 (pod placed anywhere &mdash; risky for stability)</li>
+      </ul>
+      <div class="snippet-label">Pod with resource requests and limits</div>
+      <pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: resource-demo
+spec:
+  containers:
+  - name: app
+    image: nginx
+    resources:
+      requests:
+        memory: "64Mi"        # scheduler looks for node with &ge;64Mi free
+        cpu: "250m"           # 0.25 vCPU (millicores)
+      limits:
+        memory: "128Mi"       # OOMKilled if exceeded
+        cpu: "500m"           # throttled if exceeded</code></pre>
 
-      <h3>Static pods</h3>
-      <p>Kubelet can run pods from a directory on the host (no API server). Configure kubelet with
-        <code>--pod-manifest-path</code> or in config as <code>staticPodPath</code>. Kubelet creates both static pods
-        and API-server pods. Static pods are mirrored in the API as read-only.
-      </p>
+      <h3>LimitRange</h3>
+      <p>Namespace-scoped policy that sets default requests/limits and enforces min/max bounds for containers. Applied
+        at admission time &mdash; existing pods are NOT affected.</p>
+      <div class="snippet-label">LimitRange YAML</div>
+      <pre><code>apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-cpu-limits
+  namespace: dev
+spec:
+  limits:
+  - type: Container
+    default:              # used when container omits limits
+      cpu: "500m"
+      memory: "128Mi"
+    defaultRequest:       # used when container omits requests
+      cpu: "250m"
+      memory: "64Mi"
+    max:                  # container cannot request/limit above this
+      cpu: "2"
+      memory: "1Gi"
+    min:                  # container must request/limit at least this
+      cpu: "100m"
+      memory: "16Mi"</code></pre>
+      <pre><code>kubectl apply -f limitrange.yaml
+kubectl describe limitrange mem-cpu-limits -n dev</code></pre>
+
+      <h3>DaemonSets</h3>
+      <p>Ensures <strong>exactly one Pod</strong> copies runs on every node (or selected nodes). New nodes auto-receive
+        the pod; deleted nodes clean it up. Common uses: log collectors (Fluentd, Filebeat), node monitoring
+        (node-exporter), kube-proxy, CNI plugins.</p>
+      <div class="snippet-label">DaemonSet YAML</div>
+      <pre><code>apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: monitoring-daemon
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: monitoring-daemon       # must match template labels
+  template:
+    metadata:
+      labels:
+        app: monitoring-daemon     # must match selector
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule         # also run on master nodes
+      containers:
+      - name: monitoring-agent
+        image: prom/node-exporter
+        ports:
+        - containerPort: 9100
+        resources:
+          limits:
+            memory: "200Mi"
+            cpu: "100m"</code></pre>
+      <pre><code>kubectl apply -f daemonset.yaml
+kubectl get daemonsets -n kube-system
+kubectl describe daemonset monitoring-daemon -n kube-system</code></pre>
+
+      <h3>Static Pods</h3>
+      <p>Pods managed <strong>directly by the kubelet</strong>, bypassing the API server. Kubelet watches a manifest
+        directory and creates/deletes pods from files there. The API server shows them as read-only <em>mirror
+          pods</em>.</p>
+      <ul>
+        <li>Default path: <code>/etc/kubernetes/manifests/</code></li>
+        <li>Control-plane components (etcd, kube-apiserver, controller-manager, scheduler) are all static pods on master
+        </li>
+        <li>To delete: remove the manifest file &mdash; <code>kubectl delete pod</code> will NOT work (mirror pod
+          recreates immediately)</li>
+      </ul>
+      <div class="snippet-label">Configure staticPodPath in kubelet</div>
+      <pre><code># /var/lib/kubelet/config.yaml
+staticPodPath: /etc/kubernetes/manifests
+
+# OR as a kubelet start flag:
+--pod-manifest-path=/etc/kubernetes/manifests
+
+# Apply changes
+systemctl daemon-reload &amp;&amp; systemctl restart kubelet</code></pre>
+      <div class="snippet-label">Example static pod manifest (drop into manifests dir)</div>
+      <pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: static-nginx
+  namespace: kube-system
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    ports:
+    - containerPort: 80</code></pre>
+      <pre><code># Static pods have the node name appended: kube-apiserver-controlplane
+kubectl get pods -n kube-system
+
+# Confirm it's static (ownerReferences.kind == Node)
+kubectl get pod kube-apiserver-controlplane -n kube-system   -o jsonpath='{.metadata.ownerReferences[*].kind}'
+
+# Locate the staticPodPath on a node
+ps aux | grep kubelet | grep config</code></pre>
+
+      <h3>Node Maintenance &mdash; Cordon, Drain, Uncordon</h3>
+      <p>Safely move workloads off a node before maintenance (OS upgrade, reboot, hardware replacement).</p>
+      <ul>
+        <li><strong>cordon:</strong> Marks node <code>SchedulingDisabled</code>. No new pods placed; existing pods keep
+          running.</li>
+        <li><strong>drain:</strong> Cordon + graceful eviction of all pods (respects PodDisruptionBudgets). DaemonSet
+          pods ignored by default.</li>
+        <li><strong>uncordon:</strong> Re-enables scheduling after maintenance completes.</li>
+      </ul>
+      <pre><code># Mark as unschedulable only (pods keep running)
+kubectl cordon node01
+
+# Evict pods and mark unschedulable
+kubectl drain node01 --ignore-daemonsets --delete-emptydir-data
+
+# Re-enable scheduling after work is done
+kubectl uncordon node01
+
+# Check node status and conditions
+kubectl get nodes
+kubectl describe node node01 | grep -E "Taints|Unschedulable"</code></pre>
+
+      <h3>Pod Priority and Preemption</h3>
+      <p>When the cluster is full, high-priority pods can <strong>preempt</strong> (evict) lower-priority pods. Priority
+        is defined by a <code>PriorityClass</code> resource.</p>
+      <div class="snippet-label">PriorityClass definition</div>
+      <pre><code>apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 1000000              # higher = more important (system max ~2 billion)
+globalDefault: false        # if true, applies to pods without a class
+description: "Critical production workloads"
+preemptionPolicy: PreemptLowerPriority   # or Never (no eviction)</code></pre>
+      <div class="snippet-label">Pod using PriorityClass</div>
+      <pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: critical-app
+spec:
+  priorityClassName: high-priority
+  containers:
+  - name: app
+    image: nginx</code></pre>
+      <pre><code>kubectl get priorityclasses
+kubectl describe priorityclass high-priority</code></pre>
+
+      <h3>Multiple Schedulers</h3>
+      <p>Deploy a custom scheduler Pod/Deployment alongside the default. Give it a unique <code>schedulerName</code> in
+        its config. Pods opt in with <code>spec.schedulerName</code>.</p>
+      <div class="snippet-label">Custom scheduler Pod manifest</div>
+      <pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: my-custom-scheduler
+  namespace: kube-system
+spec:
+  serviceAccountName: my-scheduler        # needs RBAC to watch/bind pods
+  containers:
+  - name: kube-scheduler
+    image: registry.k8s.io/kube-scheduler:v1.29.0
+    command:
+    - kube-scheduler
+    - --config=/etc/kubernetes/my-scheduler-config.yaml
+    volumeMounts:
+    - name: config
+      mountPath: /etc/kubernetes
+  volumes:
+  - name: config
+    configMap:
+      name: my-scheduler-config</code></pre>
+      <div class="snippet-label">Pod assigned to custom scheduler</div>
+      <pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: custom-scheduled-pod
+spec:
+  schedulerName: my-custom-scheduler    # must match name in scheduler config
+  containers:
+  - name: nginx
+    image: nginx</code></pre>
+      <pre><code># Verify which scheduler placed this pod
+kubectl get events --field-selector reason=Scheduled
+kubectl describe pod custom-scheduled-pod | grep "Node:"</code></pre>
+
+      <h3>Scheduler Profiles</h3>
+      <p>From Kubernetes 1.18+ you can run <strong>multiple profiles in a single scheduler binary</strong> rather than
+        separate Pods. Each profile configures its own set of plugins per phase (QueueSort, Filter, Score, Bind).</p>
+      <div class="snippet-label">KubeSchedulerConfiguration with two profiles</div>
+      <pre><code>apiVersion: kubescheduler.config.k8s.io/v1
+kind: KubeSchedulerConfiguration
+profiles:
+- schedulerName: default-scheduler
+  plugins:
+    score:
+      disabled:
+      - name: PodTopologySpread    # disable a score plugin for this profile
+- schedulerName: high-throughput-scheduler
+  plugins:
+    filter:
+      disabled:
+      - name: TaintToleration      # relax taint check for this profile</code></pre>
 
       <!-- 04 Logging & Monitoring -->
       <h2 id="section-04">04 — Logging and Monitoring</h2>
@@ -2095,7 +3650,8 @@ kubectl logs &lt;pod-name&gt; -f --previous</code></pre>
       <!-- 05 Application Lifecycle -->
       <h2 id="section-05">05 — Application Lifecycle Management</h2>
       <h3>Rolling updates and rollback</h3>
-      <p>Deployment strategies: <strong>Recreate</strong> (all down then up), <strong>RollingUpdate</strong> (default).
+      <p>Deployment strategies: <strong>Recreate</strong> (all down then up), <strong>RollingUpdate</strong>
+        (default).
       </p>
       <pre><code>kubectl rollout status deployment/myapp-deployment
 kubectl rollout history deployment/myapp-deployment
@@ -2202,9 +3758,11 @@ spec:
       <h3>Multi-container pod design patterns</h3>
       <p>CKA tests multi-container pods. Three main patterns:</p>
       <ul>
-        <li><strong>Sidecar:</strong> auxiliary container that enhances the main container (e.g. log shipper that reads
+        <li><strong>Sidecar:</strong> auxiliary container that enhances the main container (e.g. log shipper that
+          reads
           shared volume, Istio proxy).</li>
-        <li><strong>Ambassador:</strong> proxy container that handles connections to external services on behalf of the
+        <li><strong>Ambassador:</strong> proxy container that handles connections to external services on behalf of
+          the
           main container (e.g. localhost proxy to reach different DB environments).</li>
         <li><strong>Adapter:</strong> transforms data from the main container before exporting it (e.g. log format
           normaliser, metrics adapter).</li>
@@ -2232,8 +3790,10 @@ spec:
   - name: log-volume
     emptyDir: {}</code></pre>
       <h3>Init containers</h3>
-      <p>Run to completion before main containers start. Use for one-time setup or waiting for dependencies. If an init
-        container fails, the pod is restarted (all init containers re-run). Order: initContainers run sequentially; then
+      <p>Run to completion before main containers start. Use for one-time setup or waiting for dependencies. If an
+        init
+        container fails, the pod is restarted (all init containers re-run). Order: initContainers run sequentially;
+        then
         main containers start.</p>
       <pre><code>apiVersion: v1
 kind: Pod
@@ -2256,7 +3816,8 @@ spec:
 
       <h3>Liveness and readiness probes</h3>
       <p>Probes make deployments <strong>self-healing</strong>. <strong>livenessProbe</strong>: if it fails, the
-        container is restarted. <strong>readinessProbe</strong>: if it fails, the pod is removed from Service endpoints
+        container is restarted. <strong>readinessProbe</strong>: if it fails, the pod is removed from Service
+        endpoints
         (no traffic until ready). Types: <code>httpGet</code> (HTTP path), <code>exec</code> (command),
         <code>tcpSocket</code> (port open).
       </p>
@@ -2279,7 +3840,8 @@ spec:
 
       <h3>HorizontalPodAutoscaler (HPA)</h3>
       <p><strong>Workload autoscaling</strong>: HPA scales a Deployment/ReplicaSet based on CPU (or custom metrics).
-        Requires <strong>Metrics Server</strong> in the cluster for <code>kubectl top</code> and CPU-based scaling. Set
+        Requires <strong>Metrics Server</strong> in the cluster for <code>kubectl top</code> and CPU-based scaling.
+        Set
         <code>resources.requests</code> on the deployment so HPA can compute utilization.
       </p>
       <div class="snippet-label">HPA YAML</div>
@@ -2311,7 +3873,8 @@ kubectl describe hpa myapp-hpa</code></pre>
       <p><strong>Important:</strong> If a node is down for <strong>more than 5 minutes</strong>, the control plane may
         terminate pods that were on that node (they will be recreated elsewhere if managed by a controller).</p>
       <ul>
-        <li><strong>kubectl drain &lt;node&gt;</strong>: Evicts workloads from the node (pods are rescheduled elsewhere)
+        <li><strong>kubectl drain &lt;node&gt;</strong>: Evicts workloads from the node (pods are rescheduled
+          elsewhere)
           and marks the node <strong>unschedulable</strong> (cordon). Use before OS upgrade or maintenance.</li>
         <li><strong>kubectl uncordon &lt;node&gt;</strong>: Marks the node schedulable again after it is back.</li>
         <li><strong>kubectl cordon &lt;node&gt;</strong>: Only marks the node unschedulable; does <strong>not</strong>
@@ -2357,13 +3920,15 @@ kubectl uncordon node-1</code></pre>
 
       <h3>Backup and restore</h3>
       <p><strong>Resource configs:</strong> store YAML in Git; or
-        <code>kubectl get all --all-namespaces -o yaml &gt; all-deploy-services.yaml</code> (partial). Tools like Velero
+        <code>kubectl get all --all-namespaces -o yaml &gt; all-deploy-services.yaml</code> (partial). Tools like
+        Velero
         can backup/restore resources.
       </p>
       <p><strong>ETCD snapshot:</strong></p>
       <pre><code>ETCDCTL_API=3 etcdctl snapshot save snapshot.db
 ETCDCTL_API=3 etcdctl snapshot status snapshot.db</code></pre>
-      <p>With kubeadm, etcd runs as a pod; use the correct endpoint and certs. Example (adjust paths/endpoints for your
+      <p>With kubeadm, etcd runs as a pod; use the correct endpoint and certs. Example (adjust paths/endpoints for
+        your
         setup):</p>
       <pre><code>ETCDCTL_API=3 etcdctl snapshot save snapshot.db \
   --endpoints=https://127.0.0.1:2379 \
@@ -2402,7 +3967,8 @@ kubectl describe pdb myapp-pdb</code></pre>
       <h2 id="section-07">07 — Security</h2>
 
       <h3>Kubernetes security primitives</h3>
-      <p>Security starts with the <strong>API server</strong> — it is the gatekeeper. Two key questions: <strong>who can
+      <p>Security starts with the <strong>API server</strong> — it is the gatekeeper. Two key questions: <strong>who
+          can
           access?</strong> (authentication) and <strong>what can they do?</strong> (authorization). All access goes
         through the API server, making it the single chokepoint for security.</p>
 
@@ -2410,7 +3976,8 @@ kubectl describe pdb myapp-pdb</code></pre>
       <p>Kubernetes does <strong>not</strong> manage user accounts natively (no User object). It relies on external
         mechanisms. Two types of accounts:</p>
       <ul>
-        <li><strong>Users</strong> (humans): admins, developers — managed externally (certificates, LDAP, OIDC tokens).
+        <li><strong>Users</strong> (humans): admins, developers — managed externally (certificates, LDAP, OIDC
+          tokens).
         </li>
         <li><strong>Service Accounts</strong> (machines): used by pods and processes — managed by Kubernetes.</li>
       </ul>
@@ -2568,7 +4135,8 @@ kubectl api-resources --namespaced=true
 kubectl api-resources --namespaced=false</code></pre>
 
       <h3>Network policy</h3>
-      <p>Controls ingress/egress to pods by selector. Default: no restrictions. Once a NetworkPolicy selects a pod, that
+      <p>Controls ingress/egress to pods by selector. Default: no restrictions. Once a NetworkPolicy selects a pod,
+        that
         pod denies traffic not allowed by any policy.</p>
       <pre><code>apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -2658,7 +4226,8 @@ kubectl exec my-pod -- id</code></pre>
       <h2 id="section-08">08 — Storage</h2>
       <h3>Persistent Volume (PV) and Persistent Volume Claim (PVC)</h3>
       <p>PV is <strong>cluster-scoped</strong> storage (admin provisions); PVC is <strong>namespace-scoped</strong>
-        (user requests storage). They bind when capacity and <code>accessModes</code> match. If no PV matches, PVC stays
+        (user requests storage). They bind when capacity and <code>accessModes</code> match. If no PV matches, PVC
+        stays
         <strong>Pending</strong>. Access modes: ReadWriteOnce (RWO), ReadOnlyMany (ROX), ReadWriteMany (RWX).
       </p>
       <figure class="diagram">
@@ -2734,7 +4303,8 @@ metadata:
 provisioner: kubernetes.io/gce-pd</code></pre>
       <pre><code>kubectl create -f sc-definition.yaml
 kubectl get sc</code></pre>
-      <p>In PVC add <code>storageClassName: google-storage</code>. Then create PVC and use <code>claimName</code> in pod
+      <p>In PVC add <code>storageClassName: google-storage</code>. Then create PVC and use <code>claimName</code> in
+        pod
         volume as above.</p>
 
       <!-- 09 Networking -->
@@ -2817,7 +4387,8 @@ kubectl get node -o jsonpath='{.spec.podCIDR}'</code></pre>
         <code>kubectl get endpoints</code>.
       </p>
 
-      <p><em>Mechanism:</em> <strong>kube-proxy</strong> runs on every node and watches the API server. It updates node
+      <p><em>Mechanism:</em> <strong>kube-proxy</strong> runs on every node and watches the API server. It updates
+        node
         network rules (usually <strong>iptables</strong> or <strong>IPVS</strong>) to trap traffic destined for the
         Service IP and redirect it to a random backing Pod IP.</p>
 
@@ -2918,8 +4489,10 @@ kubectl describe ingress ingress-wear-watch</code></pre>
 
       <!-- 11 kubeadm -->
       <h2 id="section-11">11 — Install Kubernetes the kubeadm Way</h2>
-      <p><strong>kubeadm</strong> bootstraps the control plane and generates certs, manifests, and kubeconfig. You then
-        join worker nodes with <code>kubeadm join</code>. The exam rarely asks for a full install; <strong>upgrading an
+      <p><strong>kubeadm</strong> bootstraps the control plane and generates certs, manifests, and kubeconfig. You
+        then
+        join worker nodes with <code>kubeadm join</code>. The exam rarely asks for a full install; <strong>upgrading
+          an
           existing cluster</strong> (kubeadm upgrade plan / apply, drain/uncordon workers) is frequently tested.</p>
       <h4>kubeadm init steps (reference)</h4>
       <div class="snippet-label">Prerequisites on all nodes</div>
@@ -2970,7 +4543,8 @@ kubeadm token create --print-join-command</code></pre>
       <h2 id="section-12">12 — Troubleshooting</h2>
       <h3>Application failure — step-by-step</h3>
       <ul class="step-list">
-        <li><strong>Is the service reachable?</strong> <code>curl http://&lt;node-ip&gt;:&lt;nodePort&gt;</code> or from
+        <li><strong>Is the service reachable?</strong> <code>curl http://&lt;node-ip&gt;:&lt;nodePort&gt;</code> or
+          from
           inside cluster <code>curl http://&lt;svc-name&gt;.&lt;ns&gt;.svc.cluster.local:port</code>.</li>
         <li><strong>Does the service have endpoints?</strong> <code>kubectl get endpoints &lt;service-name&gt;</code>.
           If empty, the service selector does not match any pod (wrong labels or pods not ready).</li>
@@ -3014,7 +4588,8 @@ openssl x509 -in /var/lib/kubelet/worker-1.crt -text</code></pre>
         <li><code>kubelet</code> not running → <code>systemctl start kubelet</code>, check
           <code>journalctl -u kubelet</code>
         </li>
-        <li>Config error → check <code>/var/lib/kubelet/config.yaml</code> and <code>/etc/kubernetes/kubelet.conf</code>
+        <li>Config error → check <code>/var/lib/kubelet/config.yaml</code> and
+          <code>/etc/kubernetes/kubelet.conf</code>
         </li>
         <li>Expired certificates → check cert dates with <code>openssl x509 -in &lt;cert&gt; -text -noout</code></li>
         <li>Node conditions: <code>MemoryPressure</code>, <code>DiskPressure</code>, <code>PIDPressure</code> → check
@@ -3070,14 +4645,16 @@ kubectl get nodes --sort-by=.status.capacity.cpu</code></pre>
       </p>
 
       <h3>CRDs and operators</h3>
-      <p><strong>Custom Resource Definitions (CRDs)</strong> extend the API with custom resources. After defining a CRD,
+      <p><strong>Custom Resource Definitions (CRDs)</strong> extend the API with custom resources. After defining a
+        CRD,
         you get new resource types (e.g. <code>kubectl get myresource</code>). <strong>Operators</strong> are
         controllers that manage custom resources and their lifecycle (install, upgrade, backup). They use CRDs + a
         controller process. List CRDs: <code>kubectl get crd</code>.</p>
 
       <h3>Extension interfaces: CNI, CSI, CRI</h3>
       <p>Kubernetes uses pluggable interfaces. <strong>CNI</strong> (Container Network Interface): pod networking;
-        plugins (Calico, Flannel, Weave) implement the pod network. <strong>CSI</strong> (Container Storage Interface):
+        plugins (Calico, Flannel, Weave) implement the pod network. <strong>CSI</strong> (Container Storage
+        Interface):
         storage drivers for PVs; dynamic provisioning via StorageClass uses a CSI driver. <strong>CRI</strong>
         (Container Runtime Interface): container runtimes (containerd, CRI-O); kubelet talks to the runtime via CRI.
         Configure/validate these when installing or troubleshooting the cluster.</p>
@@ -3098,7 +4675,8 @@ kubectl get nodes --sort-by=.status.capacity.cpu</code></pre>
         <li>
           <a href="https://www.katacoda.com/courses/kubernetes" target="_blank" rel="noopener noreferrer">Katacoda
             (legacy)</a>
-          <div class="link-desc">Kubernetes playgrounds (some scenarios may be deprecated; Killercoda is the successor).
+          <div class="link-desc">Kubernetes playgrounds (some scenarios may be deprecated; Killercoda is the
+            successor).
           </div>
         </li>
         <li>
@@ -3117,7 +4695,8 @@ kubectl get nodes --sort-by=.status.capacity.cpu</code></pre>
       <div class="playground-scenario">
         <h4>Scenario 1: Deployment and Service</h4>
         <p class="playground-context">Namespace <code>app</code> exists. Create a deployment and expose it.</p>
-        <p class="playground-task"><strong>Task:</strong> Create a deployment named <code>nginx-deploy</code> with image
+        <p class="playground-task"><strong>Task:</strong> Create a deployment named <code>nginx-deploy</code> with
+          image
           <code>nginx:1.21</code>, 3 replicas. Expose it as a ClusterIP service <code>nginx-svc</code> on port 80. Use
           namespace <code>app</code>.
         </p>
@@ -3149,7 +4728,8 @@ kubectl run busybox-cm --image=busybox:1.28 --restart=Never -- sleep 3600 --over
 
       <div class="playground-scenario">
         <h4>Scenario 3: Node selector and drain</h4>
-        <p class="playground-context">Node <code>worker-1</code> has label <code>disk=ssd</code>. You need to run a pod
+        <p class="playground-context">Node <code>worker-1</code> has label <code>disk=ssd</code>. You need to run a
+          pod
           there and later drain the node.</p>
         <p class="playground-task"><strong>Task:</strong> Create a pod <code>ssd-pod</code> (image
           <code>nginx:alpine</code>) that is scheduled only on nodes with <code>disk=ssd</code>. Then cordon and drain
@@ -3171,7 +4751,8 @@ kubectl drain worker-1 --ignore-daemonsets --delete-emptydir-data</code></pre>
 
       <div class="mock-question">
         <h4>Mock 1: RBAC — read-only pods in a namespace</h4>
-        <p class="mock-context">Namespace <code>dev</code> exists. A user/service account should only list and get pods
+        <p class="mock-context">Namespace <code>dev</code> exists. A user/service account should only list and get
+          pods
           in <code>dev</code>, no create/delete.</p>
         <p class="mock-task"><strong>Task:</strong> Create a Role that allows <code>get</code>, <code>list</code> on
           <code>pods</code> in namespace <code>dev</code>. Create a RoleBinding binding that Role to a user named
@@ -3190,7 +4771,8 @@ kubectl create rolebinding jane-pod-reader --role=pod-reader --user=jane -n dev<
 
       <div class="mock-question">
         <h4>Mock 2: Multi-container pod and logs</h4>
-        <p class="mock-context">A pod has two containers: <code>main</code> and <code>sidecar</code>. It is failing and
+        <p class="mock-context">A pod has two containers: <code>main</code> and <code>sidecar</code>. It is failing
+          and
           you need to inspect the previous instance’s logs.</p>
         <p class="mock-task"><strong>Task:</strong> Write the exact <code>kubectl logs</code> command to stream logs
           from the <strong>previous</strong> instance of the <code>sidecar</code> container in pod
@@ -3228,7 +4810,8 @@ spec:
     image: busybox:1.28
     command: ["sleep", "3600"]</code></pre>
           <p style="margin-top:0.5rem;font-size:0.9rem;">Copy this file to the control plane node at
-            <code>/etc/kubernetes/manifests/</code>. Kubelet will create the pod. No <code>kubectl apply</code> needed.
+            <code>/etc/kubernetes/manifests/</code>. Kubelet will create the pod. No <code>kubectl apply</code>
+            needed.
           </p>
         </div>
       </div>
@@ -3257,7 +4840,8 @@ kubectl get endpoints web-svc -n prod     # should list pod IPs now</code></pre>
           kubeadm; etcd runs as a pod and listens on <code>https://127.0.0.1:2379</code> with certs under
           <code>/etc/kubernetes/pki/etcd/</code>.
         </p>
-        <p class="mock-task"><strong>Task:</strong> Run the <code>etcdctl snapshot save</code> command with the correct
+        <p class="mock-task"><strong>Task:</strong> Run the <code>etcdctl snapshot save</code> command with the
+          correct
           API version, endpoint, and cert flags. Save to <code>/tmp/etcd-snapshot.db</code>.</p>
         <button type="button" class="solution-toggle" aria-expanded="false">Show solution</button>
         <div class="mock-solution">
@@ -3266,7 +4850,8 @@ kubectl get endpoints web-svc -n prod     # should list pod IPs now</code></pre>
   --cacert=/etc/kubernetes/pki/etcd/ca.crt \
   --cert=/etc/kubernetes/pki/etcd/server.crt \
   --key=/etc/kubernetes/pki/etcd/server.key</code></pre>
-          <p style="margin-top:0.5rem;font-size:0.9rem;">Run from the control plane node (or from inside the etcd pod).
+          <p style="margin-top:0.5rem;font-size:0.9rem;">Run from the control plane node (or from inside the etcd
+            pod).
             Verify with <code>ETCDCTL_API=3 etcdctl snapshot status /tmp/etcd-snapshot.db</code>.</p>
         </div>
       </div>
@@ -3330,9 +4915,11 @@ kubectl get pv,pvc,pod</code></pre>
 
       <div class="mock-question">
         <h4>Mock 7: NetworkPolicy — deny all ingress</h4>
-        <p class="mock-context">Namespace <code>secure</code> exists with pods labeled <code>app=db</code>. You need to
+        <p class="mock-context">Namespace <code>secure</code> exists with pods labeled <code>app=db</code>. You need
+          to
           deny all ingress traffic except from pods labeled <code>app=api</code> on port 5432.</p>
-        <p class="mock-task"><strong>Task:</strong> Create a NetworkPolicy in namespace <code>secure</code> that selects
+        <p class="mock-task"><strong>Task:</strong> Create a NetworkPolicy in namespace <code>secure</code> that
+          selects
           pods with label <code>app=db</code>, denies all ingress, and only allows ingress from pods with
           <code>app=api</code> on TCP port 5432.
         </p>
@@ -3366,7 +4953,8 @@ kubectl describe netpol db-policy -n secure</code></pre>
       <div class="mock-question">
         <h4>Mock 8: Cluster upgrade (kubeadm)</h4>
         <p class="mock-context">Your cluster runs v1.30.0. You need to upgrade the control plane to v1.31.0.</p>
-        <p class="mock-task"><strong>Task:</strong> Upgrade kubeadm, then the control plane, then kubelet and kubectl on
+        <p class="mock-task"><strong>Task:</strong> Upgrade kubeadm, then the control plane, then kubelet and kubectl
+          on
           the control plane node. Show the commands in order.</p>
         <button type="button" class="solution-toggle" aria-expanded="false">Show solution</button>
         <div class="mock-solution">
@@ -3460,7 +5048,8 @@ kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.a
         Ingress), and cluster upgrades. Use the same format: try the scenario in a playground, then compare with the
         solutions in the course docs or your notes.</p>
       <p><strong>Ultimate mock strategy:</strong> Set a 2-hour timer, attempt all questions sequentially. Flag hard
-        questions and return to them. Prioritize high-weight questions (troubleshooting = 30%). Practice with Killer.sh
+        questions and return to them. Prioritize high-weight questions (troubleshooting = 30%). Practice with
+        Killer.sh
         (free retake included with CKA exam purchase).</p>
 
       <h2 id="section-17">17 — Tips and Tricks</h2>
@@ -3510,7 +5099,8 @@ set autoindent</code></pre>
             Cheat Sheet</a></li>
         <li><a href="https://kubernetes.io/docs/concepts/" target="_blank" rel="noopener">Concepts</a> → Workloads,
           Services, Storage, Config</li>
-        <li><a href="https://kubernetes.io/docs/tasks/" target="_blank" rel="noopener">Tasks</a> → Administer a Cluster,
+        <li><a href="https://kubernetes.io/docs/tasks/" target="_blank" rel="noopener">Tasks</a> → Administer a
+          Cluster,
           Manage TLS, Configure Pods</li>
         <li><a href="https://kubernetes.io/docs/reference/" target="_blank" rel="noopener">API Reference</a></li>
       </ul>
@@ -3563,11 +5153,13 @@ grep staticPodPath /var/lib/kubelet/config.yaml</code></pre>
 
       <h3>Common exam mistakes to avoid</h3>
       <ul>
-        <li>❌ Forgetting to switch context (<code>kubectl config use-context &lt;context&gt;</code>) — each question may
+        <li>❌ Forgetting to switch context (<code>kubectl config use-context &lt;context&gt;</code>) — each question
+          may
           use a different cluster</li>
         <li>❌ Wrong namespace — always check the question for namespace and use <code>-n &lt;ns&gt;</code></li>
         <li>❌ YAML indentation errors — use <code>kubectl apply -f file.yaml</code> and read the error</li>
-        <li>❌ Not verifying the answer — always run <code>kubectl get</code> / <code>kubectl describe</code> to confirm
+        <li>❌ Not verifying the answer — always run <code>kubectl get</code> / <code>kubectl describe</code> to
+          confirm
         </li>
         <li>❌ Spending too long on one question — flag it and move on</li>
         <li>❌ Forgetting <code>--dry-run=client -o yaml</code> — the fastest way to generate templates</li>
@@ -3575,7 +5167,8 @@ grep staticPodPath /var/lib/kubelet/config.yaml</code></pre>
 
       <!--18 Cheat Sheet -->
       <h2 id="section-18">18 — CKA Exam Cheat Sheet</h2>
-      <p>Quick-reference cards for every exam domain. Print this section or keep it open during practice sessions. Each
+      <p>Quick-reference cards for every exam domain. Print this section or keep it open during practice sessions.
+        Each
         card contains the most commonly tested commands and YAML patterns from exam dumps.</p>
 
       <div class="cheat-grid">
@@ -4151,7 +5744,138 @@ k config use-context user-ctx</code></pre>
   </div>
   <footer class="site-footer">
     CKA Study Guide — Reference for Certified Kubernetes Administrator exam preparation.
+    &nbsp;·&nbsp; <span id="footer-stats"></span>
   </footer>
+
+  <!-- Reading Progress Bar -->
+  <div id="reading-progress"></div>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- Search Overlay -->
+  <div id="search-overlay" role="dialog" aria-modal="true" aria-label="Search">
+    <div id="search-box">
+      <div id="search-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="search-input" placeholder="Search topics, commands, concepts…" autocomplete="off"
+          spellcheck="false">
+        <span id="search-shortcut-hint">ESC to close</span>
+      </div>
+      <div id="search-results">
+        <div id="search-empty">Type to search across all sections…</div>
+      </div>
+      <div id="search-footer">
+        <span><kbd>↑↓</kbd> navigate</span>
+        <span><kbd>↵</kbd> open</span>
+        <span><kbd>ESC</kbd> close</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keyboard Shortcuts Overlay -->
+  <div id="shortcuts-overlay" role="dialog" aria-modal="true">
+    <div id="shortcuts-box">
+      <h2>⌨️ Keyboard Shortcuts</h2>
+      <div class="shortcut-grid">
+        <div class="shortcut-row"><span class="sc-desc">Search</span><span class="sc-keys"><kbd
+              class="sc-key">Ctrl</kbd><kbd class="sc-key">K</kbd></span></div>
+        <div class="shortcut-row"><span class="sc-desc">Dark Mode</span><span class="sc-keys"><kbd
+              class="sc-key">D</kbd></span></div>
+        <div class="shortcut-row"><span class="sc-desc">Next Section</span><span class="sc-keys"><kbd
+              class="sc-key">→</kbd></span></div>
+        <div class="shortcut-row"><span class="sc-desc">Prev Section</span><span class="sc-keys"><kbd
+              class="sc-key">←</kbd></span></div>
+        <div class="shortcut-row"><span class="sc-desc">Notes Panel</span><span class="sc-keys"><kbd
+              class="sc-key">N</kbd></span></div>
+        <div class="shortcut-row"><span class="sc-desc">This panel</span><span class="sc-keys"><kbd
+              class="sc-key">?</kbd></span></div>
+        <div class="shortcut-row"><span class="sc-desc">Mark Complete</span><span class="sc-keys"><kbd
+              class="sc-key">C</kbd></span></div>
+        <div class="shortcut-row"><span class="sc-desc">Bookmark Section</span><span class="sc-keys"><kbd
+              class="sc-key">B</kbd></span></div>
+        <div class="shortcut-row"><span class="sc-desc">Font Bigger</span><span class="sc-keys"><kbd
+              class="sc-key">+</kbd></span></div>
+        <div class="shortcut-row"><span class="sc-desc">Font Smaller</span><span class="sc-keys"><kbd
+              class="sc-key">-</kbd></span></div>
+        <div class="shortcut-row"><span class="sc-desc">Pomodoro Timer</span><span class="sc-keys"><kbd
+              class="sc-key">T</kbd></span></div>
+        <div class="shortcut-row"><span class="sc-desc">Close / Back</span><span class="sc-keys"><kbd
+              class="sc-key">ESC</kbd></span></div>
+      </div>
+      <div id="shortcuts-close-hint">Press <kbd class="sc-key">ESC</kbd> or click outside to close</div>
+    </div>
+  </div>
+
+  <!-- Notes Slide-in Panel -->
+  <div id="notes-panel" role="complementary" aria-label="Section Notes">
+    <div id="notes-header">
+      <h3>📝 Section Notes</h3>
+      <button id="notes-close" title="Close notes">×</button>
+    </div>
+    <div id="notes-section-name">No section selected</div>
+    <textarea id="notes-textarea"
+      placeholder="Write your notes for this section… They're saved automatically."></textarea>
+    <div id="notes-footer">
+      <span id="notes-char-count">0 characters</span>
+      <button id="notes-export-btn" title="Export all notes as Markdown">⬇ Export</button>
+      <button id="notes-save-btn">Save ✓</button>
+    </div>
+  </div>
+
+
+
+  <!-- Zen Mode Hint -->
+  <div id="zen-hint">Press <kbd>Z</kbd> or move mouse to top to show header &nbsp;·&nbsp; Press <kbd>Z</kbd> again to
+    exit Zen Mode</div>
+
+  <!-- Text Highlight Toolbar -->
+  <div id="highlight-toolbar">
+    <div class="hl-label">Highlight</div>
+    <div class="hl-row">
+      <div class="hl-swatch" data-color="hl-yellow" style="background:#fde047" title="Yellow"></div>
+      <div class="hl-swatch" data-color="hl-green" style="background:#86efac" title="Green"></div>
+      <div class="hl-swatch" data-color="hl-pink" style="background:#f9a8d4" title="Pink"></div>
+      <div class="hl-swatch" data-color="hl-blue" style="background:#93c5fd" title="Blue"></div>
+      <button class="hl-clear" id="hl-clear-btn" title="Remove highlight">✕</button>
+    </div>
+  </div>
+
+  <!-- Mini Section TOC -->
+  <div id="mini-toc">
+    <div id="mini-toc-title">📍 On this page</div>
+    <ul id="mini-toc-list"></ul>
+  </div>
+
+  <!-- CKA Quiz Overlay -->
+  <div id="quiz-overlay" role="dialog" aria-modal="true" aria-label="CKA Quiz">
+    <div id="quiz-box">
+      <div id="quiz-header">
+        <h2>⚡ CKA Quick Quiz</h2>
+        <button id="quiz-close" title="Close quiz">×</button>
+      </div>
+      <div id="quiz-progress-bar">
+        <div id="quiz-progress-fill" style="width:0%"></div>
+      </div>
+      <div id="quiz-question"></div>
+      <div id="quiz-options"></div>
+      <div id="quiz-explanation"></div>
+      <div id="quiz-nav">
+        <span id="quiz-score">Question 1 of 15</span>
+        <button id="quiz-next">Next →</button>
+      </div>
+      <div id="quiz-results">
+        <div class="result-score" id="quiz-final-score"></div>
+        <p id="quiz-result-msg"></p>
+        <button id="quiz-restart">🔄 Try Again</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     (function () {
       // ── Core Variables ────────────────────────────────────────────────
@@ -4280,17 +6004,17 @@ k config use-context user-ctx</code></pre>
           const sectionId = h2.getAttribute('id');
           navMap[sectionId] = [];
 
-          let nextNode = h2.nextElementSibling;
-          while (nextNode && nextNode.tagName !== 'H2') {
-            if (nextNode.tagName === 'H3') {
-              if (!nextNode.id) {
-                const text = nextNode.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-                nextNode.id = sectionId + '-' + text;
-              }
-              navMap[sectionId].push({ id: nextNode.id, text: nextNode.textContent });
+          // Use the wrapping block div (if already wrapped) or fall back to
+          // sibling-walk. querySelectorAll on the block finds H3s at any depth.
+          const blockEl = document.getElementById('block-' + sectionId);
+          const searchRoot = blockEl || h2.parentNode;
+          searchRoot.querySelectorAll('h3').forEach(h3 => {
+            if (!h3.id) {
+              const text = h3.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+              h3.id = sectionId + '-' + text;
             }
-            nextNode = nextNode.nextElementSibling;
-          }
+            navMap[sectionId].push({ id: h3.id, text: h3.textContent });
+          });
         });
 
         // Loop through MAIN nav links to wrap + add listeners
@@ -4595,164 +6319,1016 @@ worker-2   Ready    <none>          10d   v1.30.0`;
 
       initTerminal();
 
-      // ─── CKA MENTOR (AI ASSISTANT) ──────────────────────────────────
-      function initAI() {
-        const aiBtn = document.createElement('button');
-        aiBtn.className = 'ai-fab';
-        aiBtn.innerHTML = '🤖';
-        aiBtn.title = 'Open CKA Mentor';
-        document.body.appendChild(aiBtn);
+      // ══════════════════════════════════════════════════════════════════
+      //  ADVANCED FEATURES ENGINE
+      // ══════════════════════════════════════════════════════════════════
+      (function () {
+        'use strict';
 
-        const aiContainer = document.createElement('div');
-        aiContainer.className = 'ai-container';
-        aiContainer.innerHTML = `
-          <div class="ai-header">
-            <span>CKA Mentor (Gemini)</span>
-            <div class="ai-controls">
-              <span class="ai-settings" title="Settings">⚙️</span>
-              <span class="ai-close">×</span>
-            </div>
-          </div>
-          <div class="ai-body" id="ai-body">
-            <div class="ai-welcome">
-              <p>Hello! I'm your CKA AI Mentor.</p>
-              <p>To get started, please enter your free <strong>Google Gemini API Key</strong>.</p>
-              <div class="api-key-input-wrapper">
-                <input type="password" id="api-key-input" placeholder="Paste Gemini API Key here">
-                <button id="save-api-key">Save Key</button>
-              </div>
-              <p style="font-size: 0.7rem; color: #888; margin-top: 1rem;">
-                Key is stored locally in your browser. <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #4ec9b0;">Get a free key here</a>.
-              </p>
-            </div>
-            <div class="ai-chat-view" style="display: none;">
-               <div class="chat-messages" id="chat-messages">
-                 <div class="message bot">
-                   Hi! Ask me anything about Kubernetes, kubectl, or the CKA exam.
-                 </div>
-               </div>
-               <div class="chat-input-area">
-                 <input type="text" id="chat-input" placeholder="Ask a question...">
-                 <button id="send-btn">➤</button>
-               </div>
-            </div>
-          </div>
-        `;
-        document.body.appendChild(aiContainer);
+        // ── Storage helpers ──────────────────────────────────────────────
+        const LS = {
+          get: (k, def) => { try { const v = localStorage.getItem('cka_' + k); return v !== null ? JSON.parse(v) : def; } catch (e) { return def; } },
+          set: (k, v) => { try { localStorage.setItem('cka_' + k, JSON.stringify(v)); } catch (e) { } }
+        };
 
-        // Elements
-        const apiKeyInput = aiContainer.querySelector('#api-key-input');
-        const saveKeyBtn = aiContainer.querySelector('#save-api-key');
-        const welcomeView = aiContainer.querySelector('.ai-welcome');
-        const chatView = aiContainer.querySelector('.ai-chat-view');
-        const chatMessages = aiContainer.querySelector('#chat-messages');
-        const chatInput = aiContainer.querySelector('#chat-input');
-        const sendBtn = aiContainer.querySelector('#send-btn');
-        const settingsBtn = aiContainer.querySelector('.ai-settings');
-        const closeBtn = aiContainer.querySelector('.ai-close');
-
-        // State
-        let apiKey = localStorage.getItem('cka_gemini_key');
-
-        // Initialize View
-        if (apiKey) {
-          welcomeView.style.display = 'none';
-          chatView.style.display = 'flex';
+        // ── Toast ────────────────────────────────────────────────────────
+        function toast(msg) {
+          const t = document.createElement('div');
+          t.className = 'toast';
+          t.textContent = msg;
+          document.getElementById('toast-container').appendChild(t);
+          setTimeout(() => t.remove(), 2700);
         }
 
-        // Toggle Visibility
-        aiBtn.addEventListener('click', () => {
-          aiContainer.classList.add('open');
-          aiBtn.style.display = 'none';
-          if (apiKey && chatView.style.display === 'none') {
-            // User might have cleared key
-          }
-        });
+        // ── Section index ────────────────────────────────────────────────
+        const SECTIONS = Array.from(document.querySelectorAll('h2[id^="section-"]')).map(h => ({
+          id: h.id,
+          title: h.textContent.trim()
+        }));
+        let currentSectionIdx = 0;
 
-        closeBtn.addEventListener('click', () => {
-          aiContainer.classList.remove('open');
-          aiBtn.style.display = 'flex';
-        });
-
-        settingsBtn.addEventListener('click', () => {
-          // Clear key and show welcome
-          if (confirm('Clear API Key and reset?')) {
-            localStorage.removeItem('cka_gemini_key');
-            apiKey = null;
-            welcomeView.style.display = 'block';
-            chatView.style.display = 'none';
-          }
-        });
-
-        // Save Key Logic
-        saveKeyBtn.addEventListener('click', () => {
-          const key = apiKeyInput.value.trim();
-          if (key) {
-            localStorage.setItem('cka_gemini_key', key);
-            apiKey = key;
-            welcomeView.style.display = 'none';
-            chatView.style.display = 'flex';
-          }
-        });
-
-        // Chat Logic
-        function appendMessage(text, isUser) {
-          const msgDiv = document.createElement('div');
-          msgDiv.className = 'message ' + (isUser ? 'user' : 'bot');
-          msgDiv.innerText = text;
-          chatMessages.appendChild(msgDiv);
-          chatMessages.scrollTop = chatMessages.scrollHeight;
+        function getCurrentBlock() {
+          return document.querySelector('.content-block.is-open');
+        }
+        function getCurrentSectionId() {
+          const b = getCurrentBlock();
+          return b ? b.id.replace('block-', '') : null;
         }
 
-        async function askGemini(question) {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        // ── Dark Mode ─────────────────────────────────────────────────────
+        const dmBtn = document.getElementById('dark-mode-btn');
+        const dmMoon = document.getElementById('dm-icon-moon');
+        const dmSun = document.getElementById('dm-icon-sun');
 
-          try {
-            const response = await fetch(url, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                contents: [{ parts: [{ text: "You are an expert Kubernetes Certified Administrator (CKA) tutor. Answer this concise and helpful: " + question }] }]
-              })
+        function setDarkMode(dark, save) {
+          document.body.classList.toggle('dark-mode', dark);
+          dmMoon.style.display = dark ? 'none' : '';
+          dmSun.style.display = dark ? '' : 'none';
+          if (save) { LS.set('dark', dark); toast(dark ? '🌙 Dark mode on' : '☀️ Light mode on'); }
+        }
+        setDarkMode(LS.get('dark', false));
+        if (dmBtn) dmBtn.addEventListener('click', () => setDarkMode(!document.body.classList.contains('dark-mode'), true));
+
+        // ── Font Size ─────────────────────────────────────────────────────
+        let fontSize = LS.get('fontSize', 16);
+        function applyFontSize() { document.documentElement.style.fontSize = fontSize + 'px'; LS.set('fontSize', fontSize); }
+        applyFontSize();
+        const fdBtn = document.getElementById('font-decrease');
+        const fiBtn = document.getElementById('font-increase');
+        if (fdBtn) fdBtn.addEventListener('click', () => { fontSize = Math.max(12, fontSize - 1); applyFontSize(); toast('Font: ' + fontSize + 'px'); });
+        if (fiBtn) fiBtn.addEventListener('click', () => { fontSize = Math.min(22, fontSize + 1); applyFontSize(); toast('Font: ' + fontSize + 'px'); });
+
+        // ── Reading Progress Bar ──────────────────────────────────────────
+        const progressBar = document.getElementById('reading-progress');
+        function updateReadingProgress() {
+          const m = document.querySelector('main');
+          if (!m || !progressBar) return;
+          const pct = (m.scrollTop / (m.scrollHeight - m.clientHeight)) * 100;
+          progressBar.style.width = Math.min(100, pct || 0) + '%';
+        }
+        const mainEl = document.querySelector('main');
+        if (mainEl) mainEl.addEventListener('scroll', updateReadingProgress, { passive: true });
+
+        // ── Progress Tracker ──────────────────────────────────────────────
+        let completedSections = LS.get('completed', {});
+
+        function updateProgressUI() {
+          const total = SECTIONS.length;
+          const done = SECTIONS.filter(s => completedSections[s.id]).length;
+          const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+          const fill = document.getElementById('progress-fill');
+          const pctEl = document.getElementById('progress-pct');
+          if (fill) fill.style.width = pct + '%';
+          if (pctEl) pctEl.textContent = pct + '%';
+          // Update footer stats
+          const fs = document.getElementById('footer-stats');
+          if (fs) fs.textContent = done + '/' + total + ' sections complete';
+          // Update nav check indicators
+          document.querySelectorAll('.nav-check').forEach(btn => {
+            const sid = btn.dataset.sid;
+            btn.classList.toggle('done', !!completedSections[sid]);
+          });
+        }
+
+        function toggleComplete(sid) {
+          completedSections[sid] = !completedSections[sid];
+          LS.set('completed', completedSections);
+          updateProgressUI();
+          updateSectionBar(sid);
+          toast(completedSections[sid] ? '✅ Section marked complete!' : '⬜ Section unmarked');
+        }
+
+        // Inject check buttons into each .nav-item wrapper after nav is set up
+        // We hook into the openBlock callback by observing DOM
+        function injectNavChecks() {
+          document.querySelectorAll('#nav .nav-item').forEach(wrapper => {
+            if (wrapper.querySelector('.nav-check')) return;
+            const link = wrapper.querySelector('a[data-sid]');
+            const sid = link ? link.dataset.sid : null;
+            if (!sid) return;
+            const btn = document.createElement('button');
+            btn.className = 'nav-check';
+            btn.dataset.sid = sid;
+            btn.title = 'Mark complete';
+            btn.addEventListener('click', e => { e.stopPropagation(); e.preventDefault(); toggleComplete(sid); });
+            wrapper.style.position = 'relative';
+            wrapper.style.display = 'flex';
+            wrapper.style.alignItems = 'center';
+            const a = wrapper.querySelector('a');
+            if (a) a.style.paddingRight = '1.75rem';
+            wrapper.appendChild(btn);
+          });
+          updateProgressUI();
+        }
+
+        // ── Section Action Bar ────────────────────────────────────────────
+        let bookmarks = LS.get('bookmarks', {});
+
+        function updateBookmarkUI() {
+          const bmList = document.getElementById('bookmarks-list');
+          const bmCount = document.getElementById('bm-count');
+          const keys = Object.keys(bookmarks).filter(k => bookmarks[k]);
+          if (bmCount) bmCount.textContent = keys.length;
+          if (!bmList) return;
+          if (keys.length === 0) {
+            bmList.innerHTML = '<li class="bookmarks-empty">No bookmarks yet</li>';
+            return;
+          }
+          bmList.innerHTML = keys.map(sid => {
+            const sec = SECTIONS.find(s => s.id === sid);
+            return sec ? `<li><a href="#${sid}" data-bm-sid="${sid}">${sec.title}</a></li>` : '';
+          }).join('');
+          bmList.querySelectorAll('a[data-bm-sid]').forEach(a => {
+            a.addEventListener('click', e => {
+              e.preventDefault();
+              const block = document.getElementById('block-' + a.dataset.bmSid);
+              if (block && window.openBlockGlobal) window.openBlockGlobal(block);
             });
+          });
+        }
 
-            if (!response.ok) throw new Error('API Error');
-
-            const data = await response.json();
-            const answer = data.candidates[0].content.parts[0].text;
-            return answer;
-
-          } catch (error) {
-            console.error(error);
-            return "Error connecting to AI. Please check your API key.";
+        function updateSectionBar(sid) {
+          const bar = document.getElementById('sab-' + sid);
+          if (!bar) return;
+          const completeBtn = bar.querySelector('.sab-complete');
+          const bookmarkBtn = bar.querySelector('.sab-bookmark');
+          if (completeBtn) completeBtn.classList.toggle('active', !!completedSections[sid]);
+          if (bookmarkBtn) {
+            bookmarkBtn.classList.toggle('active', !!bookmarks[sid]);
+            bookmarkBtn.innerHTML = (bookmarks[sid] ? '🔖' : '🔖') + ' ' + (bookmarks[sid] ? 'Bookmarked' : 'Bookmark');
           }
         }
 
-        async function handleSend() {
-          const text = chatInput.value.trim();
-          if (!text) return;
+        function injectSectionBars() {
+          SECTIONS.forEach(sec => {
+            const block = document.getElementById('block-' + sec.id);
+            if (!block || block.querySelector('.section-action-bar')) return;
 
-          appendMessage(text, true);
-          chatInput.value = '';
+            // Estimate reading time
+            const words = block.textContent.trim().split(/\s+/).length;
+            const minutes = Math.max(1, Math.round(words / 200));
 
-          // Show typing indicator
-          const loadingDiv = document.createElement('div');
-          loadingDiv.className = 'message bot loading';
-          loadingDiv.innerText = '...';
-          chatMessages.appendChild(loadingDiv);
+            const bar = document.createElement('div');
+            bar.className = 'section-action-bar';
+            bar.id = 'sab-' + sec.id;
+            bar.innerHTML = `
+              <span class="sab-label">Section</span>
+              <button class="sab-btn sab-complete" title="Mark as complete (C)">✅ Complete</button>
+              <button class="sab-btn sab-bookmark" title="Bookmark this section (B)">🔖 Bookmark</button>
+              <button class="sab-btn sab-notes" title="Open notes (N)">📝 Notes</button>
+              <span class="reading-time">~${minutes} min read</span>
+            `;
+            bar.querySelector('.sab-complete').addEventListener('click', () => toggleComplete(sec.id));
+            bar.querySelector('.sab-bookmark').addEventListener('click', () => toggleBookmark(sec.id));
+            bar.querySelector('.sab-notes').addEventListener('click', () => openNotes(sec.id, sec.title));
 
-          const answer = await askGemini(text);
-          loadingDiv.remove();
-          appendMessage(answer, false);
+            // Insert after the h2
+            const h2 = block.querySelector('h2');
+            if (h2 && h2.nextSibling) {
+              h2.parentNode.insertBefore(bar, h2.nextSibling);
+            } else {
+              block.prepend(bar);
+            }
+            updateSectionBar(sec.id);
+          });
         }
 
-        sendBtn.addEventListener('click', handleSend);
-        chatInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') handleSend();
-        });
-      }
+        function toggleBookmark(sid) {
+          bookmarks[sid] = !bookmarks[sid];
+          LS.set('bookmarks', bookmarks);
+          updateBookmarkUI();
+          updateSectionBar(sid);
+          toast(bookmarks[sid] ? '🔖 Section bookmarked!' : '🔖 Bookmark removed');
+        }
 
-      initAI();
+        // ── Notes Panel ───────────────────────────────────────────────────
+        const notesPanel = document.getElementById('notes-panel');
+        const notesTextarea = document.getElementById('notes-textarea');
+        const notesSecName = document.getElementById('notes-section-name');
+        const notesCharCount = document.getElementById('notes-char-count');
+        const notesSaveBtn = document.getElementById('notes-save-btn');
+        const notesCloseBtn = document.getElementById('notes-close');
+        const notesOpenBtn = document.getElementById('notes-btn');
+
+        let currentNotesSid = null;
+
+        function openNotes(sid, title) {
+          currentNotesSid = sid;
+          if (notesSecName) notesSecName.textContent = title || sid;
+          const saved = LS.get('note_' + sid, '');
+          if (notesTextarea) { notesTextarea.value = saved; updateNotesCount(); }
+          if (notesPanel) notesPanel.classList.add('open');
+          if (notesTextarea) notesTextarea.focus();
+          updateNotesDots();
+        }
+
+        function closeNotes() { if (notesPanel) notesPanel.classList.remove('open'); }
+
+        function saveNotes() {
+          if (!currentNotesSid || !notesTextarea) return;
+          LS.set('note_' + currentNotesSid, notesTextarea.value);
+          toast('📝 Notes saved!');
+          updateNotesDots();
+        }
+
+        function updateNotesCount() {
+          if (notesTextarea && notesCharCount) notesCharCount.textContent = notesTextarea.value.length + ' characters';
+        }
+
+        function updateNotesDots() {
+          document.querySelectorAll('#nav .nav-note-dot').forEach(d => d.remove());
+          document.querySelectorAll('#nav a[data-sid]').forEach(a => {
+            const hasNote = LS.get('note_' + a.dataset.sid, '').length > 0;
+            if (hasNote && !a.querySelector('.nav-note-dot')) {
+              const dot = document.createElement('span');
+              dot.className = 'nav-note-dot';
+              dot.title = 'Has notes';
+              a.appendChild(dot);
+            }
+          });
+        }
+
+        if (notesCloseBtn) notesCloseBtn.addEventListener('click', () => { saveNotes(); closeNotes(); });
+        if (notesSaveBtn) notesSaveBtn.addEventListener('click', saveNotes);
+        if (notesTextarea) notesTextarea.addEventListener('input', updateNotesCount);
+        if (notesOpenBtn) notesOpenBtn.addEventListener('click', () => {
+          const sid = getCurrentSectionId();
+          if (sid) {
+            const sec = SECTIONS.find(s => s.id === sid);
+            openNotes(sid, sec ? sec.title : sid);
+          } else {
+            openNotes('general', 'General Notes');
+          }
+        });
+
+        // ── Search ────────────────────────────────────────────────────────
+        const searchOverlay = document.getElementById('search-overlay');
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+        const searchBtn = document.getElementById('search-btn');
+
+        // Build search index
+        let searchIndex = [];
+        function buildSearchIndex() {
+          searchIndex = [];
+          SECTIONS.forEach(sec => {
+            const block = document.getElementById('block-' + sec.id);
+            if (!block) return;
+            // Index h3s
+            block.querySelectorAll('h3').forEach(h3 => {
+              searchIndex.push({ type: 'heading', sid: sec.id, sTitle: sec.title, title: h3.textContent.trim(), text: '', id: h3.id });
+            });
+            // Index paragraphs
+            block.querySelectorAll('p, li').forEach(el => {
+              const txt = el.textContent.trim();
+              if (txt.length > 20) searchIndex.push({ type: 'text', sid: sec.id, sTitle: sec.title, title: sec.title, text: txt });
+            });
+            // Index code snippets
+            block.querySelectorAll('pre code').forEach(el => {
+              const txt = el.textContent.trim().slice(0, 200);
+              searchIndex.push({ type: 'code', sid: sec.id, sTitle: sec.title, title: sec.title + ' — code', text: txt });
+            });
+          });
+        }
+
+        let searchSelIdx = -1;
+
+        function highlight(str, query) {
+          if (!query) return str;
+          const re = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+          return str.replace(re, m => '<mark>' + m + '</mark>');
+        }
+
+        function doSearch(q) {
+          if (!q || q.length < 2) {
+            searchResults.innerHTML = '<div id="search-empty">Type to search across all sections…</div>';
+            searchSelIdx = -1;
+            return;
+          }
+          const ql = q.toLowerCase();
+          const hits = searchIndex.filter(item =>
+            item.title.toLowerCase().includes(ql) || item.text.toLowerCase().includes(ql)
+          ).slice(0, 20);
+
+          if (hits.length === 0) {
+            searchResults.innerHTML = '<div id="search-empty">No results for "' + q + '"</div>';
+            searchSelIdx = -1;
+            return;
+          }
+
+          searchResults.innerHTML = hits.map((h, i) => {
+            const snippetRaw = h.text.slice(0, 120) + (h.text.length > 120 ? '…' : '');
+            const titleH = highlight(h.title, q);
+            const snipH = highlight(snippetRaw, q);
+            const icon = h.type === 'code' ? '💻' : h.type === 'heading' ? '📌' : '📄';
+            return `<div class="search-result-item" data-idx="${i}" data-sid="${h.sid}" data-id="${h.id || ''}">
+              <div class="res-title">${icon} ${titleH} <small style="font-weight:400;color:var(--text-muted)">— ${h.sTitle}</small></div>
+              ${snipH ? '<div class="res-snippet">' + snipH + '</div>' : ''}
+            </div>`;
+          }).join('');
+
+          searchSelIdx = -1;
+          searchResults.querySelectorAll('.search-result-item').forEach((el, i) => {
+            el.addEventListener('mouseenter', () => { searchSelIdx = i; highlightSearchSel(); });
+            el.addEventListener('click', () => openSearchResult(hits[i]));
+          });
+        }
+
+        function highlightSearchSel() {
+          searchResults.querySelectorAll('.search-result-item').forEach((el, i) => {
+            el.classList.toggle('is-selected', i === searchSelIdx);
+          });
+        }
+
+        function openSearchResult(hit) {
+          closeSearch();
+          const block = document.getElementById('block-' + hit.sid);
+          if (block && window.openBlockGlobal) window.openBlockGlobal(block);
+          if (hit.id) {
+            setTimeout(() => {
+              const target = document.getElementById(hit.id);
+              if (target && mainEl) {
+                const offset = 50;
+                const y = target.getBoundingClientRect().top + mainEl.scrollTop - offset;
+                mainEl.scrollTo({ top: y, behavior: 'smooth' });
+              }
+            }, 80);
+          }
+        }
+
+        function openSearch() {
+          buildSearchIndex();
+          searchOverlay.classList.add('open');
+          if (searchInput) { searchInput.value = ''; searchInput.focus(); }
+          searchResults.innerHTML = '<div id="search-empty">Type to search across all sections…</div>';
+        }
+
+        function closeSearch() { searchOverlay.classList.remove('open'); }
+
+        if (searchBtn) searchBtn.addEventListener('click', openSearch);
+        if (searchOverlay) searchOverlay.addEventListener('click', e => { if (e.target === searchOverlay) closeSearch(); });
+        if (searchInput) {
+          searchInput.addEventListener('input', () => doSearch(searchInput.value));
+          searchInput.addEventListener('keydown', e => {
+            const items = searchResults.querySelectorAll('.search-result-item');
+            if (e.key === 'ArrowDown') { e.preventDefault(); searchSelIdx = Math.min(searchSelIdx + 1, items.length - 1); highlightSearchSel(); items[searchSelIdx]?.scrollIntoView({ block: 'nearest' }); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); searchSelIdx = Math.max(searchSelIdx - 1, 0); highlightSearchSel(); items[searchSelIdx]?.scrollIntoView({ block: 'nearest' }); }
+            else if (e.key === 'Enter' && searchSelIdx >= 0) { e.preventDefault(); items[searchSelIdx]?.click(); }
+            else if (e.key === 'Escape') closeSearch();
+          });
+        }
+
+        // ── Shortcuts Panel ───────────────────────────────────────────────
+        const shortcutsOverlay = document.getElementById('shortcuts-overlay');
+        const shortcutsBtn = document.getElementById('shortcuts-btn');
+        function openShortcuts() { shortcutsOverlay.classList.add('open'); }
+        function closeShortcuts() { shortcutsOverlay.classList.remove('open'); }
+        if (shortcutsBtn) shortcutsBtn.addEventListener('click', openShortcuts);
+        if (shortcutsOverlay) shortcutsOverlay.addEventListener('click', e => { if (e.target === shortcutsOverlay) closeShortcuts(); });
+
+        // ── Pomodoro Timer ────────────────────────────────────────────────
+        const pomoHeaderBtn = document.getElementById('pomo-header-btn');
+        const pomoWidget = document.getElementById('pomodoro-widget');
+        const pomoTime = document.getElementById('pomo-time');
+        const pomoLabel = document.getElementById('pomo-label');
+        const pomoStartBtn = document.getElementById('pomo-start');
+        const pomoResetBtn = document.getElementById('pomo-reset');
+        const pomoCircle = document.getElementById('pomo-progress-circle');
+        const pomoSessCount = document.getElementById('pomo-session-count');
+        const pomoHeaderTick = document.getElementById('pomo-header-tick');
+
+        const POMO_WORK = 25 * 60;
+        const POMO_BREAK = 5 * 60;
+        let pomoRunning = false;
+        let pomoInterval = null;
+        let pomoSecondsLeft = POMO_WORK;
+        let pomoIsBreak = false;
+        let pomoSessions = LS.get('pomoSessions', 0);
+        const CIRCUMFERENCE = 213.6; // 2 * PI * 34
+
+        if (pomoSessCount) pomoSessCount.textContent = pomoSessions;
+
+        function pomoUpdateUI() {
+          const total = pomoIsBreak ? POMO_BREAK : POMO_WORK;
+          const m = Math.floor(pomoSecondsLeft / 60);
+          const s = pomoSecondsLeft % 60;
+          if (pomoTime) pomoTime.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+          if (pomoCircle) {
+            const offset = CIRCUMFERENCE * (1 - pomoSecondsLeft / total);
+            pomoCircle.style.strokeDashoffset = offset;
+          }
+          if (pomoLabel) pomoLabel.textContent = pomoIsBreak ? '☕ Break Time' : '🎯 Focus Session';
+          if (pomoTime) pomoTime.className = pomoIsBreak ? 'pomo-break' : '';
+          // Sync mini tick badge on header button
+          if (pomoHeaderTick) pomoHeaderTick.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+          if (pomoHeaderBtn) pomoHeaderBtn.classList.toggle('running', pomoRunning);
+        }
+
+        function pomoStart() {
+          if (pomoRunning) {
+            clearInterval(pomoInterval);
+            pomoRunning = false;
+            if (pomoStartBtn) pomoStartBtn.textContent = 'Resume';
+          } else {
+            pomoRunning = true;
+            if (pomoStartBtn) pomoStartBtn.textContent = 'Pause';
+            pomoInterval = setInterval(() => {
+              pomoSecondsLeft--;
+              pomoUpdateUI();
+              if (pomoSecondsLeft <= 0) {
+                clearInterval(pomoInterval);
+                pomoRunning = false;
+                if (!pomoIsBreak) {
+                  pomoSessions++;
+                  LS.set('pomoSessions', pomoSessions);
+                  if (pomoSessCount) pomoSessCount.textContent = pomoSessions;
+                  toast('🎉 Pomodoro complete! Take a break.');
+                } else {
+                  toast('⚡ Break over! Back to work.');
+                }
+                pomoIsBreak = !pomoIsBreak;
+                pomoSecondsLeft = pomoIsBreak ? POMO_BREAK : POMO_WORK;
+                if (pomoStartBtn) pomoStartBtn.textContent = 'Start';
+                pomoUpdateUI();
+              }
+            }, 1000);
+          }
+        }
+
+        function pomoReset() {
+          clearInterval(pomoInterval);
+          pomoRunning = false;
+          pomoSecondsLeft = POMO_WORK;
+          pomoIsBreak = false;
+          if (pomoStartBtn) pomoStartBtn.textContent = 'Start';
+          pomoUpdateUI();
+        }
+
+        pomoUpdateUI();
+        if (pomoHeaderBtn) pomoHeaderBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          pomoWidget.classList.toggle('open');
+        });
+        if (pomoStartBtn) pomoStartBtn.addEventListener('click', pomoStart);
+        if (pomoResetBtn) pomoResetBtn.addEventListener('click', pomoReset);
+        // Close widget when clicking outside
+        document.addEventListener('click', e => {
+          if (pomoWidget && pomoWidget.classList.contains('open')) {
+            if (!pomoWidget.contains(e.target) && e.target !== pomoHeaderBtn && !pomoHeaderBtn?.contains(e.target)) {
+              pomoWidget.classList.remove('open');
+            }
+          }
+        });
+
+        // ── Global Keyboard Shortcuts ────────────────────────────────────
+        document.addEventListener('keydown', function (e) {
+          const tag = document.activeElement.tagName;
+          const inInput = tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable;
+
+          // Ctrl+K / Cmd+K — Search
+          if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            if (searchOverlay.classList.contains('open')) closeSearch(); else openSearch();
+            return;
+          }
+
+          if (inInput) return; // Don't fire other shortcuts in inputs
+
+          // ESC — close any open panel
+          if (e.key === 'Escape') {
+            if (shortcutsOverlay.classList.contains('open')) { closeShortcuts(); return; }
+            if (searchOverlay.classList.contains('open')) { closeSearch(); return; }
+            if (notesPanel.classList.contains('open')) { saveNotes(); closeNotes(); return; }
+            if (pomoWidget.classList.contains('open')) { pomoWidget.classList.remove('open'); return; }
+          }
+
+          // ? — shortcuts
+          if (e.key === '?') { openShortcuts(); return; }
+
+          // D — dark mode
+          if (e.key === 'd' || e.key === 'D') { setDarkMode(!document.body.classList.contains('dark-mode'), true); return; }
+
+          // N — notes
+          if (e.key === 'n' || e.key === 'N') {
+            const sid = getCurrentSectionId();
+            if (sid) { const sec = SECTIONS.find(s => s.id === sid); openNotes(sid, sec ? sec.title : sid); }
+            return;
+          }
+
+          // T — pomodoro
+          if (e.key === 't' || e.key === 'T') { if (pomoWidget) pomoWidget.classList.toggle('open'); return; }
+
+          // Arrow Right — next section
+          if (e.key === 'ArrowRight') {
+            const sids = SECTIONS.map(s => s.id);
+            const cur = getCurrentSectionId();
+            const idx = sids.indexOf(cur);
+            if (idx < sids.length - 1) {
+              const next = document.getElementById('block-' + sids[idx + 1]);
+              if (next && window.openBlockGlobal) window.openBlockGlobal(next);
+            }
+            return;
+          }
+
+          // Arrow Left — prev section
+          if (e.key === 'ArrowLeft') {
+            const sids = SECTIONS.map(s => s.id);
+            const cur = getCurrentSectionId();
+            const idx = sids.indexOf(cur);
+            if (idx > 0) {
+              const prev = document.getElementById('block-' + sids[idx - 1]);
+              if (prev && window.openBlockGlobal) window.openBlockGlobal(prev);
+            }
+            return;
+          }
+
+          // C — toggle complete
+          if (e.key === 'c' || e.key === 'C') {
+            const sid = getCurrentSectionId();
+            if (sid) toggleComplete(sid);
+            return;
+          }
+
+          // B — bookmark
+          if (e.key === 'b' || e.key === 'B') {
+            const sid = getCurrentSectionId();
+            if (sid) toggleBookmark(sid);
+            return;
+          }
+
+          // + / = — increase font
+          if (e.key === '+' || e.key === '=') { fontSize = Math.min(22, fontSize + 1); applyFontSize(); toast('Font: ' + fontSize + 'px'); return; }
+
+          // - — decrease font
+          if (e.key === '-') { fontSize = Math.max(12, fontSize - 1); applyFontSize(); toast('Font: ' + fontSize + 'px'); return; }
+        });
+
+        // ── Hook into openBlock to update active section ──────────────────
+        // We expose openBlock globally so our advanced JS can call it too
+        // We wrap the DOMContentLoaded hook via a post-init observer
+        const openBlockObserver = new MutationObserver(() => {
+          const open = document.querySelector('.content-block.is-open');
+          if (!open) return;
+          // Update nav active highlight
+          const sid = open.id.replace('block-', '');
+          document.querySelectorAll('#nav a[data-sid]').forEach(a => {
+            a.classList.toggle('active', a.dataset.sid === sid);
+          });
+        });
+        openBlockObserver.observe(document.querySelector('main') || document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
+
+        // Expose openBlock for bookmarks/search navigation
+        // The main IIFE sets openBlock; we re-expose it
+        setTimeout(() => {
+          // Find openBlock from main IIFE scope via event delegation
+          window.openBlockGlobal = function (block) {
+            // Trigger a click on the corresponding nav link
+            if (!block) return;
+            const sid = block.id.replace('block-', '');
+            const navLink = document.querySelector('#nav a[data-sid="' + sid + '"]');
+            if (navLink) navLink.click();
+          };
+          // Init after main IIFE completes
+          injectNavChecks();
+          injectSectionBars();
+          updateBookmarkUI();
+          updateNotesDots();
+          updateProgressUI();
+        }, 100);
+
+
+        // ── 6 ADVANCED FEATURES ──────────────────────────────────────────
+
+        // ① Study Streak ─────────────────────────────────────────────────
+        {
+          const today = new Date().toDateString();
+          const lastVisit = LS.get('streakLastVisit', null);
+          let streak = LS.get('streakCount', 0);
+          const yesterday = new Date(Date.now() - 86400000).toDateString();
+          if (lastVisit === today) {
+            // same day — no change
+          } else if (lastVisit === yesterday) {
+            streak++;
+          } else {
+            streak = 1; // reset
+          }
+          LS.set('streakLastVisit', today);
+          LS.set('streakCount', streak);
+          const el = document.getElementById('streak-count');
+          const badge = document.getElementById('streak-badge');
+          if (el) el.textContent = streak;
+          if (badge) badge.title = streak + '-day study streak! Keep it up!';
+          if (streak >= 7 && badge) badge.style.background = 'linear-gradient(135deg,#f59e0b,#ef4444)';
+          if (streak >= 30 && badge) badge.style.background = 'linear-gradient(135deg,#7c3aed,#ec4899)';
+        }
+
+        // ② Copy Code Buttons ────────────────────────────────────────────
+        document.querySelectorAll('pre').forEach(pre => {
+          if (pre.closest('.code-wrap')) return;
+          const wrap = document.createElement('div');
+          wrap.className = 'code-wrap';
+          pre.parentNode.insertBefore(wrap, pre);
+          wrap.appendChild(pre);
+          const btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy';
+          btn.title = 'Copy to clipboard';
+          wrap.appendChild(btn);
+          btn.addEventListener('click', () => {
+            const code = pre.querySelector('code') || pre;
+            navigator.clipboard.writeText(code.innerText).then(() => {
+              btn.textContent = '✓ Copied!';
+              btn.classList.add('copied');
+              setTimeout(() => {
+                btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy';
+                btn.classList.remove('copied');
+              }, 2000);
+            });
+          });
+        });
+
+        // ③ Zen / Focus Mode ─────────────────────────────────────────────
+        const zenBtn = document.getElementById('zen-btn');
+        function toggleZen() {
+          document.body.classList.toggle('zen-mode');
+          if (zenBtn) zenBtn.classList.toggle('active', document.body.classList.contains('zen-mode'));
+          toast(document.body.classList.contains('zen-mode') ? '🧘 Zen mode — hover top to show header' : '👁 Zen mode off');
+        }
+        if (zenBtn) zenBtn.addEventListener('click', toggleZen);
+
+        // ④ Text Highlighter ─────────────────────────────────────────────
+        const hlToolbar = document.getElementById('highlight-toolbar');
+        let hlRange = null;
+        const HL_KEY = 'textHighlights';
+
+        function saveHighlights() {
+          const marks = [];
+          document.querySelectorAll('mark[data-hl]').forEach(m => {
+            marks.push({ text: m.textContent, cls: m.className });
+          });
+          LS.set(HL_KEY, JSON.stringify(marks));
+        }
+
+        function applyHighlight(colorClass) {
+          if (!hlRange || hlRange.collapsed) return;
+          const sel = window.getSelection();
+          if (!sel || sel.rangeCount === 0) return;
+          try {
+            const mark = document.createElement('mark');
+            mark.className = colorClass;
+            mark.setAttribute('data-hl', '1');
+            hlRange.surroundContents(mark);
+            sel.removeAllRanges();
+            saveHighlights();
+          } catch (e) { /* cross-node — skip */ }
+          hlToolbar.classList.remove('visible');
+          hlRange = null;
+        }
+
+        document.querySelectorAll('.hl-swatch').forEach(sw => {
+          sw.addEventListener('mousedown', e => {
+            e.preventDefault();
+            applyHighlight(sw.dataset.color);
+          });
+        });
+
+        const hlClear = document.getElementById('hl-clear-btn');
+        if (hlClear) {
+          hlClear.addEventListener('mousedown', e => {
+            e.preventDefault();
+            if (hlRange) {
+              const mark = hlRange.commonAncestorContainer.parentElement;
+              if (mark && mark.tagName === 'MARK') {
+                const text = document.createTextNode(mark.textContent);
+                mark.replaceWith(text);
+                saveHighlights();
+              }
+            }
+            hlToolbar.classList.remove('visible');
+          });
+        }
+
+        document.addEventListener('mouseup', e => {
+          setTimeout(() => {
+            const sel = window.getSelection();
+            if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+              hlToolbar.classList.remove('visible');
+              return;
+            }
+            if (hlToolbar && hlToolbar.contains(e.target)) return;
+            hlRange = sel.getRangeAt(0).cloneRange();
+            const rect = sel.getRangeAt(0).getBoundingClientRect();
+            hlToolbar.style.top = (rect.top + window.scrollY - hlToolbar.offsetHeight - 10) + 'px';
+            hlToolbar.style.left = Math.max(4, rect.left + rect.width / 2 - 70) + 'px';
+            hlToolbar.classList.add('visible');
+          }, 10);
+        });
+
+        document.addEventListener('mousedown', e => {
+          if (hlToolbar && !hlToolbar.contains(e.target)) {
+            hlToolbar.classList.remove('visible');
+          }
+        });
+
+        // ⑤ Export Notes ─────────────────────────────────────────────────
+        const notesExportBtn = document.getElementById('notes-export-btn');
+        if (notesExportBtn) {
+          notesExportBtn.addEventListener('click', () => {
+            const allNotes = [];
+            for (let i = 0; i < localStorage.length; i++) {
+              const key = localStorage.key(i);
+              if (key && key.startsWith('cka-notes-')) {
+                const sectionId = key.replace('cka-notes-', '');
+                const text = localStorage.getItem(key);
+                if (text && text.trim()) {
+                  const heading = document.getElementById(sectionId);
+                  const title = heading ? heading.textContent.trim() : sectionId;
+                  allNotes.push('## ' + title + '\n\n' + text.trim());
+                }
+              }
+            }
+            if (!allNotes.length) { toast('📝 No notes saved yet!'); return; }
+            const md = '# CKA Study Notes\n_Exported: ' + new Date().toLocaleString() + '_\n\n' + allNotes.join('\n\n---\n\n');
+            const blob = new Blob([md], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'cka-study-notes.md'; a.click();
+            URL.revokeObjectURL(url);
+            toast('📥 Notes exported as cka-study-notes.md');
+          });
+        }
+
+        // ⑥ Mini Section TOC ─────────────────────────────────────────────
+        const miniToc = document.getElementById('mini-toc');
+        const miniTocList = document.getElementById('mini-toc-list');
+
+        function buildMiniToc(block) {
+          if (!miniToc || !miniTocList) return;
+          miniTocList.innerHTML = '';
+          const h3s = block ? block.querySelectorAll('h3') : [];
+          if (h3s.length < 2) { miniToc.classList.remove('visible'); return; }
+          h3s.forEach(h3 => {
+            if (!h3.id) h3.id = 'toc-' + h3.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = '#' + h3.id;
+            a.textContent = h3.textContent;
+            a.addEventListener('click', e => {
+              e.preventDefault();
+              h3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            li.appendChild(a);
+            miniTocList.appendChild(li);
+          });
+          miniToc.classList.add('visible');
+        }
+
+        // Update TOC when section changes
+        const origOpenBlock = typeof openBlock !== 'undefined' ? openBlock : null;
+        if (main) {
+          main.addEventListener('scroll', () => {
+            const tocLinks = miniTocList ? miniTocList.querySelectorAll('a') : [];
+            let active = null;
+            tocLinks.forEach(a => {
+              const h3 = document.getElementById(a.href.split('#')[1]);
+              if (h3) {
+                const rect = h3.getBoundingClientRect();
+                if (rect.top <= 120) active = a;
+              }
+              a.classList.remove('toc-active');
+            });
+            if (active) active.classList.add('toc-active');
+          });
+        }
+
+        // Hook into existing openBlock via MutationObserver on main
+        if (main && miniToc) {
+          const tocObs = new MutationObserver(() => {
+            const openBlk = main.querySelector('.content-block.is-open');
+            if (openBlk) buildMiniToc(openBlk);
+            else miniToc.classList.remove('visible');
+          });
+          tocObs.observe(main, { subtree: true, attributeFilter: ['class'] });
+          // Initial
+          const initBlk = main.querySelector('.content-block.is-open');
+          if (initBlk) buildMiniToc(initBlk);
+        }
+
+        // ── Extended Keyboard Shortcuts ──────────────────────────────────
+        // Add Z (Zen) and Q (Quiz) to the existing keydown handler
+        // We patch by adding a second listener
+        document.addEventListener('keydown', function (e) {
+          const tag = document.activeElement.tagName;
+          const inInput = tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable;
+          if (inInput) return;
+          if (e.key === 'z' || e.key === 'Z') toggleZen();
+          if (e.key === 'q' || e.key === 'Q') toggleQuiz();
+        });
+
+        // ── CKA Quiz ────────────────────────────────────────────────────
+        const QUIZ_QUESTIONS = [
+          {
+            q: "Which kubectl command marks a node as unschedulable WITHOUT evicting existing pods?",
+            opts: ["kubectl drain node01", "kubectl cordon node01", "kubectl taint nodes node01 key:NoSchedule", "kubectl delete node node01"],
+            ans: 1, exp: "kubectl cordon only marks the node SchedulingDisabled. kubectl drain also evicts running pods."
+          },
+          {
+            q: "A pod spec has a toleration with operator: Exists and no value. What does this match?",
+            opts: ["Taints with value='Exists'", "Only NoSchedule taints", "Any taint with the matching key, regardless of value", "Only taints on the master node"],
+            ans: 2, exp: "operator: Exists matches any taint that has the specified key, ignoring the value."
+          },
+          {
+            q: "What happens to a container that exceeds its memory limit?",
+            opts: ["It is throttled", "It is OOMKilled and restarted", "The node is cordoned", "Nothing — limits are advisory"],
+            ans: 1, exp: "Memory limits are hard. Exceeding them causes an OOM kill (exit code 137). CPU is throttled, not killed."
+          },
+          {
+            q: "Which object sets default resource requests and limits for all containers in a namespace?",
+            opts: ["ResourceQuota", "LimitRange", "NetworkPolicy", "PodSecurityPolicy"],
+            ans: 1, exp: "LimitRange sets per-container defaults and min/max bounds. ResourceQuota limits total resource consumption for the namespace."
+          },
+          {
+            q: "Static pods are managed by:",
+            opts: ["kube-controller-manager", "kube-apiserver", "kubelet directly on the node", "etcd"],
+            ans: 2, exp: "kubelet reads YAML files from staticPodPath (/etc/kubernetes/manifests) and manages those pods directly, without the API server."
+          },
+          {
+            q: "You need a pod to land ONLY on nodes labelled gpu=true. Taints alone are not sufficient because:",
+            opts: ["Taints don't work with GPUs", "Tolerations only prevent scheduling — they don't guarantee placement on specific nodes", "Taints require a LimitRange", "kubectl taint requires admin privileges"],
+            ans: 1, exp: "Taints repel pods that lack tolerations. But a pod with a toleration could still land on a non-GPU node. You must also use Node Affinity to attract pods to gpu=true nodes."
+          },
+          {
+            q: "Which DaemonSet toleration allows the daemon to also run on control-plane (master) nodes?",
+            opts: ["effect: NoExecute", "key: node.kubernetes.io/disk-pressure", "key: node-role.kubernetes.io/control-plane, effect: NoSchedule, operator: Exists", "effect: PreferNoSchedule"],
+            ans: 2, exp: "Master nodes automatically have node-role.kubernetes.io/control-plane:NoSchedule. A DaemonSet needs this toleration to schedule pods there."
+          },
+          {
+            q: "What is the correct way to remove the taint 'app=blue:NoSchedule' from a node?",
+            opts: ["kubectl taint nodes node01 app=blue:NoSchedule --remove", "kubectl untaint nodes node01 app=blue", "kubectl taint nodes node01 app=blue:NoSchedule-", "kubectl patch node (avoid JSON in string)"],
+
+            ans: 2, exp: "Append a minus (-) to the taint specification to remove it: kubectl taint nodes node01 app=blue:NoSchedule-"
+          },
+          {
+            q: "In Node Affinity, requiredDuringSchedulingIgnoredDuringExecution means:",
+            opts: ["The pod restarts if the node label changes", "Existing pods are evicted when node labels no longer match", "The rule is hard at scheduling time; already-running pods are NOT evicted if labels change later", "The affinity is applied to init containers only"],
+            ans: 2, exp: "IgnoredDuringExecution means the rule is only evaluated at scheduling time. Running pods are not affected by label changes."
+          },
+          {
+            q: "A PriorityClass with preemptionPolicy: Never will:",
+            opts: ["Never schedule the pod", "Schedule the pod with high priority but NOT preempt lower-priority pods", "Evict lower pods but without a grace period", "Only work on nodes with GPUs"],
+            ans: 1, exp: "preemptionPolicy: Never means the pod gets a high priority value for ordering but will not preempt (evict) running lower-priority pods when the cluster is full."
+          },
+          {
+            q: "kubectl drain fails on a node that has a pod using emptyDir. Which flag resolves this?",
+            opts: ["--force", "--ignore-daemonsets", "--delete-emptydir-data", "--skip-volumes"],
+            ans: 2, exp: "--delete-emptydir-data allows drain to proceed by evicting pods that use emptyDir volumes (data will be lost)."
+          },
+          {
+            q: "You want a pod to prefer nodes with disktype=ssd but still schedule elsewhere if unavailable. Which affinity type is correct?",
+            opts: ["requiredDuringSchedulingIgnoredDuringExecution", "requiredDuringSchedulingRequiredDuringExecution", "preferredDuringSchedulingIgnoredDuringExecution", "preferredDuringSchedulingRequiredDuringExecution"],
+            ans: 2, exp: "preferred...IgnoredDuringExecution is the soft rule. The scheduler tries to match but places the pod elsewhere if no matching node is available."
+          },
+          {
+            q: "Which component on a node actually starts pod containers after the scheduler assigns nodeName?",
+            opts: ["kube-proxy", "kube-scheduler", "kubelet", "container-runtime only (no orchestration)"],
+            ans: 2, exp: "The kubelet on each node watches for pods assigned to its node via nodeName, then instructs the container runtime (containerd/docker) to pull images and start containers."
+          },
+          {
+            q: "Scheduler Profiles (KubeSchedulerConfiguration) allow you to:",
+            opts: ["Run multiple separate scheduler binaries", "Run multiple scheduler personalities inside one binary with per-profile plugin configs", "Scale the scheduler horizontally", "Configure etcd for the scheduler"],
+            ans: 1, exp: "Since K8s 1.18, multiple profiles with different plugin configurations can run in a single scheduler binary, identified by different schedulerName values."
+          },
+          {
+            q: "The nodeSelector in a pod spec only supports which type of matching?",
+            opts: ["Regex matching", "Greater-than / less-than", "Equality-based labels only", "Weight-based scoring"],
+            ans: 2, exp: "nodeSelector supports only exact equality matches (key=value). For In, NotIn, Exists, DoesNotExist operators or soft preferences, use Node Affinity instead."
+          },
+        ];
+
+        const quizOverlay = document.getElementById('quiz-overlay');
+        const quizClose = document.getElementById('quiz-close');
+        const quizQuestion = document.getElementById('quiz-question');
+        const quizOptions = document.getElementById('quiz-options');
+        const quizExp = document.getElementById('quiz-explanation');
+        const quizNext = document.getElementById('quiz-next');
+        const quizScore = document.getElementById('quiz-score');
+        const quizProgressFill = document.getElementById('quiz-progress-fill');
+        const quizResults = document.getElementById('quiz-results');
+        const quizFinalScore = document.getElementById('quiz-final-score');
+        const quizResultMsg = document.getElementById('quiz-result-msg');
+        const quizRestart = document.getElementById('quiz-restart');
+        const quizBtn = document.getElementById('quiz-btn');
+
+        let quizIdx = 0, quizCorrect = 0, shuffled = [];
+
+        function shuffleArr(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+        function startQuiz() {
+          shuffled = shuffleArr(QUIZ_QUESTIONS);
+          quizIdx = 0; quizCorrect = 0;
+          if (quizResults) quizResults.style.display = 'none';
+          if (quizQuestion) quizQuestion.style.display = '';
+          if (quizOptions) quizOptions.style.display = '';
+          if (quizNav) quizNav.style.display = '';
+          showQuestion();
+        }
+
+        const quizNav = document.getElementById('quiz-nav');
+
+        function showQuestion() {
+          const q = shuffled[quizIdx];
+          if (quizProgressFill) quizProgressFill.style.width = ((quizIdx / shuffled.length) * 100) + '%';
+          if (quizScore) quizScore.textContent = 'Question ' + (quizIdx + 1) + ' of ' + shuffled.length;
+          if (quizQuestion) quizQuestion.textContent = q.q;
+          if (quizExp) { quizExp.classList.remove('show'); quizExp.textContent = ''; }
+          if (quizNext) quizNext.style.display = 'none';
+          if (quizOptions) {
+            quizOptions.innerHTML = '';
+            q.opts.forEach((opt, i) => {
+              const btn = document.createElement('button');
+              btn.className = 'quiz-option';
+              btn.textContent = opt;
+              btn.addEventListener('click', () => answerQuiz(i, q.ans, q.exp));
+              quizOptions.appendChild(btn);
+            });
+          }
+        }
+
+        function answerQuiz(chosen, correct, exp) {
+          const btns = quizOptions ? quizOptions.querySelectorAll('.quiz-option') : [];
+          btns.forEach((b, i) => {
+            b.disabled = true;
+            if (i === correct) b.classList.add('correct');
+            else if (i === chosen) b.classList.add('wrong');
+          });
+          if (chosen === correct) quizCorrect++;
+          if (quizExp) { quizExp.textContent = '💡 ' + exp; quizExp.classList.add('show'); }
+          if (quizNext) quizNext.style.display = 'block';
+        }
+
+        if (quizNext) quizNext.addEventListener('click', () => {
+          quizIdx++;
+          if (quizIdx >= shuffled.length) {
+            showQuizResults();
+          } else {
+            showQuestion();
+          }
+        });
+
+        function showQuizResults() {
+          if (quizProgressFill) quizProgressFill.style.width = '100%';
+          if (quizQuestion) quizQuestion.style.display = 'none';
+          if (quizOptions) quizOptions.style.display = 'none';
+          if (quizExp) quizExp.classList.remove('show');
+          if (quizNav) quizNav.style.display = 'none';
+          if (quizResults) quizResults.style.display = 'block';
+          const pct = Math.round((quizCorrect / shuffled.length) * 100);
+          if (quizFinalScore) quizFinalScore.textContent = pct + '%';
+          let msg = pct >= 90 ? '🎉 Excellent! You\'re ready for the CKA exam!' :
+            pct >= 70 ? '👍 Good job! Review the topics you missed.' :
+              pct >= 50 ? '📚 Keep studying — focus on Scheduling concepts.' :
+                '💪 Keep going! Practice makes perfect.';
+          if (quizResultMsg) quizResultMsg.textContent = msg + ' (' + quizCorrect + '/' + shuffled.length + ' correct)';
+        }
+
+        function toggleQuiz() {
+          if (!quizOverlay) return;
+          if (quizOverlay.classList.contains('open')) {
+            quizOverlay.classList.remove('open');
+          } else {
+            quizOverlay.classList.add('open');
+            startQuiz();
+          }
+        }
+
+        if (quizBtn) quizBtn.addEventListener('click', toggleQuiz);
+        if (quizClose) quizClose.addEventListener('click', () => quizOverlay && quizOverlay.classList.remove('open'));
+        if (quizOverlay) quizOverlay.addEventListener('click', e => { if (e.target === quizOverlay) quizOverlay.classList.remove('open'); });
+        if (quizRestart) quizRestart.addEventListener('click', startQuiz);
+
+
+      })(); // End advanced features
+
 
     })();
   </script>
