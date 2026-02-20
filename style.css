@@ -1857,48 +1857,6 @@
       visibility: visible !important;
     }
 
-    /* ── Copy Code Button ───────────────────────────────────────────────── */
-    .code-wrap {
-      position: relative;
-    }
-
-    .copy-btn {
-      position: absolute;
-      top: 0.45rem;
-      right: 0.45rem;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      padding: 0.22rem 0.55rem;
-      border-radius: 5px;
-      border: 1px solid var(--border);
-      background: var(--surface2);
-      color: var(--text-muted);
-      font-family: inherit;
-      font-size: 0.72rem;
-      font-weight: 600;
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.2s, background 0.15s, color 0.15s;
-      z-index: 2;
-    }
-
-    .code-wrap:hover .copy-btn {
-      opacity: 1;
-    }
-
-    .copy-btn:hover {
-      background: var(--accent2);
-      color: white;
-      border-color: var(--accent2);
-    }
-
-    .copy-btn.copied {
-      background: var(--accent);
-      color: white;
-      border-color: var(--accent);
-      opacity: 1;
-    }
 
     /* ── Zen / Focus Mode ───────────────────────────────────────────────── */
     body.zen-mode .site-header {
