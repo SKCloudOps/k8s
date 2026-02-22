@@ -20,6 +20,6 @@ jobs:
       pull-requests: write
       models: read
     steps:
-      - uses: sathishkpr/ai-faillog-lens@main
+      - uses: SKCloudOps/ai-faillog-lens@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
