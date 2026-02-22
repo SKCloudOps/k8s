@@ -1,0 +1,25 @@
+name: Test AI FaillogLens
+
+on: push
+
+jobs:
+  deliberate-fail:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail with Docker error
+        run: |
+          docker login -u fakeuser -p fakepass
+          # This will fail with auth error
+
+  analyze-failure:
+    runs-on: ubuntu-latest
+    needs: [deliberate-fail]
+    if: failure()
+    permissions:
+      actions: read
+      pull-requests: write
+      models: read
+    steps:
+      - uses: sathishkpr/ai-faillog-lens@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
