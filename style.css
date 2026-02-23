@@ -625,6 +625,18 @@
         -webkit-overflow-scrolling: touch;
       }
 
+      /* Mobile: hide Playground & Labs */
+      nav a.nav-hide-mobile {
+        display: none;
+      }
+
+      /* Horizontal/landscape view: hide some nav items to save space */
+      @media (orientation: landscape) and (max-height: 500px) {
+        nav a.nav-hide-landscape {
+          display: none;
+        }
+      }
+
       /* Horizontal/landscape view: ensure content scroll works */
       @media (orientation: landscape) and (max-height: 500px) {
         .layout {
