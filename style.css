@@ -470,6 +470,10 @@
       text-align: center;
     }
 
+    .diagram img {
+      cursor: zoom-in;
+    }
+
     .diagram svg {
       display: block;
       max-width: 100%;
@@ -2485,4 +2489,75 @@
       font-size: 0.75rem;
       color: var(--text-muted);
       white-space: nowrap;
+    }
+
+    /* Diagram zoom lightbox */
+    .diagram-zoom-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(0, 0, 0, 0.85);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    .diagram-zoom-overlay.open {
+      display: flex;
+    }
+    .diagram-zoom-overlay .zoom-container {
+      position: relative;
+      width: 95vw;
+      height: 95vh;
+      overflow: hidden;
+      cursor: grab;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .diagram-zoom-overlay .zoom-container:active {
+      cursor: grabbing;
+    }
+    .diagram-zoom-overlay .zoom-container img {
+      max-width: none;
+      cursor: grab;
+      transform-origin: center center;
+      user-select: none;
+      pointer-events: none;
+    }
+    .diagram-zoom-controls {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 8px;
+      z-index: 100000;
+    }
+    .diagram-zoom-controls button {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.25rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .diagram-zoom-controls button:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    .diagram-zoom-controls .zoom-close {
+      margin-left: 0.5rem;
+      padding-left: 0.75rem;
+      border-left: 1px solid rgba(255, 255, 255, 0.3);
+      width: auto;
+      padding: 0 0.75rem;
     }

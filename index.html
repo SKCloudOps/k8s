@@ -400,339 +400,8 @@ crictl logs &lt;container-id&gt;          # view logs directly from runtime
 crictl inspect &lt;container-id&gt;       # deep dive into container status</code></pre>
 
       <figure class="diagram">
-        <svg viewBox="0 0 960 560" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
-          style="max-width:100%;font-family:'Outfit',sans-serif;">
-          <defs>
-            <!-- Gradients -->
-            <linearGradient id="g-api" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#1e40af" />
-              <stop offset="100%" stop-color="#2563eb" />
-            </linearGradient>
-            <linearGradient id="g-etcd" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#92400e" />
-              <stop offset="100%" stop-color="#b45309" />
-            </linearGradient>
-            <linearGradient id="g-sched" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#1f2937" />
-              <stop offset="100%" stop-color="#374151" />
-            </linearGradient>
-            <linearGradient id="g-cm" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#1f2937" />
-              <stop offset="100%" stop-color="#374151" />
-            </linearGradient>
-            <linearGradient id="g-cloud" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#5b21b6" />
-              <stop offset="100%" stop-color="#7c3aed" />
-            </linearGradient>
-            <linearGradient id="g-kubelet" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#0369a1" />
-              <stop offset="100%" stop-color="#0284c7" />
-            </linearGradient>
-            <linearGradient id="g-proxy" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#1e293b" />
-              <stop offset="100%" stop-color="#334155" />
-            </linearGradient>
-            <linearGradient id="g-runtime" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#134e4a" />
-              <stop offset="100%" stop-color="#0f766e" />
-            </linearGradient>
-            <linearGradient id="g-pod" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#14532d" />
-              <stop offset="100%" stop-color="#15803d" />
-            </linearGradient>
-            <linearGradient id="g-node" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#f8fafc" />
-              <stop offset="100%" stop-color="#f1f5f9" />
-            </linearGradient>
-            <linearGradient id="g-cp-bg" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#f0fdf4" />
-              <stop offset="100%" stop-color="#dcfce7" />
-            </linearGradient>
-            <!-- Drop shadows -->
-            <filter id="f-lg" x="-8%" y="-8%" width="116%" height="124%">
-              <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="rgba(0,0,0,0.14)" />
-            </filter>
-            <filter id="f-md" x="-10%" y="-10%" width="120%" height="130%">
-              <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.18)" />
-            </filter>
-            <filter id="f-sm" x="-12%" y="-12%" width="124%" height="136%">
-              <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="rgba(0,0,0,0.20)" />
-            </filter>
-            <!-- Arrow markers -->
-            <marker id="a-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-              <polygon points="0 0,10 3.5,0 7" fill="#3b82f6" />
-            </marker>
-            <marker id="a-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-              <polygon points="0 0,10 3.5,0 7" fill="#f59e0b" />
-            </marker>
-            <marker id="a-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-              <polygon points="0 0,10 3.5,0 7" fill="#8b5cf6" />
-            </marker>
-          </defs>
-
-          <!-- ── PAGE BACKGROUND ───────────────────────────────────────── -->
-          <rect width="960" height="560" fill="#f8fafc" rx="14" />
-
-          <!-- ── TITLE BAR ─────────────────────────────────────────────── -->
-          <rect x="0" y="0" width="960" height="46" rx="14" fill="#0f172a" />
-          <rect x="0" y="34" width="960" height="12" fill="#0f172a" />
-          <!-- K8s wheel icon -->
-          <circle cx="30" cy="23" r="14" fill="none" stroke="#326ce5" stroke-width="2.2" />
-          <circle cx="30" cy="23" r="4.5" fill="#326ce5" />
-          <line x1="30" y1="9" x2="30" y2="15" stroke="#326ce5" stroke-width="2" />
-          <line x1="30" y1="31" x2="30" y2="37" stroke="#326ce5" stroke-width="2" />
-          <line x1="16" y1="23" x2="22" y2="23" stroke="#326ce5" stroke-width="2" />
-          <line x1="38" y1="23" x2="44" y2="23" stroke="#326ce5" stroke-width="2" />
-          <line x1="20" y1="13" x2="24.2" y2="17.2" stroke="#326ce5" stroke-width="2" />
-          <line x1="35.8" y1="28.8" x2="40" y2="33" stroke="#326ce5" stroke-width="2" />
-          <line x1="40" y1="13" x2="35.8" y2="17.2" stroke="#326ce5" stroke-width="2" />
-          <line x1="24.2" y1="28.8" x2="20" y2="33" stroke="#326ce5" stroke-width="2" />
-          <text x="56" y="29" fill="white" font-size="14" font-weight="700" letter-spacing="2">KUBERNETES CLUSTER
-            ARCHITECTURE</text>
-          <text x="944" y="29" fill="#475569" font-size="10" text-anchor="end" letter-spacing="0.5">v1.30+</text>
-
-          <!-- ══ CONTROL PLANE ════════════════════════════════════════════ -->
-          <rect x="14" y="55" width="932" height="168" rx="10" fill="url(#g-cp-bg)" stroke="#16a34a" stroke-width="2"
-            filter="url(#f-lg)" />
-          <!-- label pill -->
-          <rect x="14" y="55" width="190" height="26" rx="5" fill="#16a34a" />
-          <text x="25" y="72" fill="white" font-size="11" font-weight="700" letter-spacing="1.2">▣ CONTROL PLANE</text>
-
-          <!-- ── etcd ── -->
-          <rect x="28" y="88" width="148" height="120" rx="9" fill="url(#g-etcd)" filter="url(#f-md)" />
-          <rect x="28" y="88" width="148" height="3" rx="2" fill="rgba(255,255,255,0.3)" />
-          <text x="102" y="118" fill="white" font-size="14" font-weight="800" text-anchor="middle"
-            letter-spacing="0.5">etcd</text>
-          <text x="102" y="136" fill="#fde68a" font-size="9.5" text-anchor="middle">Distributed K-V Store</text>
-          <text x="102" y="152" fill="rgba(255,255,255,0.75)" font-size="9" text-anchor="middle">Cluster state &amp;
-            config</text>
-          <text x="102" y="168" fill="rgba(255,255,255,0.55)" font-size="9" text-anchor="middle">Only API Server
-            reads/writes</text>
-          <rect x="64" y="179" width="76" height="16" rx="8" fill="rgba(0,0,0,0.2)" />
-          <text x="102" y="190" fill="rgba(255,255,255,0.7)" font-size="8.5" text-anchor="middle">port :2379</text>
-
-          <!-- ── kube-scheduler ── -->
-          <rect x="190" y="88" width="160" height="120" rx="9" fill="url(#g-sched)" filter="url(#f-md)" />
-          <rect x="190" y="88" width="160" height="3" rx="2" fill="rgba(255,255,255,0.2)" />
-          <text x="270" y="118" fill="white" font-size="13" font-weight="800" text-anchor="middle">kube-scheduler</text>
-          <text x="270" y="136" fill="#93c5fd" font-size="9" text-anchor="middle">① Filter — resource/taint</text>
-          <text x="270" y="151" fill="#93c5fd" font-size="9" text-anchor="middle">② Score — best-fit node</text>
-          <text x="270" y="166" fill="#93c5fd" font-size="9" text-anchor="middle">③ Bind — sets nodeName</text>
-          <text x="270" y="185" fill="rgba(255,255,255,0.45)" font-size="8.5" text-anchor="middle">watches unscheduled
-            pods</text>
-
-          <!-- ── kube-apiserver (central, tallest) ── -->
-          <rect x="364" y="76" width="232" height="140" rx="10" fill="url(#g-api)" filter="url(#f-lg)" />
-          <rect x="364" y="76" width="232" height="5" rx="3" fill="#60a5fa" />
-          <text x="480" y="112" fill="white" font-size="15" font-weight="800" text-anchor="middle"
-            letter-spacing="0.5">kube-apiserver</text>
-          <text x="480" y="132" fill="#bfdbfe" font-size="9.5" text-anchor="middle">REST gateway · Auth · AuthZ</text>
-          <text x="480" y="147" fill="#bfdbfe" font-size="9.5" text-anchor="middle">Admission control ·
-            Validation</text>
-          <!-- port badge -->
-          <rect x="424" y="157" width="112" height="17" rx="8" fill="rgba(0,0,0,0.22)" />
-          <text x="480" y="169" fill="white" font-size="9" text-anchor="middle" letter-spacing="0.3">HTTPS :6443</text>
-          <!-- hub badge -->
-          <rect x="392" y="200" width="176" height="16" rx="8" fill="rgba(255,255,255,0.18)" />
-          <text x="480" y="211" fill="white" font-size="9" font-weight="700" text-anchor="middle" letter-spacing="0.5">★
-            SINGLE POINT OF COMMUNICATION</text>
-
-          <!-- ── kube-controller-manager ── -->
-          <rect x="610" y="88" width="168" height="120" rx="9" fill="url(#g-cm)" filter="url(#f-md)" />
-          <rect x="610" y="88" width="168" height="3" rx="2" fill="rgba(255,255,255,0.2)" />
-          <text x="694" y="113" fill="white" font-size="12" font-weight="800"
-            text-anchor="middle">controller-manager</text>
-          <text x="694" y="132" fill="#93c5fd" font-size="9" text-anchor="middle">Node · ReplicaSet · Deployment</text>
-          <text x="694" y="147" fill="#93c5fd" font-size="9" text-anchor="middle">Job · Endpoint · Namespace</text>
-          <text x="694" y="162" fill="#93c5fd" font-size="9" text-anchor="middle">ServiceAccount · Token</text>
-          <text x="694" y="181" fill="rgba(255,255,255,0.45)" font-size="8.5" text-anchor="middle">reconciliation
-            control loops</text>
-
-          <!-- ── cloud-controller-manager ── -->
-          <rect x="792" y="88" width="148" height="120" rx="9" fill="url(#g-cloud)" filter="url(#f-md)" />
-          <rect x="792" y="88" width="148" height="3" rx="2" fill="rgba(255,255,255,0.25)" />
-          <text x="866" y="113" fill="white" font-size="11" font-weight="800"
-            text-anchor="middle">cloud-controller</text>
-          <text x="866" y="127" fill="white" font-size="11" font-weight="800" text-anchor="middle">manager</text>
-          <text x="866" y="146" fill="#ddd6fe" font-size="9" text-anchor="middle">LoadBalancer IPs</text>
-          <text x="866" y="161" fill="#ddd6fe" font-size="9" text-anchor="middle">Cloud Volumes</text>
-          <text x="866" y="176" fill="#ddd6fe" font-size="9" text-anchor="middle">Node lifecycle</text>
-          <text x="866" y="195" fill="rgba(255,255,255,0.45)" font-size="8" text-anchor="middle">optional ·
-            cloud-specific</text>
-
-          <!-- Control plane internal arrows -->
-          <!-- etcd ↔ API (bidirectional dashed amber) -->
-          <line x1="176" y1="140" x2="362" y2="140" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="5,3"
-            marker-end="url(#a-amber)" />
-          <line x1="362" y1="152" x2="176" y2="152" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="5,3"
-            marker-end="url(#a-amber)" />
-          <!-- Scheduler → API -->
-          <line x1="350" y1="138" x2="365" y2="138" stroke="#3b82f6" stroke-width="1.4" stroke-dasharray="4,3"
-            marker-end="url(#a-blue)" opacity="0.85" />
-          <!-- CM → API -->
-          <line x1="610" y1="138" x2="596" y2="138" stroke="#3b82f6" stroke-width="1.4" stroke-dasharray="4,3"
-            marker-end="url(#a-blue)" opacity="0.85" />
-          <!-- Cloud CM → API (curved below) -->
-          <path d="M 866,208 Q 866,226 480,226 L 480,216" fill="none" stroke="#8b5cf6" stroke-width="1.4"
-            stroke-dasharray="5,3" marker-end="url(#a-violet)" opacity="0.75" />
-
-          <!-- ══ WORKER NODE 1 ════════════════════════════════════════════ -->
-          <rect x="14" y="242" width="460" height="300" rx="10" fill="url(#g-node)" stroke="#64748b" stroke-width="1.5"
-            filter="url(#f-md)" />
-          <rect x="14" y="242" width="170" height="25" rx="5" fill="#334155" />
-          <text x="25" y="259" fill="white" font-size="10" font-weight="700" letter-spacing="1.2">⬡ WORKER NODE 1</text>
-          <text x="464" y="259" fill="#94a3b8" font-size="9" text-anchor="end">linux/amd64</text>
-
-          <!-- kubelet N1 -->
-          <rect x="28" y="276" width="128" height="88" rx="8" fill="url(#g-kubelet)" filter="url(#f-sm)" />
-          <rect x="28" y="276" width="128" height="3" rx="2" fill="rgba(255,255,255,0.3)" />
-          <text x="92" y="310" fill="white" font-size="12" font-weight="800" text-anchor="middle">kubelet</text>
-          <text x="92" y="328" fill="#bae6fd" font-size="9" text-anchor="middle">Pod lifecycle mgmt</text>
-          <text x="92" y="342" fill="#bae6fd" font-size="9" text-anchor="middle">Node agent · CRI</text>
-          <rect x="52" y="350" width="80" height="13" rx="6" fill="rgba(0,0,0,0.2)" />
-          <text x="92" y="360" fill="rgba(255,255,255,0.65)" font-size="8" text-anchor="middle">:10250 / :10255</text>
-
-          <!-- kube-proxy N1 -->
-          <rect x="170" y="276" width="128" height="88" rx="8" fill="url(#g-proxy)" filter="url(#f-sm)" />
-          <rect x="170" y="276" width="128" height="3" rx="2" fill="rgba(255,255,255,0.2)" />
-          <text x="234" y="310" fill="white" font-size="12" font-weight="800" text-anchor="middle">kube-proxy</text>
-          <text x="234" y="328" fill="#cbd5e1" font-size="9" text-anchor="middle">iptables / IPVS</text>
-          <text x="234" y="342" fill="#cbd5e1" font-size="9" text-anchor="middle">Service network rules</text>
-          <rect x="194" y="350" width="80" height="13" rx="6" fill="rgba(0,0,0,0.2)" />
-          <text x="234" y="360" fill="rgba(255,255,255,0.65)" font-size="8" text-anchor="middle">:10256</text>
-
-          <!-- Container Runtime N1 -->
-          <rect x="312" y="276" width="148" height="88" rx="8" fill="url(#g-runtime)" filter="url(#f-sm)" />
-          <rect x="312" y="276" width="148" height="3" rx="2" fill="rgba(255,255,255,0.2)" />
-          <text x="386" y="305" fill="white" font-size="12" font-weight="800" text-anchor="middle">Container</text>
-          <text x="386" y="319" fill="white" font-size="12" font-weight="800" text-anchor="middle">Runtime</text>
-          <text x="386" y="337" fill="#99f6e4" font-size="9" text-anchor="middle">containerd / CRI-O</text>
-          <rect x="338" y="350" width="96" height="13" rx="6" fill="rgba(0,0,0,0.2)" />
-          <text x="386" y="360" fill="rgba(255,255,255,0.65)" font-size="8" text-anchor="middle">CRI interface</text>
-
-          <!-- Pods separator N1 -->
-          <line x1="26" y1="376" x2="462" y2="376" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4" />
-          <text x="30" y="390" fill="#94a3b8" font-size="9" font-weight="700" letter-spacing="0.8">RUNNING PODS</text>
-
-          <!-- Pod boxes N1 -->
-          <rect x="28" y="398" width="96" height="66" rx="7" fill="url(#g-pod)" filter="url(#f-sm)" />
-          <text x="76" y="424" fill="white" font-size="11" font-weight="700" text-anchor="middle">Pod A</text>
-          <text x="76" y="440" fill="#86efac" font-size="8.5" text-anchor="middle">nginx:1.25</text>
-          <text x="76" y="454" fill="rgba(255,255,255,0.5)" font-size="8" text-anchor="middle">Deployment</text>
-
-          <rect x="136" y="398" width="96" height="66" rx="7" fill="url(#g-pod)" filter="url(#f-sm)" />
-          <text x="184" y="424" fill="white" font-size="11" font-weight="700" text-anchor="middle">Pod B</text>
-          <text x="184" y="440" fill="#86efac" font-size="8.5" text-anchor="middle">app + sidecar</text>
-          <text x="184" y="454" fill="rgba(255,255,255,0.5)" font-size="8" text-anchor="middle">StatefulSet</text>
-
-          <rect x="244" y="398" width="96" height="66" rx="7" fill="url(#g-pod)" filter="url(#f-sm)" />
-          <text x="292" y="424" fill="white" font-size="11" font-weight="700" text-anchor="middle">Pod C</text>
-          <text x="292" y="440" fill="#86efac" font-size="8.5" text-anchor="middle">fluentd</text>
-          <text x="292" y="454" fill="rgba(255,255,255,0.5)" font-size="8" text-anchor="middle">DaemonSet</text>
-
-          <!-- pending pod -->
-          <rect x="352" y="398" width="110" height="66" rx="7" fill="rgba(20,83,45,0.12)" stroke="#16a34a"
-            stroke-width="1" stroke-dasharray="5,3" />
-          <text x="407" y="424" fill="#16a34a" font-size="10" font-weight="700" text-anchor="middle">Pod D</text>
-          <text x="407" y="440" fill="#16a34a" font-size="8.5" text-anchor="middle">Pending / Init</text>
-          <text x="407" y="454" fill="#6b7280" font-size="8" text-anchor="middle">awaiting scheduling</text>
-
-          <!-- ══ WORKER NODE 2 ════════════════════════════════════════════ -->
-          <rect x="486" y="242" width="460" height="300" rx="10" fill="url(#g-node)" stroke="#64748b" stroke-width="1.5"
-            filter="url(#f-md)" />
-          <rect x="486" y="242" width="170" height="25" rx="5" fill="#334155" />
-          <text x="497" y="259" fill="white" font-size="10" font-weight="700" letter-spacing="1.2">⬡ WORKER NODE
-            2</text>
-          <text x="936" y="259" fill="#94a3b8" font-size="9" text-anchor="end">linux/amd64</text>
-
-          <!-- kubelet N2 -->
-          <rect x="500" y="276" width="128" height="88" rx="8" fill="url(#g-kubelet)" filter="url(#f-sm)" />
-          <rect x="500" y="276" width="128" height="3" rx="2" fill="rgba(255,255,255,0.3)" />
-          <text x="564" y="310" fill="white" font-size="12" font-weight="800" text-anchor="middle">kubelet</text>
-          <text x="564" y="328" fill="#bae6fd" font-size="9" text-anchor="middle">Pod lifecycle mgmt</text>
-          <text x="564" y="342" fill="#bae6fd" font-size="9" text-anchor="middle">Node agent · CRI</text>
-          <rect x="524" y="350" width="80" height="13" rx="6" fill="rgba(0,0,0,0.2)" />
-          <text x="564" y="360" fill="rgba(255,255,255,0.65)" font-size="8" text-anchor="middle">:10250 / :10255</text>
-
-          <!-- kube-proxy N2 -->
-          <rect x="642" y="276" width="128" height="88" rx="8" fill="url(#g-proxy)" filter="url(#f-sm)" />
-          <rect x="642" y="276" width="128" height="3" rx="2" fill="rgba(255,255,255,0.2)" />
-          <text x="706" y="310" fill="white" font-size="12" font-weight="800" text-anchor="middle">kube-proxy</text>
-          <text x="706" y="328" fill="#cbd5e1" font-size="9" text-anchor="middle">iptables / IPVS</text>
-          <text x="706" y="342" fill="#cbd5e1" font-size="9" text-anchor="middle">Service network rules</text>
-          <rect x="666" y="350" width="80" height="13" rx="6" fill="rgba(0,0,0,0.2)" />
-          <text x="706" y="360" fill="rgba(255,255,255,0.65)" font-size="8" text-anchor="middle">:10256</text>
-
-          <!-- Container Runtime N2 -->
-          <rect x="784" y="276" width="148" height="88" rx="8" fill="url(#g-runtime)" filter="url(#f-sm)" />
-          <rect x="784" y="276" width="148" height="3" rx="2" fill="rgba(255,255,255,0.2)" />
-          <text x="858" y="305" fill="white" font-size="12" font-weight="800" text-anchor="middle">Container</text>
-          <text x="858" y="319" fill="white" font-size="12" font-weight="800" text-anchor="middle">Runtime</text>
-          <text x="858" y="337" fill="#99f6e4" font-size="9" text-anchor="middle">containerd / CRI-O</text>
-          <rect x="810" y="350" width="96" height="13" rx="6" fill="rgba(0,0,0,0.2)" />
-          <text x="858" y="360" fill="rgba(255,255,255,0.65)" font-size="8" text-anchor="middle">CRI interface</text>
-
-          <!-- Pods separator N2 -->
-          <line x1="498" y1="376" x2="934" y2="376" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4" />
-          <text x="502" y="390" fill="#94a3b8" font-size="9" font-weight="700" letter-spacing="0.8">RUNNING PODS</text>
-
-          <!-- Pod boxes N2 -->
-          <rect x="500" y="398" width="96" height="66" rx="7" fill="url(#g-pod)" filter="url(#f-sm)" />
-          <text x="548" y="424" fill="white" font-size="11" font-weight="700" text-anchor="middle">Pod E</text>
-          <text x="548" y="440" fill="#86efac" font-size="8.5" text-anchor="middle">postgres:15</text>
-          <text x="548" y="454" fill="rgba(255,255,255,0.5)" font-size="8" text-anchor="middle">StatefulSet</text>
-
-          <rect x="610" y="398" width="96" height="66" rx="7" fill="url(#g-pod)" filter="url(#f-sm)" />
-          <text x="658" y="424" fill="white" font-size="11" font-weight="700" text-anchor="middle">Pod F</text>
-          <text x="658" y="440" fill="#86efac" font-size="8.5" text-anchor="middle">api-server</text>
-          <text x="658" y="454" fill="rgba(255,255,255,0.5)" font-size="8" text-anchor="middle">Deployment</text>
-
-          <rect x="720" y="398" width="96" height="66" rx="7" fill="url(#g-pod)" filter="url(#f-sm)" />
-          <text x="768" y="424" fill="white" font-size="11" font-weight="700" text-anchor="middle">Pod G</text>
-          <text x="768" y="440" fill="#86efac" font-size="8.5" text-anchor="middle">node-exporter</text>
-          <text x="768" y="454" fill="rgba(255,255,255,0.5)" font-size="8" text-anchor="middle">DaemonSet</text>
-
-          <rect x="830" y="398" width="108" height="66" rx="7" fill="url(#g-pod)" filter="url(#f-sm)" />
-          <text x="884" y="424" fill="white" font-size="11" font-weight="700" text-anchor="middle">Pod H</text>
-          <text x="884" y="440" fill="#86efac" font-size="8.5" text-anchor="middle">job-worker</text>
-          <text x="884" y="454" fill="rgba(255,255,255,0.5)" font-size="8" text-anchor="middle">Job / CronJob</text>
-
-          <!-- ══ API → KUBELET ARROWS ══════════════════════════════════════ -->
-          <!-- API bottom-center to Node1 kubelet top -->
-          <path d="M 430,216 C 430,240 92,240 92,274" fill="none" stroke="#3b82f6" stroke-width="2.4"
-            marker-end="url(#a-blue)" opacity="0.9" />
-          <!-- path label -->
-          <rect x="198" y="230" width="90" height="16" rx="8" fill="rgba(59,130,246,0.12)" />
-          <text x="243" y="241" fill="#1d4ed8" font-size="8.5" font-weight="600" text-anchor="middle">watch /
-            sync</text>
-
-          <!-- API bottom-center to Node2 kubelet top -->
-          <path d="M 530,216 C 530,240 564,240 564,274" fill="none" stroke="#3b82f6" stroke-width="2.4"
-            marker-end="url(#a-blue)" opacity="0.9" />
-          <rect x="558" y="230" width="90" height="16" rx="8" fill="rgba(59,130,246,0.12)" />
-          <text x="603" y="241" fill="#1d4ed8" font-size="8.5" font-weight="600" text-anchor="middle">watch /
-            sync</text>
-
-          <!-- ══ LEGEND BAR ════════════════════════════════════════════════ -->
-          <rect x="14" y="546" width="932" height="10" rx="4" fill="#e2e8f0" />
-          <rect x="14" y="548" width="932" height="8" rx="4" fill="#f1f5f9" />
-          <!-- Legend items -->
-          <line x1="30" y1="539" x2="58" y2="539" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="4,2" />
-          <polygon points="56,535.5 62,539 56,542.5" fill="#f59e0b" />
-          <text x="68" y="542" fill="#475569" font-size="9">etcd read/write</text>
-
-          <line x1="162" y1="539" x2="190" y2="539" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="4,2" />
-          <polygon points="188,535.5 194,539 188,542.5" fill="#3b82f6" />
-          <text x="200" y="542" fill="#475569" font-size="9">component → API watch</text>
-
-          <line x1="330" y1="539" x2="358" y2="539" stroke="#3b82f6" stroke-width="2.2" />
-          <polygon points="356,535.5 362,539 356,542.5" fill="#3b82f6" />
-          <text x="368" y="542" fill="#475569" font-size="9">API → kubelet (pod scheduling)</text>
-
-          <line x1="520" y1="539" x2="548" y2="539" stroke="#8b5cf6" stroke-width="1.8" stroke-dasharray="4,2" />
-          <polygon points="546,535.5 552,539 546,542.5" fill="#8b5cf6" />
-          <text x="558" y="542" fill="#475569" font-size="9">cloud-controller-manager</text>
-        </svg>
+        <img src="assets/k8s-enterprise-architecture.png" alt="Kubernetes Cluster Architecture" width="960" height="560"
+          style="max-width:100%;height:auto;display:block;">
         <figcaption>
           <strong>Kubernetes Cluster Architecture</strong> — The <strong>kube-apiserver</strong> is the single gateway:
           every component communicates exclusively through it. <strong>etcd</strong> is the sole persistent store and is
@@ -751,6 +420,10 @@ crictl inspect &lt;container-id&gt;       # deep dive into container status</cod
         <br><em>Life:</em> Pods are <strong>ephemeral</strong>. They are born, they run, and they die. They are not
         resurrected; a new one is created to replace them.
       </p>
+      <figure class="diagram">
+        <img src="assets/k8s-pod-lifecycle.png" alt="Pod lifecycle states: Pending, Running, Succeeded, Failed, Unknown" width="480" height="120" style="max-width:100%;height:auto;display:block;">
+        <figcaption>Pod lifecycle: <strong>Pending</strong> (waiting for scheduling) &rarr; <strong>Running</strong> (containers running) &rarr; <strong>Succeeded</strong> / <strong>Failed</strong> / <strong>Unknown</strong>.</figcaption>
+      </figure>
 
       <div class="snippet-label">Run a pod (imperative)</div>
       <pre><code>kubectl run nginx --image nginx
@@ -774,6 +447,10 @@ kubectl get deploy,rs,po</code></pre>
       <p>Scale: <code>kubectl scale --replicas=5 deployment/webapp</code> or edit via
         <code>kubectl edit deploy webapp</code>.
       </p>
+      <figure class="diagram">
+        <img src="assets/k8s-deployment-replicaset-pod.png" alt="Workloads hierarchy: Deployment → ReplicaSet → Pod" width="400" height="200" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>Workloads hierarchy:</strong> Deployment manages ReplicaSets; ReplicaSet maintains pod count via selector; Pod runs containers.</figcaption>
+      </figure>
 
       <h3>Imperative commands — exam speed reference</h3>
       <p>In the CKA exam, speed matters. Use imperative commands with <code>--dry-run=client -o yaml</code> to
@@ -899,26 +576,7 @@ spec:
 kubectl get services
 curl http://&lt;node-ip&gt;:30008   # for NodePort</code></pre>
       <figure class="diagram">
-        <svg viewBox="0 0 540 160" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-          <rect x="20" y="20" width="155" height="120" rx="8" fill="#eaeef2" stroke="#d0d7de" />
-          <text x="97" y="46" fill="#1a7f37" font-size="16" font-weight="600" text-anchor="middle">NodePort</text>
-          <text x="97" y="66" fill="#656d76" font-size="13" text-anchor="middle">Node:30008 → :80</text>
-          <text x="97" y="82" fill="#656d76" font-size="13" text-anchor="middle">→ Pod targetPort</text>
-          <text x="97" y="106" fill="#1f2328" font-size="13" text-anchor="middle">External via</text>
-          <text x="97" y="120" fill="#1f2328" font-size="13" text-anchor="middle">any node + nodePort</text>
-          <rect x="192" y="20" width="155" height="120" rx="8" fill="#eaeef2" stroke="#d0d7de" />
-          <text x="269" y="46" fill="#1a7f37" font-size="16" font-weight="600" text-anchor="middle">ClusterIP</text>
-          <text x="269" y="66" fill="#656d76" font-size="13" text-anchor="middle">Virtual IP 10.96.x.x</text>
-          <text x="269" y="82" fill="#656d76" font-size="13" text-anchor="middle">Cluster-internal</text>
-          <text x="269" y="106" fill="#1f2328" font-size="13" text-anchor="middle">Frontend → Backend</text>
-          <text x="269" y="120" fill="#1f2328" font-size="12" text-anchor="middle">svc.ns.svc.cluster.local</text>
-          <rect x="364" y="20" width="155" height="120" rx="8" fill="#eaeef2" stroke="#d0d7de" />
-          <text x="441" y="46" fill="#1a7f37" font-size="16" font-weight="600" text-anchor="middle">LoadBalancer</text>
-          <text x="441" y="66" fill="#656d76" font-size="13" text-anchor="middle">Cloud LB → NodePort</text>
-          <text x="441" y="82" fill="#656d76" font-size="13" text-anchor="middle">→ Service → Pods</text>
-          <text x="441" y="106" fill="#1f2328" font-size="13" text-anchor="middle">External IP</text>
-          <text x="441" y="120" fill="#1f2328" font-size="13" text-anchor="middle">(AWS/GCP/Azure)</text>
-        </svg>
+        <img src="assets/k8s-service-types.png" alt="Kubernetes Service Types: NodePort, ClusterIP, LoadBalancer" width="540" height="160" style="max-width:100%;height:auto;display:block;">
         <figcaption>Service types: NodePort (expose on node port), ClusterIP (internal VIP), LoadBalancer (cloud LB).
         </figcaption>
       </figure>
@@ -948,23 +606,7 @@ curl http://&lt;node-ip&gt;:30008   # for NodePort</code></pre>
         <code>kubectl describe pod &lt;name&gt;</code> to check events.
       </p>
       <figure class="diagram">
-        <svg viewBox="0 0 560 110" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-          <rect x="10" y="20" width="110" height="56" rx="6" fill="#eaeef2" stroke="#0969da" />
-          <text x="65" y="46" fill="#1f2328" font-size="13" text-anchor="middle">Pod created</text>
-          <text x="65" y="62" fill="#656d76" font-size="11" text-anchor="middle">(nodeName empty)</text>
-          <path d="M120 48 L148 48" stroke="#1a7f37" stroke-width="2" />
-          <rect x="148" y="20" width="120" height="56" rx="6" fill="#eaeef2" stroke="#0969da" />
-          <text x="208" y="44" fill="#1f2328" font-size="13" text-anchor="middle">Scheduler</text>
-          <text x="208" y="60" fill="#656d76" font-size="11" text-anchor="middle">Filter &rarr; Score</text>
-          <path d="M268 48 L296 48" stroke="#1a7f37" stroke-width="2" />
-          <rect x="296" y="20" width="120" height="56" rx="6" fill="#eaeef2" stroke="#0969da" />
-          <text x="356" y="44" fill="#1f2328" font-size="13" text-anchor="middle">Binding obj</text>
-          <text x="356" y="60" fill="#656d76" font-size="11" text-anchor="middle">nodeName = node01</text>
-          <path d="M416 48 L444 48" stroke="#1a7f37" stroke-width="2" />
-          <rect x="444" y="20" width="100" height="56" rx="6" fill="#eaeef2" stroke="#1a7f37" />
-          <text x="494" y="44" fill="#1f2328" font-size="13" text-anchor="middle">Kubelet</text>
-          <text x="494" y="60" fill="#656d76" font-size="11" text-anchor="middle">runs pod</text>
-        </svg>
+        <img src="assets/k8s-scheduling-flow.png" alt="Pod scheduling flow: Pod created → Scheduler → Binding → Kubelet" width="560" height="110" style="max-width:100%;height:auto;display:block;">
         <figcaption>Scheduling flow: Filter + Score &rarr; Binding object &rarr; kubelet starts the pod.</figcaption>
       </figure>
       <div class="snippet-label">Debug scheduling decisions</div>
@@ -1109,6 +751,10 @@ kubectl get pods -L app,env    # show specific labels as columns</code></pre>
         pass&rdquo; on the pod.</p>
       <p><em>Critical: Tolerations do NOT guarantee the pod will land on that node &mdash; they only
           &ldquo;allow&rdquo; it. Use Node Affinity to <strong>attract</strong> pods to specific nodes.</em></p>
+      <figure class="diagram">
+        <img src="assets/k8s-taints-tolerations.png" alt="Taints repel pods from nodes; Tolerations allow pods onto tainted nodes" width="500" height="140" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>Taints and Tolerations:</strong> Node taints &ldquo;keep out&rdquo; pods; pod tolerations act as a &ldquo;VIP pass&rdquo; to land on tainted nodes.</figcaption>
+      </figure>
       <ul>
         <li><strong>NoSchedule:</strong> New pods without a matching toleration are <em>never</em> scheduled here.
           Existing pods stay untouched.</li>
@@ -1805,6 +1451,10 @@ kubectl logs &lt;pod-name&gt; -f --previous</code></pre>
       <p>Deployment strategies: <strong>Recreate</strong> (all down then up), <strong>RollingUpdate</strong>
         (default).
       </p>
+      <figure class="diagram">
+        <img src="assets/k8s-rolling-update.png" alt="Rolling update: gradually replace old ReplicaSet with new" width="540" height="160" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>Rolling update:</strong> Deployment gradually replaces old ReplicaSet pods with new version pods, maintaining availability.</figcaption>
+      </figure>
       <pre><code>kubectl rollout status deployment/myapp-deployment
 kubectl rollout history deployment/myapp-deployment
 kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1
@@ -1909,6 +1559,10 @@ spec:
 
       <h3>Multi-container pod design patterns</h3>
       <p>CKA tests multi-container pods. Three main patterns:</p>
+      <figure class="diagram">
+        <img src="assets/k8s-multi-container-patterns.png" alt="Multi-container patterns: Sidecar, Ambassador, Adapter" width="540" height="140" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>Multi-container patterns:</strong> Sidecar (auxiliary), Ambassador (proxy to external services), Adapter (transforms output).</figcaption>
+      </figure>
       <ul>
         <li><strong>Sidecar:</strong> auxiliary container that enhances the main container (e.g. log shipper that
           reads
@@ -1947,6 +1601,10 @@ spec:
         container fails, the pod is restarted (all init containers re-run). Order: initContainers run sequentially;
         then
         main containers start.</p>
+      <figure class="diagram">
+        <img src="assets/k8s-init-containers.png" alt="Init containers run sequentially before main containers" width="500" height="120" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>Init containers:</strong> Run sequentially to completion; only then do main containers start. Failure restarts the pod.</figcaption>
+      </figure>
       <pre><code>apiVersion: v1
 kind: Pod
 metadata:
@@ -1973,6 +1631,10 @@ spec:
         (no traffic until ready). Types: <code>httpGet</code> (HTTP path), <code>exec</code> (command),
         <code>tcpSocket</code> (port open).
       </p>
+      <figure class="diagram">
+        <img src="assets/k8s-liveness-readiness.png" alt="Liveness vs Readiness probes" width="500" height="120" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>Probes:</strong> Liveness fails &rarr; restart container. Readiness fails &rarr; remove from Service endpoints (no traffic).</figcaption>
+      </figure>
       <div class="snippet-label">Probes example</div>
       <pre><code>containers:
 - name: app
@@ -2033,20 +1695,7 @@ kubectl describe hpa myapp-hpa</code></pre>
           evict existing pods.</li>
       </ul>
       <figure class="diagram">
-        <svg viewBox="0 0 420 120" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-          <rect x="20" y="20" width="118" height="80" rx="8" fill="#eaeef2" stroke="#d0d7de" />
-          <text x="79" y="48" fill="#1a7f37" font-size="15" font-weight="600" text-anchor="middle">cordon</text>
-          <text x="79" y="68" fill="#656d76" font-size="13" text-anchor="middle">No new pods</text>
-          <text x="79" y="84" fill="#656d76" font-size="13" text-anchor="middle">Pods stay</text>
-          <rect x="151" y="20" width="118" height="80" rx="8" fill="#eaeef2" stroke="#d0d7de" />
-          <text x="210" y="48" fill="#0969da" font-size="15" font-weight="600" text-anchor="middle">drain</text>
-          <text x="210" y="68" fill="#656d76" font-size="13" text-anchor="middle">Cordon + evict</text>
-          <text x="210" y="84" fill="#656d76" font-size="13" text-anchor="middle">Pods move away</text>
-          <rect x="282" y="20" width="118" height="80" rx="8" fill="#eaeef2" stroke="#d0d7de" />
-          <text x="341" y="48" fill="#1a7f37" font-size="15" font-weight="600" text-anchor="middle">uncordon</text>
-          <text x="341" y="68" fill="#656d76" font-size="13" text-anchor="middle">Allow scheduling</text>
-          <text x="341" y="84" fill="#656d76" font-size="13" text-anchor="middle">again</text>
-        </svg>
+        <img src="assets/k8s-cordon-drain-uncordon.png" alt="Node maintenance: cordon, drain, uncordon" width="420" height="120" style="max-width:100%;height:auto;display:block;">
         <figcaption>cordon = no new pods; drain = cordon + evict; uncordon = allow scheduling again.</figcaption>
       </figure>
 
@@ -2357,20 +2006,7 @@ spec:
 kubectl exec my-pod -- whoami
 kubectl exec my-pod -- id</code></pre>
       <figure class="diagram">
-        <svg viewBox="0 0 400 110" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-          <rect x="24" y="24" width="100" height="62" rx="6" fill="#eaeef2" stroke="#0969da" />
-          <text x="74" y="48" fill="#1f2328" font-size="14" font-weight="600" text-anchor="middle">Role</text>
-          <text x="74" y="64" fill="#656d76" font-size="12" text-anchor="middle">apiGroups, resources</text>
-          <text x="74" y="78" fill="#656d76" font-size="12" text-anchor="middle">verbs</text>
-          <path d="M124 55 L148 55" stroke="#1a7f37" stroke-width="2" />
-          <rect x="148" y="24" width="104" height="62" rx="6" fill="#eaeef2" stroke="#0969da" />
-          <text x="200" y="48" fill="#1f2328" font-size="14" font-weight="600" text-anchor="middle">RoleBinding</text>
-          <text x="200" y="66" fill="#656d76" font-size="12" text-anchor="middle">subjects, roleRef</text>
-          <path d="M252 55 L276 55" stroke="#1a7f37" stroke-width="2" />
-          <rect x="276" y="24" width="100" height="62" rx="6" fill="#eaeef2" stroke="#1a7f37" />
-          <text x="326" y="48" fill="#1f2328" font-size="14" font-weight="600" text-anchor="middle">User</text>
-          <text x="326" y="66" fill="#656d76" font-size="12" text-anchor="middle">permissions</text>
-        </svg>
+        <img src="assets/k8s-rbac-flow.png" alt="RBAC: Role → RoleBinding → User/Group/ServiceAccount" width="400" height="110" style="max-width:100%;height:auto;display:block;">
         <figcaption>RBAC: Role defines permissions; RoleBinding binds Role to User/Group/ServiceAccount.</figcaption>
       </figure>
 
@@ -2383,19 +2019,7 @@ kubectl exec my-pod -- id</code></pre>
         <strong>Pending</strong>. Access modes: ReadWriteOnce (RWO), ReadOnlyMany (ROX), ReadWriteMany (RWX).
       </p>
       <figure class="diagram">
-        <svg viewBox="0 0 500 110" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-          <rect x="24" y="24" width="130" height="62" rx="6" fill="#eaeef2" stroke="#0969da" />
-          <text x="89" y="48" fill="#1f2328" font-size="15" font-weight="600" text-anchor="middle">PV</text>
-          <text x="89" y="66" fill="#656d76" font-size="13" text-anchor="middle">cluster-scoped</text>
-          <path d="M154 55 L178 55" stroke="#1a7f37" stroke-width="2" />
-          <rect x="178" y="24" width="130" height="62" rx="6" fill="#eaeef2" stroke="#0969da" />
-          <text x="243" y="48" fill="#1f2328" font-size="15" font-weight="600" text-anchor="middle">PVC</text>
-          <text x="243" y="66" fill="#656d76" font-size="13" text-anchor="middle">namespace-scoped</text>
-          <path d="M308 55 L332 55" stroke="#1a7f37" stroke-width="2" />
-          <rect x="332" y="24" width="130" height="62" rx="6" fill="#eaeef2" stroke="#1a7f37" />
-          <text x="397" y="48" fill="#1f2328" font-size="15" font-weight="600" text-anchor="middle">Pod</text>
-          <text x="397" y="66" fill="#656d76" font-size="13" text-anchor="middle">volumeMounts</text>
-        </svg>
+        <img src="assets/k8s-storage-pv-pvc-pod.png" alt="Storage flow: PV → PVC → Pod" width="500" height="110" style="max-width:100%;height:auto;display:block;">
         <figcaption>Storage flow: PV (pool) → PVC (claim) → Pod (volumeMounts). PVC and Pod must be in same namespace.
         </figcaption>
       </figure>
@@ -2538,7 +2162,10 @@ kubectl get node -o jsonpath='{.spec.podCIDR}'</code></pre>
         <br><strong>Endpoints:</strong> The actual list of backend Pod IPs. Checked via
         <code>kubectl get endpoints</code>.
       </p>
-
+      <figure class="diagram">
+        <img src="assets/k8s-service-to-pods.png" alt="Service flow: ClusterIP → kube-proxy → Endpoints → Pods" width="560" height="120" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>Service to Pods:</strong> Client &rarr; ClusterIP (VIP) &rarr; kube-proxy (iptables/IPVS) &rarr; Endpoints &rarr; backend Pods.</figcaption>
+      </figure>
       <p><em>Mechanism:</em> <strong>kube-proxy</strong> runs on every node and watches the API server. It updates
         node
         network rules (usually <strong>iptables</strong> or <strong>IPVS</strong>) to trap traffic destined for the
@@ -2569,6 +2196,10 @@ kubectl get configmap coredns -n kube-system -o yaml</code></pre>
       <h3>Ingress</h3>
       <p>Need an Ingress controller (e.g. nginx-ingress) and Ingress resources (rules). Ingress exposes HTTP/HTTPS
         routes to services.</p>
+      <figure class="diagram">
+        <img src="assets/k8s-ingress-flow.png" alt="Ingress flow: External → Ingress Controller → Service → Pods" width="560" height="140" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>Ingress flow:</strong> External traffic &rarr; Ingress Controller &rarr; Ingress rules (host/path) &rarr; Service &rarr; Pods.</figcaption>
+      </figure>
       <div class="snippet-label">Ingress with paths</div>
       <pre><code>apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -2646,6 +2277,10 @@ kubectl describe ingress ingress-wear-watch</code></pre>
         join worker nodes with <code>kubeadm join</code>. The exam rarely asks for a full install; <strong>upgrading
           an
           existing cluster</strong> (kubeadm upgrade plan / apply, drain/uncordon workers) is frequently tested.</p>
+      <figure class="diagram">
+        <img src="assets/k8s-kubeadm-flow.png" alt="kubeadm init and join flow" width="560" height="180" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>kubeadm flow:</strong> Control plane: <code>kubeadm init</code>; workers: <code>kubeadm join</code> with token and CA hash.</figcaption>
+      </figure>
       <h4>kubeadm init steps (reference)</h4>
       <div class="snippet-label">Prerequisites on all nodes</div>
       <pre><code># Disable swap (required)
@@ -4008,6 +3643,19 @@ k config use-context user-ctx</code></pre>
         <p id="quiz-result-msg"></p>
         <button id="quiz-restart">🔄 Try Again</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Diagram zoom lightbox -->
+  <div id="diagram-zoom-overlay" class="diagram-zoom-overlay" aria-hidden="true">
+    <div class="zoom-container">
+      <img id="diagram-zoom-img" src="" alt="">
+    </div>
+    <div class="diagram-zoom-controls">
+      <button type="button" id="diagram-zoom-in" title="Zoom in">+</button>
+      <button type="button" id="diagram-zoom-out" title="Zoom out">−</button>
+      <button type="button" id="diagram-zoom-reset" title="Reset zoom">⟲</button>
+      <button type="button" id="diagram-zoom-close" class="zoom-close" title="Close">Close</button>
     </div>
   </div>
 
