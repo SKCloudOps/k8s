@@ -383,6 +383,10 @@
       </p>
       <h4>ETCD Commands</h4>
       <p>Use <code>etcdctl</code> (etcd v3) or <code>etcdutl</code> for snapshots. Set <code>ETCDCTL_API=3</code>. See Cluster Maintenance for backup/restore.</p>
+      <figure class="diagram">
+        <img src="assets/k8s-etcd-raft.png" alt="etcd RAFT consensus: Leader replicates writes to Followers" width="560" height="200" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>etcd RAFT:</strong> Odd number of nodes (3 or 5). Leader handles writes and replicates log to followers. Majority must ack before commit.</figcaption>
+      </figure>
 
       <h4>Kube Scheduler</h4>
       <p>Watches for newly created Pods with no assigned node and selects a node for them to run on.
@@ -1035,6 +1039,10 @@ spec:
       </ul>
       <h4>Taints vs Affinity</h4>
       <p>Taints <em>repel</em> pods (unless tolerated); Affinity <em>attracts</em> pods to nodes. Use both for dedicated nodes: taint to block others, affinity to pull your workload.</p>
+      <figure class="diagram">
+        <img src="assets/k8s-taints-vs-affinity.png" alt="Taints repel pods; Node Affinity attracts pods" width="540" height="160" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>Taints vs Affinity:</strong> Taints = keep out (unless tolerated). Node Affinity = prefer this node.</figcaption>
+      </figure>
 
       <h3>Resource Limits</h3>
       <h4>Editing Pods & Deployments</h4>
@@ -1797,6 +1805,10 @@ spec:
       <p>Kubernetes 1.27+: resize CPU/memory without restart. Update <code>resources</code> in pod spec; kubelet applies if supported.</p>
       <h4>Vertical Pod Autoscaler (VPA)</h4>
       <p>Recommends or auto-updates resource requests/limits based on usage. Install VPA controller; create VPA resource targeting deployment.</p>
+      <figure class="diagram">
+        <img src="assets/k8s-hpa-flow.png" alt="HPA flow: Metrics Server to HPA to Deployment scaling" width="560" height="120" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>HPA flow:</strong> Metrics Server collects CPU → HPA compares to target → scales Deployment replicas.</figcaption>
+      </figure>
       <h3>HorizontalPodAutoscaler (HPA)</h3>
       <div class="cka-definition">
         <div class="cka-def-term">HPA (Horizontal Pod Autoscaler)</div>
@@ -1981,6 +1993,10 @@ spec:
       <h3>TLS & Certificates</h3>
       <h4>TLS Basics</h4>
       <p>TLS provides encryption and authentication. Certificates bind identity to public key. Kubernetes uses TLS for API server, etcd, and kubelet.</p>
+      <figure class="diagram">
+        <img src="assets/k8s-tls-cert-chain.png" alt="Kubernetes TLS certificate chain: CA signs component certs" width="400" height="200" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>TLS certificate chain:</strong> CA is root of trust. API server, etcd, kubelet certs are signed by cluster CA.</figcaption>
+      </figure>
       <h4>TLS in Kubernetes</h4>
       <p>Cluster components use <strong>TLS</strong>: servers use <strong>server certificates</strong>, clients use
         <strong>client certificates</strong> for authentication. API server, etcd, kubelet, and other control-plane
@@ -2354,6 +2370,10 @@ ip -n blue link set veth-blue up</code></pre>
 
       <h3>Cluster Networking</h3>
       <h4>Pod Networking</h4>
+      <figure class="diagram">
+        <img src="assets/k8s-pod-networking-cni.png" alt="Pod networking: CNI assigns IPs, pods communicate across nodes" width="560" height="180" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>Pod networking:</strong> CNI assigns each pod a unique IP from Pod CIDR. Pods on different nodes communicate directly.</figcaption>
+      </figure>
       <p>Kubernetes uses the <strong>Container Network Interface (CNI)</strong> standard to manage networking.
         <br><em>Core Responsibilities of CNI Plugin:</em>
         <br>1. <strong>Connectivity:</strong> Insert a network interface into the container's namespace.
@@ -2400,6 +2420,10 @@ iptables-save | grep &lt;service-name&gt;
 kubectl logs -n kube-system -l k8s-app=kube-proxy</code></pre>
 
       <h3>DNS in Kubernetes / CoreDNS in Kubernetes</h3>
+      <figure class="diagram">
+        <img src="assets/k8s-dns-coredns.png" alt="DNS resolution: Pod → CoreDNS → Service IP" width="540" height="160" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>DNS resolution:</strong> Pod lookup (e.g. <code>my-svc.default.svc.cluster.local</code>) → CoreDNS → returns Service ClusterIP.</figcaption>
+      </figure>
       <p><strong>CoreDNS</strong> is the cluster's internal DNS server. It watches the API server for new Services and
         Pods and creates DNS records.
         <br><em>Config:</em> The <strong>Corefile</strong> (inside a ConfigMap) defines behavior (plugins like
@@ -2685,6 +2709,10 @@ kubectl kustomize overlays/prod   # preview</code></pre>
 
       <!-- 14 Troubleshooting -->
       <h2 id="section-14">14 — Troubleshooting</h2>
+      <figure class="diagram">
+        <img src="assets/k8s-troubleshooting-flowchart.png" alt="Troubleshooting decision flowchart for CKA" width="560" height="280" style="max-width:100%;height:auto;display:block;">
+        <figcaption><strong>Troubleshooting flow:</strong> Pending → scheduler/taints/resources. Running but no traffic → Service/Endpoints. CrashLoopBackOff → logs --previous. No connectivity → DNS/CNI/kube-proxy.</figcaption>
+      </figure>
       <div class="cka-definition">
         <div class="cka-def-term">Troubleshooting (30% of CKA)</div>
         <div class="cka-def-body">Highest-weight domain. Application: check pod status, describe, logs (<code>--previous</code>), endpoints, selector mismatch. Control plane: kube-apiserver, etcd, scheduler. Worker: kubelet, container runtime. Network: CNI, CoreDNS, kube-proxy, firewall. Use <code>kubectl describe</code>, <code>journalctl -u kubelet</code>, <code>crictl</code>.</div>
