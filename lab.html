@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CKA Lab | Command Reference & Practice Scenarios</title>
+  <meta name="description" content="CKA command reference with 60+ kubectl commands by domain and practice scenarios. Copy commands and run in Killercoda or your cluster.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .lab-page { --nav-width: 280px; }
+    .lab-layout { display: flex; gap: 0; min-height: calc(100vh - 48px); }
+    .lab-sidebar { width: var(--nav-width); min-width: var(--nav-width); background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; }
+    .lab-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .lab-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .lab-header h1 { margin: 0; font-size: 1.2rem; font-weight: 700; }
+    .cmd-cat { border-bottom: 1px solid var(--border); }
+    .cmd-cat-header { padding: 0.6rem 1rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+    .cmd-cat-header:hover { background: var(--surface2); color: var(--text); }
+    .cmd-cat-header .arrow { font-size: 0.7rem; transition: transform 0.2s; }
+    .cmd-cat.collapsed .arrow { transform: rotate(-90deg); }
+    .cmd-cat.collapsed .cmd-list { display: none; }
+    .cmd-list { padding: 0.25rem 0; }
+    .cmd-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: background 0.15s; }
+    .cmd-item:hover { background: var(--surface2); }
+    .cmd-item code { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.78rem; }
+    .cmd-item .copy-btn { flex-shrink: 0; padding: 0.2rem 0.4rem; font-size: 0.7rem; opacity: 0.7; }
+    .cmd-item:hover .copy-btn { opacity: 1; }
+    .lab-btn { padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 600; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .lab-btn:hover { filter: brightness(1.08); }
+    .lab-btn.secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .lab-scenarios { padding: 1.5rem; border-top: 1px solid var(--border); background: var(--bg); }
+    .lab-scenarios h2 { font-size: 1rem; margin: 0 0 1rem; }
+    .scenario-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; }
+    .scenario-card h4 { margin: 0 0 0.5rem; font-size: 0.95rem; }
+    .scenario-card p { margin: 0.25rem 0; font-size: 0.85rem; color: var(--text-muted); }
+    .scenario-card pre { margin: 0.5rem 0 0; padding: 0.75rem; background: var(--bg); border-radius: 6px; font-size: 0.8rem; overflow-x: auto; }
+    .scenario-card .copy-cmd { margin-top: 0.5rem; font-size: 0.8rem; }
+    @media (max-width: 900px) { .lab-layout { flex-direction: column; } .lab-sidebar { width: 100%; min-width: 100%; max-height: 40vh; } }
+  </style>
+</head>
+<body class="lab-page">
+  <header class="site-header" style="height: 48px; padding: 0 1rem;">
+    <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.5rem;">
+      <span style="font-weight: 700;">CKA Study Guide</span>
+      <span class="badge">CKA</span>
+    </a>
+    <a href="index.html#section-16" class="lab-btn secondary">← Back to Guide</a>
+  </header>
+
+  <div class="lab-layout">
+    <aside class="lab-sidebar">
+      <div style="padding: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+        <strong>Command Reference</strong> — Click to copy, paste into terminal.
+      </div>
+      <div id="cmd-reference"></div>
+    </aside>
+
+    <div class="lab-main">
+      <div class="lab-header">
+        <h1>📋 CKA Command Reference & Scenarios</h1>
+        <div style="display: flex; gap: 0.5rem;">
+          <a href="https://killercoda.com/killer-shell-cka" target="_blank" rel="noopener" class="lab-btn">Practice in Killercoda ↗</a>
+          <a href="https://labs.play-with-k8s.com" target="_blank" rel="noopener" class="lab-btn secondary">Play with K8s ↗</a>
+        </div>
+      </div>
+      <div class="lab-scenarios">
+        <h2>Quick scenarios — Copy & run in Killercoda or your cluster</h2>
+        <div class="scenario-card">
+          <h4>1. Pod + Deployment + Service</h4>
+          <p>Create nginx deployment with 3 replicas, expose as Service.</p>
+          <pre><code>kubectl create deployment nginx-deploy --image=nginx:1.21 --replicas=3
+kubectl expose deployment nginx-deploy --port=80 --name=nginx-svc
+kubectl get deploy,svc,pods</code></pre>
+          <button class="copy-cmd copy-btn" data-cmd="kubectl create deployment nginx-deploy --image=nginx:1.21 --replicas=3
+kubectl expose deployment nginx-deploy --port=80 --name=nginx-svc
+kubectl get deploy,svc,pods">Copy all</button>
+        </div>
+        <div class="scenario-card">
+          <h4>2. ConfigMap + Pod env</h4>
+          <p>ConfigMap with APP_ENV=prod, pod using it as env var.</p>
+          <pre><code>kubectl create configmap app-cm --from-literal=APP_ENV=production
+kubectl run busybox-cm --image=busybox:1.28 --restart=Never -- sleep 3600 --overrides='{"spec":{"containers":[{"name":"b","image":"busybox:1.28","command":["sleep","3600"],"env":[{"name":"APP_ENV","valueFrom":{"configMapKeyRef":{"name":"app-cm","key":"APP_ENV"}}}]}]}}'</code></pre>
+          <button class="copy-cmd copy-btn" data-cmd="kubectl create configmap app-cm --from-literal=APP_ENV=production
+kubectl run busybox-cm --image=busybox:1.28 --restart=Never -- sleep 3600">Copy all</button>
+        </div>
+        <div class="scenario-card">
+          <h4>3. RBAC — Role + RoleBinding</h4>
+          <p>Role: get,list on pods in dev. Bind to user jane.</p>
+          <pre><code>kubectl create role pod-reader --verb=get,list --resource=pods -n dev
+kubectl create rolebinding jane-pod-reader --role=pod-reader --user=jane -n dev
+kubectl auth can-i get pods --as=jane -n dev</code></pre>
+          <button class="copy-cmd copy-btn" data-cmd="kubectl create role pod-reader --verb=get,list --resource=pods -n dev
+kubectl create rolebinding jane-pod-reader --role=pod-reader --user=jane -n dev">Copy all</button>
+        </div>
+        <div class="scenario-card">
+          <h4>4. Node drain (maintenance)</h4>
+          <p>Cordon, drain, uncordon a node.</p>
+          <pre><code>kubectl cordon worker-1
+kubectl drain worker-1 --ignore-daemonsets --delete-emptydir-data
+# After maintenance:
+kubectl uncordon worker-1</code></pre>
+          <button class="copy-cmd copy-btn" data-cmd="kubectl cordon worker-1
+kubectl drain worker-1 --ignore-daemonsets --delete-emptydir-data">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const COMMANDS = {
+      'Pods': [
+        ['kubectl get pods', 'List pods (default ns)'],
+        ['kubectl get pods -A', 'All namespaces'],
+        ['kubectl get pods -o wide', 'With node + IP'],
+        ['kubectl get pods -w', 'Watch live'],
+        ['kubectl describe pod <name>', 'Events + status'],
+        ['kubectl logs <pod> -f', 'Stream logs'],
+        ['kubectl logs <pod> --previous', 'Crashed container logs'],
+        ['kubectl exec -it <pod> -- /bin/sh', 'Exec into pod'],
+        ['kubectl run nginx --image=nginx', 'Create pod imperatively'],
+        ['kubectl run nginx --image=nginx --dry-run=client -o yaml', 'Generate YAML'],
+        ['kubectl delete pod <name>', 'Delete pod'],
+      ],
+      'Deployments': [
+        ['kubectl create deployment myapp --image=nginx --replicas=3', 'Create deployment'],
+        ['kubectl get deploy', 'List deployments'],
+        ['kubectl scale deployment myapp --replicas=5', 'Scale'],
+        ['kubectl set image deployment/myapp nginx=nginx:1.25', 'Update image'],
+        ['kubectl rollout status deployment/myapp', 'Check rollout'],
+        ['kubectl rollout history deployment/myapp', 'View history'],
+        ['kubectl rollout undo deployment/myapp', 'Rollback'],
+        ['kubectl rollout undo deployment/myapp --to-revision=2', 'Rollback to revision'],
+      ],
+      'Services': [
+        ['kubectl expose deployment myapp --port=80', 'ClusterIP (default)'],
+        ['kubectl expose deployment myapp --port=80 --type=NodePort', 'NodePort'],
+        ['kubectl expose deployment myapp --port=80 --type=LoadBalancer', 'LoadBalancer'],
+        ['kubectl get svc', 'List services'],
+        ['kubectl get endpoints', 'Service endpoints'],
+      ],
+      'ConfigMap & Secret': [
+        ['kubectl create configmap app-cm --from-literal=KEY=val', 'Create ConfigMap'],
+        ['kubectl create configmap app-cm --from-file=config.txt', 'From file'],
+        ['kubectl create secret generic my-secret --from-literal=pass=xxx', 'Create Secret'],
+        ['kubectl get configmap,secret', 'List CM + Secrets'],
+      ],
+      'Storage': [
+        ['kubectl get pv,pvc', 'List PV + PVC'],
+        ['kubectl get storageclass', 'List StorageClasses'],
+      ],
+      'RBAC': [
+        ['kubectl create role pod-reader --verb=get,list --resource=pods -n dev', 'Create Role'],
+        ['kubectl create rolebinding jane-pod-reader --role=pod-reader --user=jane -n dev', 'RoleBinding'],
+        ['kubectl create clusterrole pod-reader --verb=get,list --resource=pods', 'ClusterRole'],
+        ['kubectl create clusterrolebinding ... --clusterrole=pod-reader --user=jane', 'ClusterRoleBinding'],
+        ['kubectl auth can-i get pods --as=user -n dev', 'Check permission'],
+      ],
+      'Nodes & Scheduling': [
+        ['kubectl get nodes', 'List nodes'],
+        ['kubectl describe node <name>', 'Node details'],
+        ['kubectl cordon <node>', 'Mark unschedulable'],
+        ['kubectl drain <node> --ignore-daemonsets --delete-emptydir-data', 'Drain node'],
+        ['kubectl uncordon <node>', 'Mark schedulable'],
+      ],
+      'Namespaces': [
+        ['kubectl get ns', 'List namespaces'],
+        ['kubectl create namespace dev', 'Create ns'],
+        ['kubectl get pods -n dev', 'Pods in namespace'],
+      ],
+      'Troubleshooting': [
+        ['kubectl get events -A --sort-by=.lastTimestamp', 'Recent events'],
+        ['kubectl get pods -A | grep -v Running', 'Non-running pods'],
+        ['kubectl describe pod <name>', 'Pod events'],
+        ['kubectl logs <pod> -c <container>', 'Multi-container logs'],
+      ],
+      'JSONPath & Output': [
+        ['kubectl get pods -o jsonpath=\'{.items[*].metadata.name}\'', 'Extract names'],
+        ['kubectl get pods -o custom-columns=NAME:.metadata.name,NODE:.spec.nodeName', 'Custom columns'],
+        ['kubectl get pods -o yaml', 'YAML output'],
+        ['kubectl get pods -o json', 'JSON output'],
+      ],
+      'Job & CronJob': [
+        ['kubectl create job myjob --image=busybox -- echo hello', 'Create Job'],
+        ['kubectl create cronjob myjob --image=busybox --schedule="0 * * * *" -- echo hi', 'Create CronJob'],
+        ['kubectl get jobs,cronjobs', 'List jobs'],
+      ],
+      'NetworkPolicy': [
+        ['kubectl get networkpolicy', 'List NetworkPolicies'],
+        ['kubectl describe networkpolicy <name>', 'Describe policy'],
+      ],
+      'etcd & Backup': [
+        ['ETCDCTL_API=3 etcdctl snapshot save snapshot.db', 'Backup etcd'],
+        ['etcdutl snapshot restore snapshot.db --data-dir=/var/lib/etcd-restore', 'Restore etcd'],
+      ],
+      'kubeadm': [
+        ['kubeadm init --pod-network-cidr=10.244.0.0/16', 'Init control plane'],
+        ['kubeadm join <master>:6443 --token <t> --discovery-token-ca-cert-hash sha256:<h>', 'Join node'],
+        ['kubeadm upgrade plan', 'Check upgrade path'],
+        ['kubeadm upgrade apply v1.28.0', 'Upgrade cluster'],
+      ],
+    };
+
+    function renderCmdRef() {
+      const el = document.getElementById('cmd-reference');
+      let html = '';
+      for (const [cat, cmds] of Object.entries(COMMANDS)) {
+        html += `<div class="cmd-cat">
+          <div class="cmd-cat-header"><span>${cat}</span><span class="arrow">▼</span></div>
+          <div class="cmd-list">`;
+        cmds.forEach(([cmd]) => {
+          html += `<div class="cmd-item"><code>${escapeHtml(cmd)}</code><button class="copy-btn" title="Copy">Copy</button></div>`;
+        });
+        html += '</div></div>';
+      }
+      el.innerHTML = html;
+      el.querySelectorAll('.cmd-cat-header').forEach(h => {
+        h.addEventListener('click', () => h.parentElement.classList.toggle('collapsed'));
+      });
+      el.querySelectorAll('.cmd-item').forEach(item => {
+        const code = item.querySelector('code');
+        const cmd = () => code ? code.textContent : item.dataset.cmd || '';
+        item.querySelector('.copy-btn').addEventListener('click', e => { e.stopPropagation(); copyToClipboard(cmd()); });
+        item.addEventListener('click', () => copyToClipboard(cmd()));
+      });
+      document.querySelectorAll('.scenario-card').forEach(card => {
+        const pre = card.querySelector('pre code');
+        const btn = card.querySelector('.copy-cmd');
+        if (btn && pre) {
+          btn.addEventListener('click', () => copyToClipboard(pre.textContent));
+        }
+      });
+    }
+
+    function copyToClipboard(text) {
+      const t = text.replace(/\\n/g, '\n');
+      navigator.clipboard.writeText(t).then(() => {
+        const toast = document.createElement('div');
+        toast.textContent = '✓ Copied';
+        toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:var(--accent);color:white;padding:0.5rem 1rem;border-radius:6px;font-size:0.9rem;z-index:9999;animation:fadeIn 0.2s;';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 1500);
+      });
+    }
+
+    function escapeHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    renderCmdRef();
+  </script>
+</body>
+</html>
