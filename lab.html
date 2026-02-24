@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    body.lab-page { overflow: auto !important; }
-    .lab-page { --nav-width: 400px; min-height: 100vh; }
-    .lab-layout { display: flex; gap: 0; min-height: calc(100vh - 48px); }
+    body.lab-page { overflow: hidden; }
+    .lab-page { --nav-width: 400px; height: 100vh; display: flex; flex-direction: column; }
+    .lab-layout { display: flex; gap: 0; flex: 1; min-height: 0; }
     .lab-sidebar { width: var(--nav-width); min-width: var(--nav-width); height: calc(100vh - 48px); background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; flex-shrink: 0; }
-    .lab-main { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: calc(100vh - 48px); overflow: hidden; }
+    .lab-main { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; }
     .lab-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
     .lab-header h1 { margin: 0; font-size: 1.2rem; font-weight: 700; }
     .cmd-cat { border-bottom: 1px solid var(--border); }
@@ -210,7 +210,7 @@ kubectl drain worker-1 --ignore-daemonsets --delete-emptydir-data">Copy</button>
       let html = '';
       const cats = Object.entries(COMMANDS);
       cats.forEach(([cat, cmds], i) => {
-        const collapsed = i !== 0 ? ' collapsed' : '';
+        const collapsed = ' collapsed';
         html += `<div class="cmd-cat${collapsed}">
           <div class="cmd-cat-header"><span>${cat}</span><span class="arrow">▼</span></div>
           <div class="cmd-list">`;
