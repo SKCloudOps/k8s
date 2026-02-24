@@ -10,8 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    body.cheat-page { margin: 0; font-family: 'Outfit', sans-serif; background: var(--surface); color: var(--text); }
-    .cheat-header { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.5rem; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 0.75rem; }
+    body.cheat-page { margin: 0; font-family: 'Outfit', sans-serif; background: var(--surface); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+    .cheat-header { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.5rem; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 0.75rem; }
     .cheat-header a { text-decoration: none; color: inherit; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
     .cheat-actions { display: flex; align-items: center; gap: 0.5rem; }
     .cheat-btn { padding: 0.5rem 1rem; font-size: 0.95rem; font-weight: 600; border-radius: 6px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; font-family: inherit; }
@@ -19,16 +19,22 @@
     .cheat-btn.primary:hover { filter: brightness(1.08); }
     .cheat-btn.secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
     .cheat-btn.secondary:hover { background: var(--border); }
-    .cheat-intro { padding: 1rem 1.5rem 0.5rem; font-size: 0.95rem; color: var(--text-muted); max-width: 900px; }
-    .cheat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1rem; padding: 1rem 1.5rem 2rem; }
+    .cheat-main { flex: 1; min-height: 0; overflow-y: auto; padding: 0 1.5rem 2rem; }
+    .cheat-intro { padding: 1rem 0 0.5rem; font-size: 1rem; color: var(--text-muted); max-width: 720px; line-height: 1.5; }
+    .cheat-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; padding: 0.5rem 0 2rem; max-width: 900px; }
     .cheat-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; break-inside: avoid; }
-    .cheat-card-header { padding: 0.6rem 1rem; background: var(--surface2); border-bottom: 1px solid var(--border); font-weight: 700; font-size: 0.95rem; }
+    .cheat-card-header { padding: 0.75rem 1.25rem; background: var(--surface2); border-bottom: 1px solid var(--border); font-weight: 700; font-size: 1.05rem; color: var(--text); }
     .cheat-card-body { padding: 0; }
-    .cheat-card-body pre { margin: 0; padding: 1rem; background: #0d1117; color: #e6edf3; font-size: 0.8rem; line-height: 1.45; overflow-x: auto; font-family: 'JetBrains Mono', monospace; }
+    .cheat-card-body pre { margin: 0; padding: 1.25rem; background: #1a1d23; color: #e6edf3; font-size: 0.9rem; line-height: 1.6; overflow-x: auto; font-family: 'JetBrains Mono', monospace; }
     .cheat-card-body code { font-family: 'JetBrains Mono', monospace; }
+    .cheat-page-title { font-size: 1.5rem; font-weight: 700; margin: 0; padding: 1rem 0 0.25rem; color: var(--text); }
+    @media (min-width: 900px) {
+      .cheat-grid { grid-template-columns: repeat(2, 1fr); max-width: none; }
+    }
     @media print {
-      body.cheat-page { background: #fff; }
+      body.cheat-page { background: #fff; height: auto; overflow: visible; }
       .no-print { display: none !important; }
+      .cheat-main { overflow: visible; }
       .cheat-intro { color: #333; padding: 0.5rem 0; }
       .cheat-grid { padding: 0; gap: 0.75rem; grid-template-columns: 1fr; }
       .cheat-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
@@ -38,7 +44,6 @@
       .print-only { display: block !important; font-weight: 700; font-size: 0.95rem; }
       .cheat-page-title { font-size: 1.2rem; margin: 0 0 0.5rem; }
     }
-    .cheat-page-title { font-size: 1.35rem; font-weight: 700; margin: 0; padding: 0 1.5rem; }
   </style>
 </head>
 <body class="cheat-page">
@@ -50,10 +55,11 @@
     </div>
   </header>
 
+  <div class="cheat-main">
   <h1 class="cheat-page-title no-print">CKA Exam Cheat Sheet</h1>
   <p class="cheat-intro no-print">Quick reference for the Certified Kubernetes Administrator exam. Use <strong>Print Cheat Sheet</strong> to print; the printed copy is designed to be a complete exam-day reference.</p>
   <p class="cheat-intro print-only" style="display: none;">CKA Exam Cheat Sheet — Certified Kubernetes Administrator. 2h exam, 66% pass. Allowed: kubernetes.io/docs. alias k=kubectl</p>
-  <p class="cheat-intro" style="padding: 0 1.5rem 0.5rem; font-size: 0.85rem; color: var(--text-muted);">
+  <p class="cheat-intro" style="padding: 0 0 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
     <strong>Exam:</strong> 2 hours, 66% to pass. Allowed: one browser tab to <a href="https://kubernetes.io/docs/" target="_blank" rel="noopener">kubernetes.io/docs</a>. Set <code>alias k=kubectl</code> at start.
   </p>
 
@@ -580,6 +586,8 @@ k config use-context user-ctx</code></pre>
       </div>
     </div>
   </div>
+
+  </div><!-- .cheat-main -->
 
   <script>
     document.getElementById('print-btn').addEventListener('click', function () {
