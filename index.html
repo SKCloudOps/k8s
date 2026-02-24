@@ -373,14 +373,7 @@
       <h3>Control Plane Components</h3>
 
       <h4>kube-apiserver</h4>
-      <p>The <strong>front-end</strong> of the Kubernetes control plane. It exposes the Kubernetes API (REST). It is the
-        <strong>only</strong> component that communicates directly with <strong>etcd</strong>.
-        <br><em>Key function:</em> Authenticates, validates, and processes all REST requests (internal & external). It
-        is designed to scale horizontally.
-      </p>
-
-      <h4>Kube API Server</h4>
-      <p>Same as kube-apiserver — the front-end API for the cluster. All components communicate through it.</p>
+      <p>The <strong>kube-apiserver</strong> is the front-end of the Kubernetes control plane. It exposes the Kubernetes REST API and is the <strong>only</strong> component that communicates directly with <strong>etcd</strong>. Every request — from kubectl, from the scheduler, from the kubelet, from controllers — goes through the API server. It authenticates and authorizes requests, validates and defaults resource specs, and persists state to etcd. It is designed to scale horizontally (run multiple replicas behind a load balancer).</p>
 
       <h4>etcd / ETCD in Kubernetes</h4>
       <div class="cka-definition">
@@ -1563,27 +1556,23 @@ spec:
 
       <!-- 04 Logging & Monitoring -->
       <h2 id="section-04">04 — Logging and Monitoring</h2>
+      <p>Logging and monitoring are essential for running and troubleshooting workloads. The CKA exam expects you to know how to <strong>retrieve application logs</strong>, interpret <strong>cluster and node metrics</strong>, and understand how the <strong>Metrics Server</strong> enables <code>kubectl top</code> and autoscaling. You do not need to install or configure Prometheus/Grafana for the exam; focus on built-in tools.</p>
       <div class="cka-definition">
         <div class="cka-def-term">Logging & Monitoring (CKA)</div>
         <div class="cka-def-body">Application logs via <code>kubectl logs</code> (stdout/stderr). Use <code>--previous</code> for crashed containers. Cluster metrics: <strong>Metrics Server</strong> powers <code>kubectl top nodes/pods</code>. HPA requires Metrics Server for CPU-based scaling.</div>
       </div>
       <h3>Monitor Cluster Components</h3>
-      <p>Check control-plane pods: <code>kubectl get pods -n kube-system</code>. For node metrics: <code>kubectl top nodes</code>. Verify scheduler, API server, etcd are running.</p>
+      <p>Before debugging application issues, confirm the control plane and nodes are healthy. Run <code>kubectl get pods -n kube-system</code> to see API server, scheduler, controller-manager, etcd, and (if present) CoreDNS and CNI pods. Use <code>kubectl top nodes</code> to see CPU and memory usage per node — this requires the Metrics Server to be installed. If <code>kubectl top</code> returns "Metrics API not available", the Metrics Server is either not deployed or not ready. Verify scheduler and API server are running; many exam scenarios assume a working control plane.</p>
       <h3>Managing Application Logs</h3>
-      <p>Container stdout/stderr are captured by kubelet and exposed via the API. Use <code>kubectl logs</code>. For a
-        <strong>multi-container</strong> pod you must specify the container name.
-      </p>
+      <p>Containers write to stdout and stderr; the <strong>kubelet</strong> on each node captures these streams and exposes them through the Kubernetes API. You use <code>kubectl logs &lt;pod-name&gt;</code> to read them. For a <strong>multi-container</strong> pod you must specify the container with <code>-c &lt;container-name&gt;</code>, otherwise kubectl picks the first container.</p>
+      <p>When a container restarts (e.g. after a crash), the previous instance's logs are still available for a short time. Use <code>kubectl logs &lt;pod-name&gt; --previous</code> to see what the crashed container wrote before it exited. This is one of the most common exam patterns for diagnosing CrashLoopBackOff.</p>
       <pre><code>kubectl logs -f &lt;pod-name&gt;
 kubectl logs -f &lt;pod-name&gt; &lt;container-name&gt;
 kubectl logs &lt;pod-name&gt; --previous
 kubectl logs &lt;pod-name&gt; -f --previous</code></pre>
-      <p><code>-f</code> streams logs; <code>--previous</code> shows logs from the <strong>previous</strong> container
-        instance (e.g. after a crash/restart).</p>
+      <p><code>-f</code> streams logs (like <code>tail -f</code>); <code>--previous</code> shows logs from the <strong>previous</strong> container instance (e.g. after a crash or restart). Combine both when debugging a pod that keeps restarting.</p>
       <h3>Cluster metrics</h3>
-      <p><strong>Metrics Server</strong> provides resource metrics (CPU/memory) for <code>kubectl top nodes</code> and
-        <code>kubectl top pods</code>. It is not for long-term storage; use a monitoring stack (Prometheus, etc.) for
-        that. Legacy Heapster is deprecated.
-      </p>
+      <p>The <strong>Metrics Server</strong> is a cluster add-on that scrapes resource usage (CPU and memory) from the kubelet on each node and exposes them via the Kubernetes Metrics API. That API powers <code>kubectl top nodes</code> and <code>kubectl top pods</code>. Without the Metrics Server, these commands fail. The Metrics Server is <strong>not</strong> for long-term storage or alerting; it keeps only a short window of data. For historical metrics and dashboards you would use a full monitoring stack (e.g. Prometheus, Grafana). The legacy Heapster project is deprecated. For the CKA, know that HPA (Horizontal Pod Autoscaler) based on CPU or memory also depends on the Metrics Server being installed and working.</p>
 
       <section class="comments-section" aria-label="Comments">
         <h3 class="comments-title">Comments — 04 Logging &amp; Monitoring</h3>
@@ -1607,9 +1596,9 @@ kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1
 kubectl apply -f deployment-definition.yaml
 kubectl rollout undo deployment/myapp-deployment</code></pre>
       <h3>Rollbacks</h3>
-      <p><code>kubectl rollout undo deployment/&lt;name&gt;</code>. Check history: <code>kubectl rollout history</code>.</p>
+      <p>If a rollout introduces a bad change, you can roll back to the previous revision with <code>kubectl rollout undo deployment/&lt;name&gt;</code>. Kubernetes keeps a history of ReplicaSets (revisions); <code>kubectl rollout history deployment/&lt;name&gt;</code> shows them. To roll back to a specific revision use <code>kubectl rollout undo deployment/&lt;name&gt; --to-revision=2</code>. Rollback is another rolling update, so availability is preserved.</p>
       <h3>Scaling</h3>
-      <p><code>kubectl scale deployment/&lt;name&gt; --replicas=N</code>. Or edit <code>spec.replicas</code> and apply.</p>
+      <p>Change the number of replicas with <code>kubectl scale deployment/&lt;name&gt; --replicas=N</code>. Alternatively edit <code>spec.replicas</code> in the Deployment YAML and run <code>kubectl apply -f deployment.yaml</code>. For automatic scaling based on CPU or memory, use a HorizontalPodAutoscaler (HPA); the Metrics Server must be installed for CPU/memory metrics.</p>
 
       <h3>Application Configuration</h3>
       <h4>ConfigMaps</h4>
@@ -1617,10 +1606,7 @@ kubectl rollout undo deployment/myapp-deployment</code></pre>
         <div class="cka-def-term">ConfigMap</div>
         <div class="cka-def-body">Stores non-sensitive config as key-value pairs. Inject via <code>env</code>, <code>envFrom</code>, or volume mount. CKA: <code>kubectl create configmap x --from-literal=K=V</code>, <code>--from-file</code>, <code>configMapKeyRef</code>/<code>configMapRef</code> in pod spec.</div>
       </div>
-      <p>Create: imperative
-        <code>kubectl create configmap app-config --from-literal=APP_COLOR=blue --from-literal=APP_MODE=prod</code> or
-        from file <code>--from-file=app_config.properties</code>.
-      </p>
+      <p>ConfigMaps decouple configuration from container images. Create one from literal key-value pairs: <code>kubectl create configmap app-config --from-literal=APP_COLOR=blue --from-literal=APP_MODE=prod</code>, or from a file: <code>--from-file=app_config.properties</code> (key becomes the filename). You can also define them in YAML and <code>kubectl apply -f</code>. Pods consume ConfigMaps via <code>env</code>, <code>envFrom</code>, or <code>volumes</code> + <code>volumeMounts</code>.</p>
       <div class="snippet-label">ConfigMap YAML</div>
       <pre><code>apiVersion: v1
 kind: ConfigMap
@@ -1653,10 +1639,7 @@ spec:
         <div class="cka-def-term">Secret</div>
         <div class="cka-def-body">Stores sensitive data (base64-encoded in YAML). Types: generic, tls, docker-registry. Inject via <code>secretKeyRef</code>/<code>secretRef</code>. CKA: <code>kubectl create secret generic x --from-literal=K=V</code>, <code>secret tls</code> for Ingress. Enable encryption at rest for prod.</div>
       </div>
-      <p>Store sensitive data (base64 in YAML). Create:
-        <code>kubectl create secret generic app-secret --from-literal=DB_Host=mysql --from-literal=DB_User=root --from-literal=DB_Password=paswrd</code>.
-        Encode for YAML: <code>echo -n "paswrd" | base64</code>.
-      </p>
+      <p>Secrets hold sensitive data such as passwords, tokens, or TLS certs. In YAML they are stored base64-encoded (not encrypted by default). Create with <code>kubectl create secret generic app-secret --from-literal=DB_Host=mysql --from-literal=DB_User=root --from-literal=DB_Password=paswrd</code>. To embed in YAML, encode values: <code>echo -n "paswrd" | base64</code>. Pods reference secrets the same way as ConfigMaps: <code>envFrom: - secretRef: name: app-secret</code> or <code>valueFrom.secretKeyRef</code> for a single key. For production, enable encryption at rest via the API server.</p>
       <pre><code>apiVersion: v1
 kind: Secret
 metadata:
@@ -1875,81 +1858,75 @@ kubectl describe hpa myapp-hpa</code></pre>
 
       <!-- 06 Cluster Maintenance -->
       <h2 id="section-06">06 — Cluster Maintenance</h2>
-      <h3>OS Upgrades</h3>
-      <p>Drain node before upgrade: <code>kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data</code>. Perform OS updates. Uncordon: <code>kubectl uncordon &lt;node&gt;</code>.</p>
-      <h3>Kubernetes Releases</h3>
-      <p>Upgrade one minor version at a time. Control plane first, then workers. Use <code>kubeadm upgrade</code>.</p>
-      <h3>Cluster Upgrade Process</h3>
-      <p>1. Upgrade kubeadm. 2. <code>kubeadm upgrade plan</code> and <code>kubeadm upgrade apply</code>. 3. Upgrade kubelet and kubectl. 4. Restart kubelet.</p>
-      <h3>Backup & Restore Methods</h3>
-      <p>Backup etcd before upgrades. Use <code>etcdctl snapshot save</code> or <code>etcdutl snapshot save</code>. Restore with <code>etcdutl snapshot restore</code>. See ETCDCTL & ETCDUTL below.</p>
-      <h3>ETCDCTL & ETCDUTL</h3>
-      <pre><code>ETCDCTL_API=3 etcdctl snapshot save snapshot.db --endpoints=...
-etcdutl snapshot restore snapshot.db --data-dir=/var/lib/etcd-restore</code></pre>
-      <h3>Certification Tips</h3>
-      <p>Set aliases at exam start. Use imperative + dry-run for YAML. Verify answers. Don't get stuck — flag and move on.</p>
+      <p>Cluster maintenance covers <strong>OS upgrades</strong> on nodes, <strong>Kubernetes version upgrades</strong> (control plane and workers), <strong>backup and restore</strong> of etcd and resource configs, and <strong>node lifecycle</strong> (cordon, drain, uncordon). You must know the order of operations and how to avoid downtime.</p>
+
       <h3>OS upgrades and node maintenance</h3>
       <p><strong>Important:</strong> If a node is down for <strong>more than 5 minutes</strong>, the control plane may
         terminate pods that were on that node (they will be recreated elsewhere if managed by a controller).</p>
       <ul>
-        <li><strong>kubectl drain &lt;node&gt;</strong>: Evicts workloads from the node (pods are rescheduled
-          elsewhere)
-          and marks the node <strong>unschedulable</strong> (cordon). Use before OS upgrade or maintenance.</li>
-        <li><strong>kubectl uncordon &lt;node&gt;</strong>: Marks the node schedulable again after it is back.</li>
-        <li><strong>kubectl cordon &lt;node&gt;</strong>: Only marks the node unschedulable; does <strong>not</strong>
-          evict existing pods.</li>
+        <li><strong>kubectl cordon &lt;node&gt;</strong>: Marks the node <strong>unschedulable</strong> only. No new pods are placed; existing pods keep running. Use when you want to stop new workload without moving current pods.</li>
+        <li><strong>kubectl drain &lt;node&gt;</strong>: Same as cordon, plus it <strong>evicts</strong> all pods from the node (they are rescheduled elsewhere). Use before OS upgrade, kernel patch, or hardware maintenance. Always use <code>--ignore-daemonsets</code> (DaemonSet pods stay on the node) and <code>--delete-emptydir-data</code> (pods with emptyDir can be evicted).</li>
+        <li><strong>kubectl uncordon &lt;node&gt;</strong>: Marks the node schedulable again after maintenance. Does not bring back evicted pods; only allows new pods to be placed on the node.</li>
       </ul>
       <figure class="diagram">
         <img src="assets/k8s-cordon-drain-uncordon.png" alt="Node maintenance: cordon, drain, uncordon" width="420" height="120" style="max-width:100%;height:auto;display:block;">
         <figcaption>cordon = no new pods; drain = cordon + evict; uncordon = allow scheduling again.</figcaption>
       </figure>
+      <div class="snippet-label">Typical node maintenance workflow</div>
+      <pre><code># 1. Drain (evict pods, mark unschedulable)
+kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data
 
-      <h3>Kubernetes versions</h3>
-      <p>Kubernetes supports the last 3 minor versions. Upgrade one minor version at a time. kubeadm, kubelet, and
-        control-plane components can be at different versions during upgrade.</p>
+# 2. Perform OS upgrade, reboot, or hardware work on the node
+
+# 3. Bring node back into rotation
+kubectl uncordon &lt;node&gt;
+
+# 4. Verify
+kubectl get nodes</code></pre>
+
+      <h3>Kubernetes versions and upgrade policy</h3>
+      <p>Kubernetes supports the <strong>last 3 minor versions</strong>. Upgrade <strong>one minor version at a time</strong> (e.g. 1.27 → 1.28 → 1.29). During an upgrade, kubeadm, kubelet, and control-plane components can be at different versions temporarily; align them to the target version when done.</p>
+      <p><strong>Upgrade order:</strong> Control plane (master) first, then worker nodes. On each control-plane node: upgrade kubeadm → <code>kubeadm upgrade plan</code> → <code>kubeadm upgrade apply</code> → upgrade kubelet and kubectl → restart kubelet.</p>
 
       <h3>Cluster upgrade (kubeadm)</h3>
-      <p><strong>Master:</strong></p>
+      <p><strong>Control plane (master):</strong></p>
       <pre><code>kubeadm upgrade plan
-apt-get upgrade -y kubeadm=1.12.0-00
-kubeadm upgrade apply v1.12.0
-apt-get upgrade kubelet=1.12.0-00
+apt-get upgrade -y kubeadm=1.28.0-00
+kubeadm upgrade apply v1.28.0
+apt-get upgrade -y kubelet=1.28.0-00 kubectl=1.28.0-00
 systemctl restart kubelet
 kubectl get nodes</code></pre>
-      <p><strong>Workers:</strong> drain, upgrade kubeadm and kubelet, update node config, restart kubelet, uncordon.
-      </p>
-      <pre><code>kubectl drain node-1
-apt-get upgrade -y kubeadm=1.12.0-00 kubelet=1.12.0-00
-kubeadm upgrade node config --kubelet-version v1.12.0
+      <p><strong>Worker nodes:</strong> Drain the node, upgrade kubeadm and kubelet, update the node config, restart kubelet, then uncordon.</p>
+      <pre><code>kubectl drain node-1 --ignore-daemonsets --delete-emptydir-data
+apt-get upgrade -y kubeadm=1.28.0-00 kubelet=1.28.0-00
+kubeadm upgrade node config --kubelet-version v1.28.0
 systemctl restart kubelet
 kubectl uncordon node-1</code></pre>
 
       <h3>Backup and restore</h3>
-      <p><strong>Resource configs:</strong> store YAML in Git; or
-        <code>kubectl get all --all-namespaces -o yaml &gt; all-deploy-services.yaml</code> (partial). Tools like
-        Velero
-        can backup/restore resources.
-      </p>
-      <p><strong>ETCD snapshot:</strong></p>
-      <pre><code>ETCDCTL_API=3 etcdctl snapshot save snapshot.db
+      <p><strong>Resource configs:</strong> Store declarative YAML in Git, or export with <code>kubectl get all --all-namespaces -o yaml &gt; all-resources.yaml</code> (partial; use for reference). Tools like <strong>Velero</strong> can backup and restore resources and volumes.</p>
+      <p><strong>ETCD snapshot (required for CKA):</strong> Always backup etcd before upgrading the control plane. etcd holds cluster state (resources, configs). Without a snapshot, a failed upgrade can leave the cluster unrecoverable.</p>
+      <pre><code># Save snapshot (API v3)
+ETCDCTL_API=3 etcdctl snapshot save snapshot.db
+
+# Check snapshot integrity
 ETCDCTL_API=3 etcdctl snapshot status snapshot.db</code></pre>
-      <p>With kubeadm, etcd runs as a pod; use the correct endpoint and certs. Example (adjust paths/endpoints for
-        your
-        setup):</p>
+      <p>With kubeadm, etcd runs as a static pod. Use the correct endpoint and certificates (paths may differ; adjust for your setup):</p>
       <pre><code>ETCDCTL_API=3 etcdctl snapshot save snapshot.db \
   --endpoints=https://127.0.0.1:2379 \
   --cacert=/etc/kubernetes/pki/etcd/ca.crt \
   --cert=/etc/kubernetes/pki/etcd/server.crt \
   --key=/etc/kubernetes/pki/etcd/server.key</code></pre>
-      <p>Restore: <code>etcdctl snapshot restore snapshot.db --data-dir=/var/lib/etcd-from-backup</code>, then point
-        etcd to the new data-dir and restart control-plane components.</p>
+      <p><strong>Restore:</strong> Restore to a new data directory, then point etcd to it and restart control-plane components. Example:</p>
+      <pre><code>etcdutl snapshot restore snapshot.db --data-dir=/var/lib/etcd-restore</code></pre>
+      <p>After restore, update etcd manifest to use <code>--data-dir=/var/lib/etcd-restore</code>, then restart the kubelet so the etcd pod picks up the new data-dir.</p>
 
       <h3>PodDisruptionBudget (PDB)</h3>
-      <p>PDB limits voluntary disruptions (e.g. <code>kubectl drain</code>, node upgrades) so that a minimum number of
-        pods stay available. <strong>minAvailable</strong>: at least N pods (number or percentage).
-        <strong>maxUnavailable</strong>: at most N pods down (number or percentage). Drain respects PDBs and may block
-        until pods can be rescheduled.
-      </p>
+      <p>PDB limits <strong>voluntary</strong> disruptions (e.g. <code>kubectl drain</code>, node upgrades) so that a minimum number of pods stay available. The drain command respects PDBs and may block or delay eviction until the constraint can be satisfied.</p>
+      <ul>
+        <li><strong>minAvailable:</strong> At least N pods (number or percentage) must remain available.</li>
+        <li><strong>maxUnavailable:</strong> At most N pods (number or percentage) can be down at once.</li>
+      </ul>
       <div class="snippet-label">PDB example (minAvailable)</div>
       <pre><code>apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -1969,6 +1946,9 @@ spec:
       <pre><code>kubectl get pdb
 kubectl describe pdb myapp-pdb</code></pre>
 
+      <h3>Certification tips</h3>
+      <p>Set aliases at exam start (<code>alias k=kubectl</code>). Use imperative + dry-run for YAML. Verify answers with <code>kubectl get</code> / <code>describe</code>. Don't get stuck — flag and move on.</p>
+
       <section class="comments-section" aria-label="Comments">
         <h3 class="comments-title">Comments — 06 Cluster Maintenance</h3>
         <script src="https://utteranc.es/client.js" repo="SKCloudOps/k8s" issue-term="CKA Guide - 06 Cluster Maintenance" theme="github-light" crossorigin="anonymous" async></script>
@@ -1976,6 +1956,7 @@ kubectl describe pdb myapp-pdb</code></pre>
 
       <!-- 07 Security -->
       <h2 id="section-07">07 — Security</h2>
+      <p>Kubernetes security centers on <strong>authentication</strong> (who you are) and <strong>authorization</strong> (what you can do). The API server enforces both; it does not store user identities itself but relies on certificates, tokens, or external identity providers. For the CKA you must know <strong>RBAC</strong> (Roles, RoleBindings, ClusterRoles, ClusterRoleBindings), <strong>ServiceAccounts</strong>, <strong>TLS and certificates</strong> (including the Certificates API and kubeadm cert layout), and how to check permissions with <code>kubectl auth can-i</code>.</p>
       <div class="cka-definition">
         <div class="cka-def-term">RBAC</div>
         <div class="cka-def-body">Role-Based Access Control. Defines who can do what via Roles/ClusterRoles (permissions) and RoleBindings/ClusterRoleBindings (who gets them). CKA: create Role (namespace-scoped), ClusterRole (cluster-wide), bind to User/Group/ServiceAccount. <code>kubectl auth can-i --as=user get pods</code>.</div>
@@ -2260,25 +2241,22 @@ kubectl exec my-pod -- id</code></pre>
 
       <!-- 08 Storage -->
       <h2 id="section-08">08 — Storage</h2>
+      <p>Kubernetes gives workloads access to storage through <strong>volumes</strong> (pod-level) and <strong>PersistentVolumes (PV) / PersistentVolumeClaims (PVC)</strong> (cluster-level persistence). The CKA exam tests your ability to create PVs and PVCs, bind them to pods, and understand <strong>StorageClasses</strong> for dynamic provisioning. You should also know how ConfigMaps and Secrets are mounted as volumes.</p>
       <h3>Docker Storage</h3>
-      <p>Docker uses layers (copy-on-write). Volumes persist data outside container lifecycle. <code>docker volume</code> for volume management.</p>
+      <p>Docker uses a <strong>layered filesystem</strong> (copy-on-write): each image layer and container layer is stacked. Data written inside a container is lost when the container is removed unless it is stored in a <strong>volume</strong>. Docker volumes persist data outside the container lifecycle. Use <code>docker volume create</code>, <code>docker volume ls</code>, and <code>docker run -v</code> for volume management. Kubernetes has its own volume model and does not rely on Docker volumes.</p>
       <h4>Volume Drivers</h4>
-      <p>Docker volume drivers (local, nfs, etc.) provide storage backends. Kubernetes uses its own volume system.</p>
+      <p>Docker volume drivers (local, nfs, cloud-provider plugins) provide different storage backends. In Kubernetes, storage is abstracted through the <strong>Container Storage Interface (CSI)</strong> and the in-tree volume types (hostPath, emptyDir, persistentVolumeClaim, etc.). You configure storage in the Pod and PVC spec, not via a separate driver CLI.</p>
       <div class="cka-definition">
         <div class="cka-def-term">PV & PVC</div>
         <div class="cka-def-body"><strong>PersistentVolume (PV):</strong> Cluster-wide storage resource. <strong>PersistentVolumeClaim (PVC):</strong> User request for storage. Binding matches PVC (size, accessMode, storageClass) to PV. CKA: static provisioning (create PV + PVC) or dynamic (StorageClass). Know <code>accessModes</code> (RWO, ROX, RWX) and <code>reclaimPolicy</code>.</div>
       </div>
       <h3>Kubernetes Storage</h3>
       <h4>Container Storage Interface (CSI)</h4>
-      <p>Standard for storage drivers. CSI drivers provision volumes for PVs. Dynamic provisioning via StorageClass uses a CSI provisioner.</p>
+      <p>The <strong>CSI</strong> is a standard for exposing block and file storage to Kubernetes. CSI drivers run as DaemonSets or StatefulSets and handle create/attach/mount of volumes. When you use a StorageClass with a <code>provisioner</code> like <code>kubernetes.io/aws-ebs</code> or a CSI driver name, the driver dynamically provisions a PV when a PVC is created. For the CKA, you typically work with static PV/PVC or a given StorageClass; you are not expected to write a CSI driver.</p>
       <h4>Volumes</h4>
-      <p>Pod-level storage: <code>emptyDir</code>, <code>hostPath</code>, <code>persistentVolumeClaim</code>, <code>configMap</code>, <code>secret</code>. Mount via <code>volumeMounts</code>.</p>
+      <p>Pod-level volumes are defined in <code>spec.volumes</code> and mounted into containers via <code>volumeMounts</code>. Common types: <strong>emptyDir</strong> (temporary, shared between containers in a pod; lost when pod is removed), <strong>hostPath</strong> (node filesystem; use with care for debugging or static data), <strong>persistentVolumeClaim</strong> (binds to a PVC for persistent data), and <strong>configMap</strong> / <strong>secret</strong> (inject config or secrets as files). Choosing the right type matters: use emptyDir for scratch space, PVC for data that must survive pod restarts and rescheduling.</p>
       <h3>Persistent Volumes (PV) and Persistent Volume Claims (PVC)</h3>
-      <p>PV is <strong>cluster-scoped</strong> storage (admin provisions); PVC is <strong>namespace-scoped</strong>
-        (user requests storage). They bind when capacity and <code>accessModes</code> match. If no PV matches, PVC
-        stays
-        <strong>Pending</strong>. Access modes: ReadWriteOnce (RWO), ReadOnlyMany (ROX), ReadWriteMany (RWX).
-      </p>
+      <p>A <strong>PersistentVolume (PV)</strong> is a cluster-scoped resource that represents a piece of storage (e.g. an NFS share, a cloud disk). An administrator provisions PVs. A <strong>PersistentVolumeClaim (PVC)</strong> is a namespace-scoped request for storage by a user or a workload. The control plane <strong>binds</strong> a PVC to a PV when capacity and <code>accessModes</code> match. If no suitable PV exists, the PVC stays <strong>Pending</strong> until one is created or (with dynamic provisioning) until the StorageClass provisioner creates a new PV. Access modes: <strong>ReadWriteOnce (RWO)</strong> — one node can mount read-write; <strong>ReadOnlyMany (ROX)</strong> — many nodes read-only; <strong>ReadWriteMany (RWX)</strong> — many nodes read-write (typically NFS or distributed storage).</p>
       <figure class="diagram">
         <img src="assets/k8s-storage-pv-pvc-pod.png" alt="Storage flow: PV → PVC → Pod" width="500" height="110" style="max-width:100%;height:auto;display:block;">
         <figcaption>Storage flow: PV (pool) → PVC (claim) → Pod (volumeMounts). PVC and Pod must be in same namespace.
@@ -2332,7 +2310,7 @@ spec:
 kubectl get pod,pvc,pv</code></pre>
 
       <h3>Storage Classes</h3>
-      <p>With a StorageClass, PVC can trigger automatic PV creation (no manual PV).</p>
+      <p>A <strong>StorageClass</strong> defines a class of storage (e.g. "fast SSD", "standard HDD") and a <strong>provisioner</strong> that can create PVs on demand. When you create a PVC with <code>storageClassName: google-storage</code> (for example), the StorageClass's provisioner automatically creates a PV that satisfies the claim. This is <strong>dynamic provisioning</strong>; you do not create the PV manually. If you omit <code>storageClassName</code> or set it to <code>""</code>, only pre-provisioned (static) PVs can bind. For the exam, you may need to create a StorageClass YAML or reference an existing one in a PVC.</p>
       <pre><code>apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -2344,7 +2322,7 @@ kubectl get sc</code></pre>
         pod
         volume as above.</p>
       <h4>Application Configuration Topics</h4>
-      <p>ConfigMaps and Secrets can be mounted as volumes. Use <code>configMapRef</code>/<code>secretRef</code> for env, or <code>volumes</code> + <code>volumeMounts</code> for file injection.</p>
+      <p>ConfigMaps and Secrets can be injected into pods as <strong>environment variables</strong> (<code>env</code> with <code>valueFrom.configMapKeyRef</code> / <code>secretKeyRef</code>, or <code>envFrom</code> with <code>configMapRef</code> / <code>secretRef</code>) or as <strong>files</strong> via <code>volumes</code> and <code>volumeMounts</code>. File injection is useful when the application reads config from a path (e.g. <code>/etc/config/app.ini</code>). Use <code>defaultMode</code> on the volume to set file permissions for mounted ConfigMap/Secret files.</p>
 
       <section class="comments-section" aria-label="Comments">
         <h3 class="comments-title">Comments — 08 Storage</h3>
@@ -2353,19 +2331,21 @@ kubectl get sc</code></pre>
 
       <!-- 09 Networking -->
       <h2 id="section-09">09 — Networking</h2>
+      <p>Kubernetes networking is built on a few principles: every pod gets a unique IP, pods can talk to each other without NAT, and Services provide stable virtual IPs that load-balance to pods. The CKA exam tests CNI, Services, DNS (CoreDNS), and basic Linux networking (ip, route, DNS). You should understand how traffic flows from a Service to a Pod and how to troubleshoot DNS and connectivity.</p>
       <div class="cka-definition">
         <div class="cka-def-term">CNI (Container Network Interface)</div>
         <div class="cka-def-body">Standard for pod networking. Plugins (Calico, Flannel, Weave) assign pod IPs and configure routing. kubelet calls CNI when pod is created/destroyed. CKA: verify CNI pods in kube-system, check DNS (CoreDNS), service endpoints.</div>
       </div>
       <h3>Networking Fundamentals</h3>
+      <p>Understanding basic Linux networking helps when troubleshooting cluster or node issues. Key concepts:</p>
       <h4>Switching</h4>
-      <p>Layer 2; switches forward by MAC. <code>ip link</code>, <code>ip addr</code> for interfaces.</p>
+      <p><strong>Layer 2 (data link):</strong> Switches forward frames by MAC address. On Linux, <code>ip link</code> shows interfaces and <code>ip addr</code> shows IP addresses. Virtual Ethernet pairs (veth) connect network namespaces (e.g. pod to bridge).</p>
       <h4>Routing</h4>
-      <p>Layer 3; routers forward by IP. <code>ip route</code>, <code>route -n</code> for routing table.</p>
+      <p><strong>Layer 3 (network):</strong> Routers forward packets by IP address using the routing table. Use <code>ip route</code> or <code>route -n</code> to view routes. In Kubernetes, nodes and CNI plugins set up routes so pod traffic can reach other pods and external IPs.</p>
       <h4>Gateways</h4>
-      <p>Default gateway: <code>ip route add default via &lt;gateway-ip&gt;</code>. Nodes need IP forwarding: <code>net.ipv4.ip_forward=1</code>.</p>
+      <p>The <strong>default gateway</strong> is the next-hop for destinations not in the local routing table. Set it with <code>ip route add default via &lt;gateway-ip&gt;</code>. For a node to forward traffic between networks (e.g. between pod and external), <strong>IP forwarding</strong> must be enabled: <code>net.ipv4.ip_forward=1</code> (in sysctl). CNI plugins typically ensure this is set.</p>
       <h3>Linux networking for CKA</h3>
-      <p>Understanding Linux networking is essential for the CKA. Key commands:</p>
+      <p>You may need to inspect interfaces, routes, or DNS on a node or inside a pod. These commands are essential:</p>
       <div class="snippet-label">Switching, routing, gateways</div>
       <pre><code># List network interfaces
 ip link
@@ -2390,9 +2370,9 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 # Permanent: set net.ipv4.ip_forward=1 in /etc/sysctl.conf
 sysctl --system</code></pre>
       <h4>DNS Basics</h4>
-      <p>FQDN resolution. Kubernetes uses CoreDNS for cluster-internal DNS (<code>.svc.cluster.local</code>).</p>
+      <p><strong>DNS</strong> resolves domain names to IP addresses. In Kubernetes, cluster-internal DNS is provided by <strong>CoreDNS</strong>. Services get a DNS name like <code>svc-name.namespace.svc.cluster.local</code>; pods can resolve this to the Service's ClusterIP. Understanding FQDN structure and how to test DNS (<code>nslookup</code>, <code>dig</code> from a debug pod) is important for the exam.</p>
       <h4>CoreDNS</h4>
-      <p>Cluster DNS. Config in ConfigMap <code>coredns</code> (Corefile). Plugins: kubernetes, forward, etc.</p>
+      <p><strong>CoreDNS</strong> is the default cluster DNS server. It runs as pods in <code>kube-system</code> and is configured via a ConfigMap named <code>coredns</code>. The config file (Corefile) uses plugins: <code>kubernetes</code> (to serve DNS records from Services and Pods), <code>forward</code> (to forward external queries to upstream DNS), <code>errors</code>, <code>health</code>, etc. For the CKA, know how to check if CoreDNS is running (<code>kubectl get pods -n kube-system -l k8s-app=kube-dns</code>), how to test resolution from a pod (<code>nslookup kubernetes</code>), and that the Corefile is stored in the <code>coredns</code> ConfigMap.</p>
       <h4>Network Namespaces</h4>
       <pre><code># Create network namespace
 ip netns add red
@@ -2578,21 +2558,17 @@ kubectl describe ingress ingress-wear-watch</code></pre>
 
       <!-- 10 Design & Install -->
       <h2 id="section-10">10 — Cluster Design & Installation</h2>
+      <p>Before installing a cluster, you need a clear design: how many control-plane nodes, how etcd is run, what network ranges to use, and how workers will join. The CKA exam may ask you to interpret or extend an existing design rather than install from scratch; understanding high availability and the role of each component is key.</p>
       <h3>Design Kubernetes Cluster</h3>
-      <p>Plan control-plane HA, node count, networking (Pod CIDR, Service CIDR), storage, and add-ons.</p>
+      <p>Design decisions include: <strong>Control-plane count</strong> — single master (dev/test) vs multiple masters for HA. <strong>Node count and sizing</strong> — enough workers for your workloads and failure domains. <strong>Networking</strong> — Pod CIDR (e.g. 10.244.0.0/16) and Service CIDR (e.g. 10.96.0.0/12) must not overlap with node networks. <strong>Storage</strong> — default StorageClass, CSI drivers if needed. <strong>Add-ons</strong> — CNI (required for pod networking), CoreDNS, Metrics Server, optional Ingress controller.</p>
       <h3>Choosing Infrastructure</h3>
-      <p>VMs, bare metal, or managed (EKS, GKE, AKS). Consider networking, storage, and scaling needs.</p>
+      <p>Clusters can run on <strong>VMs</strong> (on-prem or cloud), <strong>bare metal</strong>, or <strong>managed Kubernetes</strong> (EKS, GKE, AKS). For the CKA you typically work with VMs or a lab environment. Consider: network latency between nodes, firewall rules for control-plane and node ports, and whether you need persistent storage (cloud disks, NFS, or CSI).</p>
       <h3>Configure High Availability</h3>
-      <p>Multiple API servers behind LB; etcd cluster (3 or 5 nodes); stacked or external etcd.</p>
+      <p>High availability (HA) means the cluster keeps running even if one or more components fail. For the <strong>control plane</strong>: run multiple API server replicas behind a load balancer so that if one master fails, the others serve traffic. For <strong>etcd</strong>: run a cluster of 3 or 5 nodes so that a minority failure does not lose quorum. The <strong>scheduler</strong> and <strong>controller-manager</strong> can run as active/standby (only one leader at a time via etcd lease). Worker nodes are stateless from the control plane's perspective; losing one node affects only the pods on that node, which can be rescheduled elsewhere.</p>
       <h4>ETCD in HA</h4>
-      <p>etcd uses RAFT. Odd number of members (3, 5). Stacked: etcd on same nodes as control plane. External: separate etcd cluster.</p>
+      <p>etcd uses the <strong>RAFT</strong> consensus algorithm. Run an <strong>odd number</strong> of members (3 or 5) so that a majority can always be reached. <strong>Stacked</strong> topology: etcd runs on the same nodes as the API server (simpler, but node failure affects both). <strong>External</strong> topology: etcd runs on a separate cluster (more resilient, more operational overhead). For the CKA, know that etcd is the single source of truth and that backup/restore is done with etcdctl/etcdutl snapshots.</p>
       <h3>Kubernetes the Hard Way</h3>
-      <p>Manual install from scratch (no kubeadm): set up VMs, install binaries, configure certs, etcd, API server, scheduler, controller-manager, kubelet, kube-proxy. Excellent for deep understanding.</p>
-      <p><strong>Design:</strong> Plan control-plane count (HA = multiple masters), etcd (stacked with API server or
-        external cluster), load balancer in front of API servers. Choose node sizing and networking (pod CIDR, service
-        CIDR).</p>
-      <p><strong>High availability:</strong> Multiple API server replicas behind a load balancer; etcd cluster (odd
-        number, 3 or 5); scheduler and controller manager can run as active/standby (only one active).</p>
+      <p><strong>Kubernetes the Hard Way</strong> is a tutorial that installs Kubernetes from scratch without kubeadm: you provision VMs, install binaries (kubelet, kube-apiserver, etcd, scheduler, controller-manager, kube-proxy), generate certificates, configure kubeconfig, and start each component. It is excellent for understanding how the pieces fit together. The CKA exam does not require you to perform a full manual install; you are more likely to use kubeadm or work with an existing cluster. The design concepts — multiple API servers, etcd cluster, load balancer, node join flow — still apply.</p>
 
       <section class="comments-section" aria-label="Comments">
         <h3 class="comments-title">Comments — 10 Cluster Design</h3>
@@ -2601,6 +2577,7 @@ kubectl describe ingress ingress-wear-watch</code></pre>
 
       <!-- 11 kubeadm -->
       <h2 id="section-11">11 — kubeadm Installation</h2>
+      <p><strong>kubeadm</strong> is the standard tool for bootstrapping a conformant Kubernetes cluster. It generates certificates, static pod manifests for the control plane (API server, etcd, scheduler, controller-manager), and the initial kubeconfig. You run <code>kubeadm init</code> on the first control-plane node, then <code>kubeadm join</code> on workers (and optional additional control-plane nodes). The CKA exam rarely asks for a full from-scratch install; more often you will <strong>upgrade</strong> an existing cluster (<code>kubeadm upgrade plan</code>, <code>kubeadm upgrade apply</code>, drain/uncordon nodes) or fix a join problem (expired token, wrong CA hash).</p>
       <h3>Deployment with kubeadm</h3>
       <p><strong>kubeadm</strong> bootstraps the control plane and generates certs, manifests, and kubeconfig. You
         then
@@ -2668,21 +2645,22 @@ kubeadm token create --print-join-command</code></pre>
 
       <!-- 12 Helm -->
       <h2 id="section-12">12 — Helm</h2>
+      <p>Helm is the de facto <strong>package manager</strong> for Kubernetes. It lets you install, upgrade, and uninstall applications as pre-packaged <strong>charts</strong> (templated YAML + default values). The CKA curriculum includes Helm; you should know basic install/upgrade/uninstall and how <code>values.yaml</code> customizes a chart.</p>
       <h3>Helm Installation</h3>
-      <p><code>curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash</code> or use package manager.</p>
+      <p>Install Helm 3 via the official script: <code>curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash</code>, or use your OS package manager. Helm 3 does not use Tiller; it talks to the cluster using your kubeconfig.</p>
       <div class="cka-definition">
         <div class="cka-def-term">Helm</div>
         <div class="cka-def-body">The package manager for Kubernetes. Packages charts (pre-configured K8s resources). Helm 3 removed Tiller; uses direct API calls. CKA: know <code>helm install</code>, <code>helm list</code>, <code>helm upgrade</code>, <code>helm uninstall</code>, and <code>values.yaml</code> for customization.</div>
       </div>
       <h3>Helm Introduction</h3>
-      <p>Helm manages Kubernetes applications as <strong>charts</strong> — packages of YAML templates plus default values. Helm 3 is cluster-scoped and stores release state in Secrets.</p>
+      <p>Helm packages Kubernetes manifests as <strong>charts</strong>: a directory with <code>Chart.yaml</code> (metadata), <code>values.yaml</code> (default config), and <code>templates/</code> (YAML templates with Go templating). Installing a chart creates a <strong>release</strong> — a named instance of that chart in the cluster. Helm 3 stores release state in Secrets in the cluster; there is no server-side Tiller.</p>
       <h3>Helm Charts</h3>
-      <p>Charts are packages of templated K8s manifests. Structure: Chart.yaml, values.yaml, templates/.</p>
+      <p>A chart is a versioned package of templated Kubernetes resources. Structure: <code>Chart.yaml</code> (name, version, description), <code>values.yaml</code> (default values), <code>templates/*.yaml</code> (manifests with <code>{{ .Values.xxx }}</code>). You override values with <code>--set</code> or a custom <code>values.yaml</code> file.</p>
       <h3>Helm Components</h3>
       <ul>
-        <li><strong>Chart:</strong> Package of templated K8s manifests</li>
-        <li><strong>Release:</strong> Instance of a chart deployed to a cluster</li>
-        <li><strong>Values:</strong> Configuration overrides (YAML)</li>
+        <li><strong>Chart:</strong> Package of templated K8s manifests (the application definition).</li>
+        <li><strong>Release:</strong> Instance of a chart deployed to the cluster (each <code>helm install</code> creates a release).</li>
+        <li><strong>Values:</strong> Configuration that fills in the chart templates; override via <code>--values</code> or <code>--set</code>.</li>
       </ul>
       <h3>Working with Helm</h3>
       <div class="snippet-label">Essential Helm commands (CKA)</div>
@@ -2780,6 +2758,7 @@ kubectl kustomize overlays/prod   # preview</code></pre>
 
       <!-- 14 Troubleshooting -->
       <h2 id="section-14">14 — Troubleshooting</h2>
+      <p>Troubleshooting has the <strong>highest weight (30%)</strong> on the CKA exam. You must systematically debug application failures (pod status, logs, Service/Endpoints), control-plane failures (API server, etcd, scheduler), worker-node failures (kubelet, runtime, NotReady), and network issues (DNS, CNI, kube-proxy). Always start with <code>kubectl get</code> and <code>kubectl describe</code>, then check logs and events.</p>
       <figure class="diagram">
         <img src="assets/k8s-troubleshooting-flowchart.png" alt="Troubleshooting decision flowchart for CKA" width="560" height="280" style="max-width:100%;height:auto;display:block;">
         <figcaption><strong>Troubleshooting flow:</strong> Pending → scheduler/taints/resources. Running but no traffic → Service/Endpoints. CrashLoopBackOff → logs --previous. No connectivity → DNS/CNI/kube-proxy.</figcaption>
@@ -2789,6 +2768,7 @@ kubectl kustomize overlays/prod   # preview</code></pre>
         <div class="cka-def-body">Highest-weight domain. Application: check pod status, describe, logs (<code>--previous</code>), endpoints, selector mismatch. Control plane: kube-apiserver, etcd, scheduler. Worker: kubelet, container runtime. Network: CNI, CoreDNS, kube-proxy, firewall. Use <code>kubectl describe</code>, <code>journalctl -u kubelet</code>, <code>crictl</code>.</div>
       </div>
       <h3>Application Failure</h3>
+      <p>When an application is not working, follow a clear order: Is the Service reachable? Does it have Endpoints? Do pod labels match the Service selector? What does the pod status and <code>describe</code> show? What do the container logs (and <code>--previous</code> for crashed containers) say? Many exam tasks are "fix the broken deployment" or "find why the service returns no data" — selector mismatch and missing/crashing pods are common causes.</p>
       <h4>Debug Pod Failures</h4>
       <ul class="step-list">
         <li><strong>Is the service reachable?</strong> <code>curl http://&lt;node-ip&gt;:&lt;nodePort&gt;</code> or
@@ -2811,13 +2791,11 @@ kubectl describe pod &lt;pod-name&gt;
 kubectl logs &lt;pod-name&gt; -f --previous</code></pre>
 
       <h3>Control Plane Failure</h3>
+      <p>If the API server is down, <code>kubectl</code> will not work. Control-plane components (with kubeadm) run as static pods in <code>kube-system</code>; with a manual install they are often systemd services. Check pod status first, then logs. Certificate expiry is a common cause of kubelet or API server issues.</p>
       <h4>Debug API Server</h4>
-      <p>Check pod status, logs: <code>kubectl logs kube-apiserver-&lt;node&gt; -n kube-system</code>. Verify certs, endpoints.</p>
+      <p>Verify the API server pod is Running: <code>kubectl get pods -n kube-system -l component=kube-apiserver</code>. View logs: <code>kubectl logs kube-apiserver-&lt;node&gt; -n kube-system</code>. Check for certificate errors, wrong endpoints, or admission-controller failures. Ensure the server cert is valid: <code>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -text -noout</code>.</p>
       <h4>Debug ETCD</h4>
-      <p>Check etcd pod. Use <code>etcdctl endpoint health</code>. Verify data-dir, certs.</p>
-      <p>Verify nodes are Ready, then check control-plane components. With kubeadm they are pods in
-        <code>kube-system</code>; with manual install they are often systemd services.
-      </p>
+      <p>etcd is the cluster's data store; if it is down or corrupted, the control plane cannot function. Check the etcd pod status and logs. Use <code>ETCDCTL_API=3 etcdctl endpoint health</code> (with correct <code>--endpoints</code> and certs) to verify connectivity. Ensure the data directory is writable and that certs have not expired.</p>
       <pre><code>kubectl get nodes
 kubectl get pods -n kube-system
 service kube-apiserver status
@@ -2828,8 +2806,9 @@ kubectl logs kube-apiserver-master -n kube-system
 sudo journalctl -u kube-apiserver</code></pre>
 
       <h3>Worker Node Failure</h3>
+      <p>When a node shows <strong>NotReady</strong>, workloads on it may be rescheduled elsewhere (if managed by a controller). The cause is usually the kubelet not reporting to the API server: it might be stopped, misconfigured, or unable to authenticate (e.g. expired client cert). Check the node conditions and events with <code>kubectl describe node</code>, then on the node itself inspect kubelet and the container runtime.</p>
       <h4>Debug kubelet</h4>
-      <p><code>systemctl status kubelet</code>, <code>journalctl -u kubelet</code>. Check config, certs.</p>
+      <p>On the node: <code>systemctl status kubelet</code> and <code>journalctl -u kubelet -f</code>. Common issues: wrong kubeconfig or API server address, expired or missing client certificate, config errors in <code>/var/lib/kubelet/config.yaml</code> or <code>/etc/kubernetes/kubelet.conf</code>.</p>
       <h4>Node NotReady</h4>
       <p>kubelet not reporting. Check kubelet, container runtime, network. <code>kubectl describe node</code> for conditions.</p>
       <p>If a node is <strong>NotReady</strong>, check <code>kubectl describe node &lt;node&gt;</code> (conditions,
@@ -2854,10 +2833,11 @@ openssl x509 -in /var/lib/kubelet/worker-1.crt -text</code></pre>
       </ul>
 
       <h3>Network Troubleshooting</h3>
+      <p>Network issues show up as "pod can't reach service", "DNS not resolving", or "pods on different nodes can't talk". Always verify: (1) Service has Endpoints; (2) CoreDNS pods are running and resolvable; (3) CNI plugin is healthy; (4) kube-proxy is running and programming iptables/IPVS. Use a debug pod (e.g. <code>nicolaka/netshoot</code> or <code>busybox</code>) to run <code>nslookup</code>, <code>curl</code>, and <code>ping</code> from inside the cluster.</p>
       <h4>Debug Service Issues</h4>
-      <p>Check <code>kubectl get endpoints</code>. If empty, selector mismatch. Verify pod labels, service selector.</p>
+      <p>If a Service is not routing traffic, first check <code>kubectl get endpoints &lt;svc-name&gt;</code>. Empty endpoints mean no pod matches the Service selector — fix the selector or add the correct labels to the pods. Compare <code>kubectl describe svc</code> (Selector) with <code>kubectl get pods --show-labels</code>.</p>
       <h4>Debug DNS</h4>
-      <p>CoreDNS pods running? <code>kubectl run test --rm -it --image=busybox:1.28 -- nslookup kubernetes</code>.</p>
+      <p>Ensure CoreDNS pods are running: <code>kubectl get pods -n kube-system -l k8s-app=kube-dns</code>. Test resolution from a temporary pod: <code>kubectl run test --rm -it --image=busybox:1.28 -- nslookup kubernetes</code>. If this fails, check CoreDNS logs and the <code>coredns</code> ConfigMap (Corefile).</p>
       <h4>Debug CNI</h4>
       <p>When pods cannot communicate across nodes or DNS fails:</p>
       <ul class="step-list">
@@ -3485,7 +3465,12 @@ k delete pod x --force --grace-period=0
 
 # Context & Namespace
 k config use-context &lt;ctx&gt;
-k config set-context --current --namespace=dev</code></pre>
+k config set-context --current --namespace=dev
+
+# Node maintenance
+k cordon &lt;node&gt;
+k drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data
+k uncordon &lt;node&gt;</code></pre>
           </div>
         </div>
 
@@ -3657,14 +3642,13 @@ ETCDCTL_API=3 etcdctl snapshot save /tmp/etcd.db \
 # Verify
 ETCDCTL_API=3 etcdctl snapshot status /tmp/etcd.db
 
-# RESTORE
-ETCDCTL_API=3 etcdctl snapshot restore /tmp/etcd.db \
-  --data-dir=/var/lib/etcd-restored
+# RESTORE (etcdutl for restore)
+etcdutl snapshot restore /tmp/etcd.db --data-dir=/var/lib/etcd-restored
 
 # Then update etcd manifest:
 vi /etc/kubernetes/manifests/etcd.yaml
 # Change: hostPath.path → /var/lib/etcd-restored
-# Wait for etcd pod to restart
+# Restart kubelet so etcd pod restarts with new data-dir
 
 # Find etcd certs (from pod spec)
 k describe pod etcd-master -n kube-system | grep -A5 cert</code></pre>
@@ -3683,7 +3667,7 @@ apt-get update && apt-get install -y kubeadm=1.XX.0-*
 apt-mark hold kubeadm
 kubeadm upgrade plan
 kubeadm upgrade apply v1.XX.0
-kubectl drain &lt;cp-node&gt; --ignore-daemonsets
+kubectl drain &lt;cp-node&gt; --ignore-daemonsets --delete-emptydir-data
 apt-mark unhold kubelet kubectl
 apt-get install -y kubelet=1.XX.0-* kubectl=1.XX.0-*
 apt-mark hold kubelet kubectl
@@ -3691,7 +3675,7 @@ systemctl daemon-reload && systemctl restart kubelet
 kubectl uncordon &lt;cp-node&gt;
 
 # === WORKER NODES ===
-kubectl drain &lt;worker&gt; --ignore-daemonsets
+kubectl drain &lt;worker&gt; --ignore-daemonsets --delete-emptydir-data
 # SSH to worker:
 apt-mark unhold kubeadm kubelet
 apt-get install -y kubeadm=1.XX.0-* kubelet=1.XX.0-*
@@ -3700,6 +3684,38 @@ systemctl daemon-reload && systemctl restart kubelet
 apt-mark hold kubeadm kubelet
 # Back on control plane:
 kubectl uncordon &lt;worker&gt;</code></pre>
+          </div>
+        </div>
+
+        <div class="cheat-card">
+          <div class="cheat-card-header">
+            <h4>Node Maintenance &amp; PDB</h4>
+          </div>
+          <div class="cheat-card-body">
+            <pre><code># Cordon = no new pods (existing keep running)
+kubectl cordon &lt;node&gt;
+
+# Drain = cordon + evict all pods (use before OS/reboot)
+kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data
+kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data --force  # standalone pods
+
+# Uncordon = allow scheduling again
+kubectl uncordon &lt;node&gt;
+
+# PodDisruptionBudget (drain respects this)
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: myapp-pdb
+spec:
+  minAvailable: 2
+  # OR maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: myapp
+
+k get pdb
+k describe pdb myapp-pdb</code></pre>
           </div>
         </div>
 
