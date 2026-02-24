@@ -770,14 +770,18 @@ worker-2   Ready    <none>          10d   v1.30.0`;
       const block = document.getElementById('block-' + hit.sid);
       if (block && window.openBlockGlobal) window.openBlockGlobal(block);
       if (hit.id) {
+        // Delay to allow block switch + layout reflow when landing in a different section
         setTimeout(() => {
           const target = document.getElementById(hit.id);
           if (target && mainEl) {
             const offset = 50;
-            const y = target.getBoundingClientRect().top + mainEl.scrollTop - offset;
+            const mainRect = mainEl.getBoundingClientRect();
+            const targetRect = target.getBoundingClientRect();
+            const targetOffsetInContent = targetRect.top - mainRect.top + mainEl.scrollTop;
+            const y = Math.max(0, targetOffsetInContent - offset);
             mainEl.scrollTo({ top: y, behavior: 'smooth' });
           }
-        }, 80);
+        }, 150);
       }
     }
 
@@ -1010,7 +1014,7 @@ worker-2   Ready    <none>          10d   v1.30.0`;
         // Trigger a click on the corresponding nav link
         if (!block) return;
         const sid = block.id.replace('block-', '');
-        const navLink = document.querySelector('#nav a[data-sid="' + sid + '"]');
+        const navLink = document.querySelector('#nav a[href="#' + sid + '"]') || document.querySelector('#nav a[data-sid="' + sid + '"]');
         if (navLink) navLink.click();
       };
       // Init after main IIFE completes
