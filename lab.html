@@ -32,7 +32,7 @@
     .lab-btn { padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 600; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
     .lab-btn:hover { filter: brightness(1.08); }
     .lab-btn.secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
-    .lab-scenarios { padding: 1.5rem 2rem 2rem; border-top: 1px solid var(--border); background: var(--surface); flex: 1; overflow-y: auto; }
+    .lab-scenarios { padding: 1.5rem 2rem 2rem; border-top: 1px solid var(--border); background: var(--surface); flex: 1; min-height: 0; overflow-y: auto; }
     .lab-scenarios h2 { font-size: 1.05rem; margin: 0 0 1.25rem; color: var(--text); font-weight: 600; }
     .scenario-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
     .scenario-card h4 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--text); font-weight: 600; }
@@ -208,15 +208,17 @@ kubectl drain worker-1 --ignore-daemonsets --delete-emptydir-data">Copy</button>
     function renderCmdRef() {
       const el = document.getElementById('cmd-reference');
       let html = '';
-      for (const [cat, cmds] of Object.entries(COMMANDS)) {
-        html += `<div class="cmd-cat">
+      const cats = Object.entries(COMMANDS);
+      cats.forEach(([cat, cmds], i) => {
+        const collapsed = i !== 0 ? ' collapsed' : '';
+        html += `<div class="cmd-cat${collapsed}">
           <div class="cmd-cat-header"><span>${cat}</span><span class="arrow">▼</span></div>
           <div class="cmd-list">`;
         cmds.forEach(([cmd]) => {
           html += `<div class="cmd-item"><code>${escapeHtml(cmd)}</code><button class="copy-btn" title="Copy">Copy</button></div>`;
         });
         html += '</div></div>';
-      }
+      });
       el.innerHTML = html;
       el.querySelectorAll('.cmd-cat-header').forEach(h => {
         h.addEventListener('click', () => h.parentElement.classList.toggle('collapsed'));
