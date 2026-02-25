@@ -2372,6 +2372,10 @@ kubectl exec my-pod -- id</code></pre>
       <!-- 08 Storage -->
       <h2 id="section-08">08 — Storage</h2>
       <p>Kubernetes gives workloads access to storage through <strong>volumes</strong> (pod-level) and <strong>PersistentVolumes (PV) / PersistentVolumeClaims (PVC)</strong> (cluster-level persistence). The CKA exam tests your ability to create PVs and PVCs, bind them to pods, and understand <strong>StorageClasses</strong> for dynamic provisioning. You should also know how ConfigMaps and Secrets are mounted as volumes.</p>
+      <figure class="diagram">
+        <img src="assets/k8s-storage-architecture.png" alt="Kubernetes storage architecture: control plane, workers, CSI, and storage backends" width="960" height="560" style="max-width:100%;height:auto;display:block;">
+        <figcaption>Storage in context: control plane (API server, etcd) and workers (kubelet, CSI node plugin) integrate with PV/PVC and external storage backends (NFS, cloud disks, SAN).</figcaption>
+      </figure>
       <h3>Docker Storage</h3>
       <p>Docker uses a <strong>layered filesystem</strong> (copy-on-write): each image layer and container layer is stacked. Data written inside a container is lost when the container is removed unless it is stored in a <strong>volume</strong>. Docker volumes persist data outside the container lifecycle. Use <code>docker volume create</code>, <code>docker volume ls</code>, and <code>docker run -v</code> for volume management. Kubernetes has its own volume model and does not rely on Docker volumes.</p>
       <h4>Volume Drivers</h4>
@@ -2385,6 +2389,10 @@ kubectl exec my-pod -- id</code></pre>
       <p>The <strong>CSI</strong> is a standard for exposing block and file storage to Kubernetes. CSI drivers run as DaemonSets or StatefulSets and handle create/attach/mount of volumes. When you use a StorageClass with a <code>provisioner</code> like <code>kubernetes.io/aws-ebs</code> or a CSI driver name, the driver dynamically provisions a PV when a PVC is created. For the CKA, you typically work with static PV/PVC or a given StorageClass; you are not expected to write a CSI driver.</p>
       <h4>Volumes</h4>
       <p>Pod-level volumes are defined in <code>spec.volumes</code> and mounted into containers via <code>volumeMounts</code>. Common types: <strong>emptyDir</strong> (temporary, shared between containers in a pod; lost when pod is removed), <strong>hostPath</strong> (node filesystem; use with care for debugging or static data), <strong>persistentVolumeClaim</strong> (binds to a PVC for persistent data), and <strong>configMap</strong> / <strong>secret</strong> (inject config or secrets as files). Choosing the right type matters: use emptyDir for scratch space, PVC for data that must survive pod restarts and rescheduling.</p>
+      <figure class="diagram">
+        <img src="assets/k8s-storage-volume-types.png" alt="Pod volume types: emptyDir, hostPath, persistentVolumeClaim" width="560" height="200" style="max-width:100%;height:auto;display:block;">
+        <figcaption>Common volume types: emptyDir (temporary), hostPath (node path), persistentVolumeClaim (persistent data).</figcaption>
+      </figure>
       <h3>Persistent Volumes (PV) and Persistent Volume Claims (PVC)</h3>
       <p>A <strong>PersistentVolume (PV)</strong> is a cluster-scoped resource that represents a piece of storage (e.g. an NFS share, a cloud disk). An administrator provisions PVs. A <strong>PersistentVolumeClaim (PVC)</strong> is a namespace-scoped request for storage by a user or a workload. The control plane <strong>binds</strong> a PVC to a PV when capacity and <code>accessModes</code> match. If no suitable PV exists, the PVC stays <strong>Pending</strong> until one is created or (with dynamic provisioning) until the StorageClass provisioner creates a new PV. Access modes: <strong>ReadWriteOnce (RWO)</strong> — one node can mount read-write; <strong>ReadOnlyMany (ROX)</strong> — many nodes read-only; <strong>ReadWriteMany (RWX)</strong> — many nodes read-write (typically NFS or distributed storage).</p>
       <figure class="diagram">
@@ -2441,6 +2449,10 @@ kubectl get pod,pvc,pv</code></pre>
 
       <h3>Storage Classes</h3>
       <p>A <strong>StorageClass</strong> defines a class of storage (e.g. "fast SSD", "standard HDD") and a <strong>provisioner</strong> that can create PVs on demand. When you create a PVC with <code>storageClassName: google-storage</code> (for example), the StorageClass's provisioner automatically creates a PV that satisfies the claim. This is <strong>dynamic provisioning</strong>; you do not create the PV manually. If you omit <code>storageClassName</code> or set it to <code>""</code>, only pre-provisioned (static) PVs can bind. For the exam, you may need to create a StorageClass YAML or reference an existing one in a PVC.</p>
+      <figure class="diagram">
+        <img src="assets/k8s-storage-dynamic-provisioning.png" alt="Dynamic provisioning flow: PVC to StorageClass provisioner to PV to Pod" width="560" height="160" style="max-width:100%;height:auto;display:block;">
+        <figcaption>With a StorageClass, creating a PVC triggers the provisioner to create a PV and bind it; the Pod then mounts the PVC.</figcaption>
+      </figure>
       <pre><code>apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
