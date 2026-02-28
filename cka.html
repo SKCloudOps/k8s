@@ -90,6 +90,19 @@
       font-size: .7rem; padding: .1rem .5rem; border-radius: 3px;
       margin-bottom: .25rem; font-weight: 600; letter-spacing: .5px;
     }
+    .imp-label {
+      display: inline-block; background: #e65100; color: #fff;
+      font-size: .7rem; padding: .1rem .5rem; border-radius: 3px;
+      margin-bottom: .25rem; font-weight: 600; letter-spacing: .5px;
+    }
+    .imp-block {
+      border-left: 4px solid #e65100; background: #fff3e0;
+      padding: .5rem 1rem; margin: .8rem 0; border-radius: 0 6px 6px 0;
+      font-size: .9rem;
+    }
+    .imp-block strong { color: #e65100; }
+    .imp-block code { background: #ffe0b2; }
+    .imp-block pre { background: #fff8e1; border-color: #ffcc02; }
 
     hr { border: none; border-top: 2px solid var(--border); margin: 2.5rem 0; }
 
@@ -374,6 +387,31 @@ crictl inspect &lt;container-id&gt;       # inspect container</code></pre>
 
 <!-- ═══════════════════════════════════════════ -->
 <h1 id="pod-yaml">5. Pod YAML Skeleton (Complete)</h1>
+
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>Step 1:</strong> Generate the base YAML skeleton with imperative command:<br>
+<pre><code># Generate base pod YAML
+k run mypod --image=nginx:1.21 --port=80 --labels="app=myapp" \
+  --dry-run=client -o yaml > mypod.yaml
+
+# With a command override
+k run mypod --image=busybox --command --dry-run=client -o yaml -- sleep 3600 > mypod.yaml</code></pre>
+<strong>Step 2:</strong> The above generates a minimal Pod spec. Open with <code>vi mypod.yaml</code> and add these fields manually:
+<ul>
+<li><code>spec.serviceAccountName</code> — add under spec</li>
+<li><code>spec.nodeSelector</code> — add under spec for scheduling</li>
+<li><code>spec.tolerations</code> — add under spec for tainted nodes</li>
+<li><code>spec.initContainers</code> — add before <code>containers:</code></li>
+<li><code>env / envFrom</code> — add under the container for ConfigMap/Secret injection</li>
+<li><code>resources.requests/limits</code> — add under the container</li>
+<li><code>livenessProbe / readinessProbe</code> — add under the container</li>
+<li><code>volumeMounts</code> + <code>volumes</code> — add under container and spec respectively</li>
+<li><code>securityContext</code> — add at pod-level or container-level</li>
+</ul>
+<strong>Step 3:</strong> Apply: <code>k apply -f mypod.yaml</code>
+</div>
+
 <span class="yaml-label">YAML</span>
 <pre><code>apiVersion: v1
 kind: Pod
@@ -456,6 +494,35 @@ spec:
 <h1 id="deploy-svc">6. Deployment + Service YAML</h1>
 
 <h2>Deployment</h2>
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>Generate Deployment YAML:</strong>
+<pre><code># Create directly (fastest)
+k create deployment webapp --image=nginx:1.21 --replicas=3
+
+# Generate YAML to customize
+k create deployment webapp --image=nginx:1.21 --replicas=3 \
+  --dry-run=client -o yaml > deploy.yaml</code></pre>
+<strong>What the command generates vs what you need to add:</strong>
+<pre><code># ✅ Generated automatically:
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: webapp }
+spec:
+  replicas: 3
+  selector: { matchLabels: { app: webapp } }   # auto-matched
+  template:
+    metadata: { labels: { app: webapp } }       # auto-matched
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.21
+
+# ✏️ Add manually in vi:
+#   spec.strategy          → rollingUpdate config
+#   containers[].ports     → containerPort: 80
+#   containers[].resources → requests/limits</code></pre>
+</div>
 <span class="yaml-label">YAML</span>
 <pre><code>apiVersion: apps/v1
 kind: Deployment
@@ -481,6 +548,26 @@ spec:
           limits:   { cpu: 500m, memory: 256Mi }</code></pre>
 
 <h2>Service (NodePort)</h2>
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>Create Service imperatively:</strong>
+<pre><code># Expose existing deployment as NodePort (fastest)
+k expose deployment webapp --name=webapp-svc --port=80 --type=NodePort
+
+# Generate YAML (to set specific nodePort)
+k expose deployment webapp --name=webapp-svc --port=80 \
+  --type=NodePort --dry-run=client -o yaml > svc.yaml
+
+# With specific nodePort (can't set via imperative, must edit YAML)
+vi svc.yaml   # add nodePort: 30080 under ports
+k apply -f svc.yaml
+
+# Alternative: create service directly with nodePort
+k create service nodeport webapp-svc --tcp=80:80 \
+  --node-port=30080 --dry-run=client -o yaml > svc.yaml
+# ⚠️ Note: this won't set the selector correctly — edit selector to match pod labels</code></pre>
+<strong>Key difference:</strong> <code>k expose</code> auto-copies selector from the deployment. <code>k create service</code> uses <code>app: &lt;svc-name&gt;</code> as selector, which may not match.
+</div>
 <span class="yaml-label">YAML</span>
 <pre><code>apiVersion: v1
 kind: Service
@@ -495,6 +582,9 @@ spec:
     nodePort: 30080</code></pre>
 
 <h2>Service (ClusterIP)</h2>
+<div class="imp-block">
+<strong>Imperative:</strong> <code>k expose deployment back-end --port=80 --name=back-end</code> (ClusterIP is default type)
+</div>
 <span class="yaml-label">YAML</span>
 <pre><code>apiVersion: v1
 kind: Service
@@ -547,12 +637,27 @@ k describe node node01 | grep -i taint</code></pre>
 <pre><code># Label a node
 k label nodes node01 size=Large
 k label nodes node01 size-     # remove label</code></pre>
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>Generate pod with nodeSelector:</strong>
+<pre><code># Generate base YAML, then add nodeSelector
+k run scheduled-pod --image=nginx --dry-run=client -o yaml > pod.yaml
+vi pod.yaml
+# Add under spec:
+#   nodeSelector:
+#     size: Large
+k apply -f pod.yaml</code></pre>
+<strong>Note:</strong> <code>k run</code> does not support <code>--node-selector</code> flag. You must generate YAML and add <code>nodeSelector</code> manually.
+</div>
 <span class="yaml-label">YAML</span>
 <pre><code>spec:
   nodeSelector:
     size: Large</code></pre>
 
 <h2>Node Affinity (Advanced)</h2>
+<div class="imp-block">
+<strong>No imperative shortcut</strong> — Node affinity must be added via YAML. Use <code>k run &lt;name&gt; --image=&lt;img&gt; --dry-run=client -o yaml</code> to generate base, then add the <code>affinity</code> block under <code>spec:</code>. Use <code>k explain pod.spec.affinity.nodeAffinity --recursive</code> to quickly look up the structure.
+</div>
 <span class="yaml-label">YAML</span>
 <pre><code>spec:
   affinity:
@@ -612,6 +717,10 @@ k top pods --sort-by=memory
 k describe node node01 | grep -A 10 "Allocated resources"</code></pre>
 
 <h2>LimitRange (per-container defaults)</h2>
+<div class="imp-block">
+<strong>No imperative command</strong> — LimitRange must be created via YAML. Quick copy from docs: search <code>kubernetes.io/docs</code> for "LimitRange".<br>
+<code>k explain limitrange.spec.limits --recursive</code> to see structure.
+</div>
 <span class="yaml-label">YAML</span>
 <pre><code>apiVersion: v1
 kind: LimitRange
@@ -627,6 +736,18 @@ spec:
     min:              { cpu: "100m", memory: "16Mi" }</code></pre>
 
 <h2>ResourceQuota (namespace-total)</h2>
+<div class="imp-block">
+<strong>Imperative:</strong>
+<pre><code># Create ResourceQuota imperatively
+k create quota compute-quota -n dev \
+  --hard=pods=10,requests.cpu=4,requests.memory=4Gi,limits.cpu=8,limits.memory=8Gi
+
+# Generate YAML to customize
+k create quota compute-quota -n dev \
+  --hard=pods=10,requests.cpu=4 \
+  --dry-run=client -o yaml > quota.yaml</code></pre>
+<strong>Verify:</strong> <code>k describe quota compute-quota -n dev</code> — shows used vs hard limits.
+</div>
 <span class="yaml-label">YAML</span>
 <pre><code>apiVersion: v1
 kind: ResourceQuota
@@ -650,6 +771,29 @@ spec:
 
 <h2>DaemonSet</h2>
 <p>One pod per node (all or subset via nodeSelector). Use for: log collectors, node monitoring, CNI/CSI plugins.</p>
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>No direct <code>k create daemonset</code> command exists!</strong> Use this trick:
+<pre><code># Step 1: Generate a Deployment YAML as base
+k create deployment monitoring-daemon --image=prom/node-exporter \
+  -n kube-system --dry-run=client -o yaml > ds.yaml
+
+# Step 2: Edit ds.yaml and change these:
+#   kind: Deployment  →  kind: DaemonSet
+#   Remove: spec.replicas (DaemonSet doesn't use replicas)
+#   Remove: spec.strategy (DaemonSet uses updateStrategy instead)
+#   Add tolerations if needed for control-plane nodes
+
+# Step 3: Apply
+k apply -f ds.yaml</code></pre>
+<strong>Key changes from Deployment → DaemonSet:</strong>
+<ul>
+<li>Change <code>kind: Deployment</code> → <code>kind: DaemonSet</code></li>
+<li>Delete the <code>replicas:</code> line</li>
+<li>Delete the <code>strategy:</code> block (if any)</li>
+<li>Keep <code>selector</code> and <code>template</code> as-is</li>
+</ul>
+</div>
 <span class="yaml-label">YAML</span>
 <pre><code>apiVersion: apps/v1
 kind: DaemonSet
@@ -678,6 +822,24 @@ k describe ds monitoring-daemon -n kube-system
 k rollout undo ds monitoring-daemon -n kube-system</code></pre>
 
 <h2>Job</h2>
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>Create Job imperatively:</strong>
+<pre><code># Create directly
+k create job pi-job --image=perl -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+
+# Generate YAML to add completions/parallelism
+k create job pi-job --image=perl \
+  --dry-run=client -o yaml -- perl -Mbignum=bpi -wle 'print bpi(2000)' > job.yaml
+
+# Then edit to add:
+#   spec.completions: 3       (how many times to run)
+#   spec.parallelism: 2       (how many run at once)
+#   spec.backoffLimit: 4      (max retries)
+#   spec.activeDeadlineSeconds: 100  (timeout)
+k apply -f job.yaml</code></pre>
+<strong>Generated vs manual fields:</strong> The command generates <code>restartPolicy: Never</code> automatically (required for Jobs). Add <code>completions</code>, <code>parallelism</code>, <code>backoffLimit</code> manually.
+</div>
 <span class="yaml-label">YAML</span>
 <pre><code>apiVersion: batch/v1
 kind: Job
@@ -695,6 +857,23 @@ spec:
       restartPolicy: Never</code></pre>
 
 <h2>CronJob</h2>
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>Create CronJob imperatively:</strong>
+<pre><code># Create directly
+k create cronjob backup --image=busybox --schedule="0 2 * * *" -- /bin/sh -c "date"
+
+# Generate YAML to customize
+k create cronjob backup --image=busybox --schedule="0 2 * * *" \
+  --dry-run=client -o yaml -- /bin/sh -c "date" > cj.yaml
+
+# Edit to add:
+#   spec.successfulJobsHistoryLimit: 3
+#   spec.failedJobsHistoryLimit: 1
+#   spec.jobTemplate.spec.template.spec.restartPolicy: OnFailure
+k apply -f cj.yaml</code></pre>
+<strong>Common schedules:</strong> <code>*/5 * * * *</code> (every 5 min), <code>0 * * * *</code> (hourly), <code>0 2 * * *</code> (daily at 2am), <code>0 0 * * 0</code> (weekly Sunday).
+</div>
 <span class="yaml-label">YAML</span>
 <pre><code>apiVersion: batch/v1
 kind: CronJob
@@ -753,6 +932,23 @@ k get pod kube-apiserver-controlplane -n kube-system \
 <h1 id="cm-secret">11. ConfigMaps &amp; Secrets</h1>
 
 <h2>ConfigMap</h2>
+<h3>⚡ Imperative Commands</h3>
+<div class="imp-block">
+<strong>ConfigMaps are best created imperatively:</strong>
+<pre><code># Create from literal values (fastest)
+k create configmap app-config --from-literal=APP_COLOR=blue --from-literal=APP_MODE=prod
+
+# Create from file
+k create configmap app-config --from-file=app.properties
+
+# Create from specific key in file
+k create configmap app-config --from-file=config-key=/path/to/file
+
+# Generate YAML to inspect/edit
+k create configmap app-config --from-literal=APP_COLOR=blue \
+  --dry-run=client -o yaml > cm.yaml</code></pre>
+<strong>Pod injection:</strong> After creating ConfigMap, generate pod YAML and add <code>envFrom</code> or <code>env.valueFrom.configMapKeyRef</code> under the container, or mount as volume.
+</div>
 <pre><code>k create configmap app-config --from-literal=APP_COLOR=blue --from-literal=APP_MODE=prod
 k create configmap app-config --from-file=app.properties
 k get cm
@@ -789,6 +985,28 @@ volumes:
     name: app-config</code></pre>
 
 <h2>Secret</h2>
+<h3>⚡ Imperative Commands</h3>
+<div class="imp-block">
+<strong>All 3 secret types can be created imperatively:</strong>
+<pre><code># Generic secret (most common)
+k create secret generic app-secret \
+  --from-literal=DB_Host=mysql --from-literal=DB_Password=pass123
+
+# TLS secret (for Ingress)
+k create secret tls webapp-tls --cert=tls.crt --key=tls.key
+
+# Docker registry secret
+k create secret docker-registry regcred \
+  --docker-server=private-registry.io \
+  --docker-username=user --docker-password=pass --docker-email=user@org.com
+
+# Generate YAML (values auto-base64 encoded!)
+k create secret generic app-secret --from-literal=DB_Host=mysql \
+  --dry-run=client -o yaml > secret.yaml</code></pre>
+<strong>Key advantage:</strong> Imperative command <strong>auto-encodes values to base64</strong>. If writing YAML manually, you must encode:<br>
+<code>echo -n "myvalue" | base64</code> → use output in <code>data:</code> section.<br>
+Or use <code>stringData:</code> instead of <code>data:</code> to avoid manual encoding.
+</div>
 <pre><code>k create secret generic app-secret --from-literal=DB_Host=mysql --from-literal=DB_Password=pass123
 k create secret tls webapp-tls --cert=tls.crt --key=tls.key
 k create secret docker-registry regcred \
@@ -829,6 +1047,29 @@ data:
 <p><strong>Sidecar:</strong> auxiliary (log shipper, proxy). <strong>Ambassador:</strong> proxy to external. <strong>Adapter:</strong> transforms output.</p>
 
 <h3>Sidecar Example</h3>
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>No direct command for multi-container pods.</strong> Use this pattern:
+<pre><code># Step 1: Generate base pod with first container
+k run app-with-sidecar --image=busybox \
+  --dry-run=client -o yaml \
+  --command -- sh -c 'while true; do echo running >> /var/log/app.log; sleep 5; done' > mc.yaml
+
+# Step 2: Open mc.yaml and duplicate the containers section:
+#   - Copy the container block
+#   - Rename to "sidecar", change image/command
+#   - Add shared volumeMounts to BOTH containers
+#   - Add volumes: emptyDir at spec level
+
+# Step 3: Apply
+k apply -f mc.yaml</code></pre>
+<strong>What to add manually:</strong>
+<ul>
+<li>Second container under <code>containers:</code> (same indent level as first)</li>
+<li><code>volumeMounts</code> in each container pointing to shared mount path</li>
+<li><code>volumes: - name: shared-vol</code> with <code>emptyDir: {}</code> under spec</li>
+</ul>
+</div>
 <span class="yaml-label">YAML</span>
 <pre><code>apiVersion: v1
 kind: Pod
@@ -854,6 +1095,20 @@ spec:
 
 <h2>Init Containers</h2>
 <p>Run to completion <strong>BEFORE</strong> main containers. Sequential. Failure → pod restarts.</p>
+<div class="imp-block">
+<strong>Generate and add init containers:</strong>
+<pre><code># Generate base pod YAML
+k run myapp --image=busybox:1.28 --dry-run=client -o yaml \
+  --command -- sh -c 'echo running && sleep 3600' > pod.yaml
+
+# Edit pod.yaml — add initContainers BEFORE containers:
+#   initContainers:          &lt;— same indent as containers
+#   - name: init-myservice
+#     image: busybox:1.28
+#     command: ['sh', '-c', 'until nslookup myservice; do sleep 2; done']
+k apply -f pod.yaml</code></pre>
+<strong>Key rule:</strong> <code>initContainers</code> goes at the same level as <code>containers</code> under <code>spec</code>. Init containers run in order, each must complete before the next starts.
+</div>
 <span class="yaml-label">YAML</span>
 <pre><code>spec:
   initContainers:
@@ -874,6 +1129,34 @@ spec:
 <h1 id="probes">13. Probes &mdash; Liveness &amp; Readiness</h1>
 <p><strong>livenessProbe:</strong> fails → container restarted. <strong>readinessProbe:</strong> fails → removed from Service endpoints.</p>
 <p><strong>Types:</strong> httpGet, exec, tcpSocket</p>
+
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>No imperative flag for probes.</strong> Generate base pod YAML and add probes manually:
+<pre><code># Generate pod YAML
+k run myapp --image=myapp:1.0 --port=8080 --dry-run=client -o yaml > pod.yaml
+
+# Edit pod.yaml — add probes under the container spec:
+#   livenessProbe:
+#     httpGet: { path: /healthz, port: 8080 }
+#     initialDelaySeconds: 15
+#     periodSeconds: 20
+#   readinessProbe:
+#     httpGet: { path: /ready, port: 8080 }
+#     initialDelaySeconds: 5
+#     periodSeconds: 10
+k apply -f pod.yaml
+
+# Quick reference for probe structure:
+k explain pod.spec.containers.livenessProbe
+k explain pod.spec.containers.readinessProbe</code></pre>
+<strong>Which probe type to use:</strong>
+<ul>
+<li><strong>httpGet</strong> — for web apps (path + port)</li>
+<li><strong>exec</strong> — for file/script checks (<code>command: ["cat", "/tmp/healthy"]</code>)</li>
+<li><strong>tcpSocket</strong> — for databases/services (<code>port: 3306</code>)</li>
+</ul>
+</div>
 
 <span class="yaml-label">YAML</span>
 <pre><code>containers:
@@ -910,6 +1193,38 @@ spec:
 <h1 id="rollouts">14. Rolling Updates &amp; Rollbacks</h1>
 <p><strong>Strategies:</strong> RollingUpdate (default, gradual) | Recreate (kill all, then create new)</p>
 
+<h3>⚡ Imperative Commands (All Done Without YAML)</h3>
+<div class="imp-block">
+<strong>Rolling updates are fully imperative — no YAML editing needed:</strong>
+<pre><code># Update image (triggers rolling update automatically)
+k set image deployment/myapp nginx=nginx:1.25
+
+# Watch the rollout progress
+k rollout status deployment/myapp
+
+# Check history (shows revision numbers)
+k rollout history deployment/myapp
+
+# Rollback to previous version
+k rollout undo deployment/myapp
+
+# Rollback to specific revision
+k rollout undo deployment/myapp --to-revision=2
+
+# Pause/resume for canary-style updates
+k rollout pause deployment/myapp
+k set image deployment/myapp nginx=nginx:1.26
+k rollout resume deployment/myapp</code></pre>
+<strong>When you need YAML:</strong> Only to set <code>strategy</code> config (<code>maxSurge</code>, <code>maxUnavailable</code>) or change strategy type to <code>Recreate</code>:
+<pre><code># Generate deployment YAML and edit strategy section
+k get deployment myapp -o yaml > deploy.yaml
+vi deploy.yaml    # edit spec.strategy block
+k apply -f deploy.yaml
+
+# OR edit in-place
+k edit deployment myapp    # add strategy block directly</code></pre>
+</div>
+
 <pre><code>k rollout status deployment/myapp
 k rollout history deployment/myapp
 k set image deployment/myapp nginx=nginx:1.25
@@ -931,6 +1246,25 @@ k rollout resume deployment/myapp</code></pre>
 <!-- ═══════════════════════════════════════════ -->
 <h1 id="hpa">15. HPA &mdash; Horizontal Pod Autoscaler</h1>
 <p>Scales Deployment replicas based on CPU/memory. Requires Metrics Server. Pods <strong>MUST</strong> have <code>resources.requests</code>.</p>
+
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>Create HPA imperatively (fastest in exam):</strong>
+<pre><code># Create HPA directly (no YAML needed!)
+k autoscale deployment myapp --min=2 --max=10 --cpu-percent=80
+
+# Generate YAML for custom metrics
+k autoscale deployment myapp --min=2 --max=10 --cpu-percent=80 \
+  --dry-run=client -o yaml > hpa.yaml
+
+# The generated YAML uses autoscaling/v1 (basic).
+# Edit to autoscaling/v2 if you need memory metrics or custom metrics.
+
+# Verify
+k get hpa
+k describe hpa myapp</code></pre>
+<strong>Conversion note:</strong> <code>k autoscale</code> generates <code>autoscaling/v1</code> with only CPU. For memory metrics, generate YAML and change <code>apiVersion</code> to <code>autoscaling/v2</code>, then add the <code>metrics:</code> block as shown below.
+</div>
 
 <pre><code>k autoscale deployment myapp --min=2 --max=10 --cpu-percent=80
 k get hpa
@@ -1107,6 +1441,33 @@ k config set-context user-ctx --cluster=kubernetes --user=user</code></pre>
 <h1 id="security-ctx">19. Security Contexts</h1>
 <p>Pod-level or container-level. Container overrides pod. Capabilities only at container level.</p>
 
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>No imperative flag for security contexts.</strong> Generate and edit:
+<pre><code># Generate base pod YAML
+k run secure-pod --image=ubuntu --dry-run=client -o yaml > pod.yaml
+
+# Edit pod.yaml — add securityContext at pod and/or container level:
+#   spec:
+#     securityContext:        # pod-level
+#       runAsUser: 1000
+#       runAsGroup: 3000
+#       fsGroup: 2000
+#     containers:
+#     - name: ubuntu
+#       securityContext:      # container-level
+#         runAsNonRoot: true
+#         capabilities:
+#           add: ["NET_ADMIN"]
+#           drop: ["ALL"]
+k apply -f pod.yaml
+
+# Quick reference
+k explain pod.spec.securityContext
+k explain pod.spec.containers.securityContext.capabilities</code></pre>
+<strong>Remember:</strong> <code>capabilities</code> can only be set at <strong>container level</strong>, not pod level.
+</div>
+
 <span class="yaml-label">YAML</span>
 <pre><code>spec:
   securityContext:           # Pod-level
@@ -1132,6 +1493,38 @@ k exec my-pod -- id</code></pre>
 <!-- ═══════════════════════════════════════════ -->
 <h1 id="netpol">20. NetworkPolicy</h1>
 <p>Controls ingress/egress to pods. Requires CNI with policy support (Calico, Cilium). Default: allow all. Once policy selects pod → deny all not explicitly allowed.</p>
+
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>No <code>kubectl create networkpolicy</code> command exists!</strong> You must write YAML from scratch or copy from docs.
+<pre><code># Quick way: Use k explain to build it
+k explain networkpolicy.spec --recursive
+
+# Or search kubernetes.io/docs for "NetworkPolicy" in exam browser
+
+# Fastest approach — memorize this minimal template:
+cat &lt;&lt;EOF | k apply -f -
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: my-policy
+  namespace: prod
+spec:
+  podSelector:
+    matchLabels: { app: db }
+  policyTypes: [Ingress]
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels: { app: api }
+    ports: [{ protocol: TCP, port: 3306 }]
+EOF
+
+# Verify
+k get netpol -n prod
+k describe netpol my-policy -n prod</code></pre>
+<strong>Exam tip:</strong> Always specify <code>policyTypes</code> explicitly. An empty <code>podSelector: {}</code> selects ALL pods in the namespace.
+</div>
 
 <h2>Default Deny All</h2>
 <span class="yaml-label">YAML</span>
@@ -1196,6 +1589,32 @@ wget -qO- http://web.default.svc.cluster.local:80</code></pre>
 
 <!-- ═══════════════════════════════════════════ -->
 <h1 id="storage">21. Storage &mdash; PV, PVC, StorageClass</h1>
+
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>No imperative commands for PV/PVC/StorageClass</strong> — all must be created via YAML. But use these shortcuts:
+<pre><code># Fastest way: inline YAML with heredoc
+cat &lt;&lt;EOF | k apply -f -
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests: { storage: 1Gi }
+EOF
+
+# Quick reference for field structure
+k explain pv.spec --recursive
+k explain pvc.spec --recursive
+k explain sc --recursive
+
+# Check PV/PVC binding status
+k get pv,pvc
+k describe pvc my-pvc   # check Events for binding errors</code></pre>
+<strong>PVC → Pod workflow:</strong> Create PV first → Create PVC (must match accessModes &amp; storage) → Reference PVC in pod's <code>volumes:</code> section.
+</div>
 
 <h2>PersistentVolume (PV)</h2>
 <span class="yaml-label">YAML</span>
@@ -1304,6 +1723,37 @@ k logs &lt;coredns-pod&gt; -n kube-system</code></pre>
 <!-- ═══════════════════════════════════════════ -->
 <h1 id="ingress">24. Ingress</h1>
 <p>Requires Ingress Controller (e.g., nginx-ingress). Manages external HTTP/HTTPS access.</p>
+
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>Create Ingress imperatively:</strong>
+<pre><code># Create directly with single rule
+k create ingress app-ingress --rule="/wear=wear-service:80" \
+  --annotation nginx.ingress.kubernetes.io/rewrite-target=/
+
+# Multiple path rules
+k create ingress app-ingress \
+  --rule="/wear=wear-service:80" \
+  --rule="/watch=watch-service:80" \
+  --dry-run=client -o yaml > ingress.yaml
+
+# Host-based routing
+k create ingress app-ingress \
+  --rule="wear.example.com/=wear-svc:80" \
+  --rule="watch.example.com/=watch-svc:80" \
+  --dry-run=client -o yaml > ingress.yaml
+
+# With TLS
+k create ingress app-ingress \
+  --rule="webapp.example.com/=webapp-svc:80,tls=webapp-tls" \
+  --dry-run=client -o yaml > ingress.yaml</code></pre>
+<strong>What to add manually after generation:</strong>
+<ul>
+<li><code>annotations</code> — e.g., rewrite-target (can also use <code>--annotation</code> flag)</li>
+<li><code>pathType</code> — generated as <code>Exact</code> by default, change to <code>Prefix</code> if needed</li>
+<li>Additional TLS configuration</li>
+</ul>
+</div>
 
 <h2>Path-based Routing</h2>
 <span class="yaml-label">YAML</span>
@@ -1456,6 +1906,30 @@ kubectl uncordon &lt;node&gt;                        # re-enable scheduling
 <!-- ═══════════════════════════════════════════ -->
 <h1 id="pdb">28. PodDisruptionBudget (PDB)</h1>
 <p>Limits voluntary disruptions. <code>drain</code> respects PDBs.</p>
+
+<h3>⚡ Imperative → YAML Workflow</h3>
+<div class="imp-block">
+<strong>No direct imperative command for PDB.</strong> Use heredoc or generate from docs:
+<pre><code># Fastest way: inline YAML
+cat &lt;&lt;EOF | k apply -f -
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: myapp-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels: { app: myapp }
+EOF
+
+# Quick reference
+k explain pdb.spec
+
+# Verify
+k get pdb
+k describe pdb myapp-pdb</code></pre>
+<strong>Choose one:</strong> <code>minAvailable</code> (minimum pods that must stay up) OR <code>maxUnavailable</code> (max pods that can be down). Cannot use both.
+</div>
 
 <span class="yaml-label">YAML</span>
 <pre><code>apiVersion: policy/v1
