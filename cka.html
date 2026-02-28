@@ -57,9 +57,82 @@
       background: var(--surface);
       border-right: 1px solid var(--border);
       overflow-y: auto;
+      overflow-x: hidden;
       padding: 1rem 0;
       z-index: 100;
+      transition: width 0.25s ease, min-width 0.25s ease, padding 0.25s ease, opacity 0.2s ease, border 0.25s ease;
     }
+
+    body.cka-nav-hidden nav {
+      width: 0 !important;
+      min-width: 0 !important;
+      padding: 0 !important;
+      opacity: 0;
+      pointer-events: none;
+      border-right: none;
+    }
+
+    /* ── Nav header row (title + hide button) ── */
+    .cka-nav-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0.8rem 0 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .cka-nav-header h2 {
+      padding: 0;
+      margin: 0;
+    }
+
+    #cka-nav-toggle {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    #cka-nav-toggle:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* ── Floating "Show Nav" button (visible when nav is hidden) ── */
+    #cka-nav-show {
+      display: none;
+      position: fixed;
+      top: 0.75rem;
+      left: 0.75rem;
+      z-index: 9998;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      transition: background 0.15s;
+    }
+
+    #cka-nav-show:hover { background: #1565c0; }
+
+    body.cka-nav-hidden #cka-nav-show { display: inline-flex; align-items: center; gap: 0.35rem; }
 
     nav h2 {
       font-size: .85rem;
@@ -93,6 +166,11 @@
       flex: 1;
       max-width: var(--content-max);
       padding: 2rem 2.5rem 4rem;
+      transition: margin-left 0.25s ease;
+    }
+
+    body.cka-nav-hidden main {
+      margin-left: 0;
     }
 
     h1 {
@@ -376,7 +454,10 @@
 
   <!-- ═══════════ SIDEBAR NAV ═══════════ -->
   <nav>
-    <h2>CKA Cheat Sheet</h2>
+    <div class="cka-nav-header">
+      <h2>CKA Cheat Sheet</h2>
+      <button id="cka-nav-toggle" title="Collapse sidebar">&#8249;</button>
+    </div>
     <a href="#setup">1. Exam Setup & Aliases</a>
     <a href="#imperative">2. Imperative Commands</a>
     <a href="#kubectl-ref">3. kubectl Reference</a>
@@ -414,6 +495,9 @@
     <a href="#practice">35. Practice Scenarios</a>
     <a href="#exam-tips">36. Exam Tips</a>
   </nav>
+
+  <!-- ═══════════ SHOW NAV BUTTON (visible when sidebar is hidden) ═══════════ -->
+  <button id="cka-nav-show" title="Show navigation">&#9776; Nav</button>
 
   <!-- ═══════════ MAIN CONTENT ═══════════ -->
   <main>
@@ -2613,6 +2697,25 @@ k api-versions           # all API versions</code></pre>
 
       sections.forEach(s => observer.observe(s.el));
     });
+  </script>
+
+  <!-- ── CKA Nav Toggle ── -->
+  <script>
+    (function () {
+      var toggleBtn = document.getElementById('cka-nav-toggle');
+      var showBtn   = document.getElementById('cka-nav-show');
+
+      function hideNav() {
+        document.body.classList.add('cka-nav-hidden');
+      }
+
+      function showNav() {
+        document.body.classList.remove('cka-nav-hidden');
+      }
+
+      if (toggleBtn) toggleBtn.addEventListener('click', hideNav);
+      if (showBtn)   showBtn.addEventListener('click', showNav);
+    })();
   </script>
 
 </body>
