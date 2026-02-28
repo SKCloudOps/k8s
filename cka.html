@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CKA Exam — Comprehensive Cheat Sheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f6f8fa;
+      --surface2: #eaeef2;
+      --text: #1f2328;
+      --text-muted: #656d76;
+      --accent: #0d47a1;
+      --accent2: #1b5e20;
+      --border: #d0d7de;
+      --code-bg: #f0f0f0;
+      --nav-width: 260px;
+      --content-max: 860px;
+      --warn: #c62828;
+      --tip: #2e7d32;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-size: 15px; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.7;
+      display: flex; min-height: 100vh;
+    }
+
+    /* ── Sidebar Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; bottom: 0;
+      width: var(--nav-width); background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto; padding: 1rem 0; z-index: 100;
+    }
+    nav h2 {
+      font-size: .85rem; font-weight: 700; color: var(--accent);
+      padding: 0 1.2rem; margin: 0 0 .5rem; letter-spacing: .5px; text-transform: uppercase;
+    }
+    nav a {
+      display: block; padding: .35rem 1.2rem; font-size: .82rem;
+      color: var(--text-muted); text-decoration: none; transition: .15s;
+    }
+    nav a:hover, nav a.active { color: var(--accent); background: var(--surface2); font-weight: 500; }
+
+    /* ── Main Content ── */
+    main {
+      margin-left: var(--nav-width); flex: 1;
+      max-width: var(--content-max); padding: 2rem 2.5rem 4rem;
+    }
+
+    h1 {
+      font-size: 1.9rem; font-weight: 700; color: var(--accent);
+      border-bottom: 3px solid var(--accent); padding-bottom: .4rem; margin-top: 2.5rem;
+    }
+    h2 { font-size: 1.3rem; color: var(--accent); margin-top: 1.8rem; }
+    h3 { font-size: 1.05rem; color: var(--accent2); margin-top: 1.3rem; }
+
+    pre {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: .8rem 1rem; overflow-x: auto;
+      font-family: 'JetBrains Mono', 'Consolas', monospace; font-size: .78rem;
+      line-height: 1.55; color: #1a1a2e; margin: .5rem 0 1rem;
+    }
+    code {
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      background: var(--code-bg); padding: .15em .35em; border-radius: 3px; font-size: .85em;
+    }
+    pre code { background: none; padding: 0; font-size: inherit; }
+
+    .tip, .exam-note {
+      border-left: 4px solid; padding: .5rem 1rem; margin: .8rem 0;
+      border-radius: 0 6px 6px 0; font-size: .9rem;
+    }
+    .tip { border-color: var(--tip); background: #e8f5e9; }
+    .exam-note { border-color: var(--warn); background: #ffebee; }
+    .tip strong { color: var(--tip); }
+    .exam-note strong { color: var(--warn); }
+
+    ul { padding-left: 1.5rem; }
+    li { margin-bottom: .25rem; }
+
+    .yaml-label {
+      display: inline-block; background: var(--accent); color: #fff;
+      font-size: .7rem; padding: .1rem .5rem; border-radius: 3px;
+      margin-bottom: .25rem; font-weight: 600; letter-spacing: .5px;
+    }
+
+    hr { border: none; border-top: 2px solid var(--border); margin: 2.5rem 0; }
+
+    /* ── Print Styles ── */
+    @media print {
+      nav { display: none; }
+      main { margin-left: 0; max-width: 100%; padding: .5cm; }
+      h1 { page-break-before: always; }
+      h1:first-of-type { page-break-before: avoid; }
+      pre { font-size: 7pt; break-inside: avoid; }
+      body { font-size: 9pt; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      nav { display: none; }
+      main { margin-left: 0; padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════ SIDEBAR NAV ═══════════ -->
+<nav>
+  <h2>CKA Cheat Sheet</h2>
+  <a href="#setup">1. Exam Setup & Aliases</a>
+  <a href="#imperative">2. Imperative Commands</a>
+  <a href="#kubectl-ref">3. kubectl Reference</a>
+  <a href="#core">4. Core Concepts</a>
+  <a href="#pod-yaml">5. Pod YAML Skeleton</a>
+  <a href="#deploy-svc">6. Deployment + Service</a>
+  <a href="#scheduling">7. Scheduling</a>
+  <a href="#resources">8. Resources & Quotas</a>
+  <a href="#ds-job">9. DaemonSet, Job, CronJob</a>
+  <a href="#static-pods">10. Static Pods</a>
+  <a href="#cm-secret">11. ConfigMaps & Secrets</a>
+  <a href="#multi-container">12. Multi-Container & Init</a>
+  <a href="#probes">13. Probes</a>
+  <a href="#rollouts">14. Rolling Updates</a>
+  <a href="#hpa">15. HPA</a>
+  <a href="#rbac">16. RBAC</a>
+  <a href="#tls-csr">17. TLS & Certificates</a>
+  <a href="#kubeconfig">18. kubeconfig</a>
+  <a href="#security-ctx">19. Security Contexts</a>
+  <a href="#netpol">20. NetworkPolicy</a>
+  <a href="#storage">21. Storage</a>
+  <a href="#networking">22. Services & Networking</a>
+  <a href="#dns">23. DNS & CoreDNS</a>
+  <a href="#ingress">24. Ingress</a>
+  <a href="#etcd">25. ETCD Backup & Restore</a>
+  <a href="#upgrade">26. Cluster Upgrade</a>
+  <a href="#node-maint">27. Node Maintenance</a>
+  <a href="#pdb">28. PDB</a>
+  <a href="#troubleshoot">29. Troubleshooting</a>
+  <a href="#jsonpath">30. JSONPath & Output</a>
+  <a href="#helm">31. Helm</a>
+  <a href="#kustomize">32. Kustomize</a>
+  <a href="#kubeadm">33. kubeadm Install</a>
+  <a href="#crd">34. CRDs & Operators</a>
+  <a href="#practice">35. Practice Scenarios</a>
+  <a href="#exam-tips">36. Exam Tips</a>
+</nav>
+
+<!-- ═══════════ MAIN CONTENT ═══════════ -->
+<main>
+
+<!-- TITLE -->
+<div style="text-align:center; padding: 2rem 0 1rem;">
+  <h1 style="border:none; font-size:2.5rem; margin:0;">CKA EXAM</h1>
+  <p style="font-size:1.4rem; color:var(--accent2); font-weight:600; margin:.3rem 0;">Comprehensive Cheat Sheet</p>
+  <p style="color:var(--text-muted);">Certified Kubernetes Administrator &mdash; All Imperative Commands | YAML Configs | Troubleshooting</p>
+  <div class="exam-note" style="display:inline-block; text-align:left; margin-top:1rem;">
+    <strong>Exam:</strong> 2 hours | 66% to pass | One tab: kubernetes.io/docs<br>
+    <strong>Domains:</strong> Architecture 25% | Workloads 15% | Networking 20% | Storage 10% | Troubleshooting 30%
+  </div>
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="setup">1. Exam Environment Setup &amp; Shell Aliases</h1>
+<p>Run these commands <strong>FIRST</strong> when the exam starts:</p>
+
+<h3>Shell Aliases (~/.bashrc)</h3>
+<pre><code># Essential aliases — set these at the START of the exam
+alias k=kubectl
+alias kn='kubectl config set-context --current --namespace'
+alias kgp='kubectl get pods'
+alias kgs='kubectl get svc'
+alias kgn='kubectl get nodes'
+alias kga='kubectl get all'
+alias kaf='kubectl apply -f'
+alias kdp='kubectl describe pod'
+alias kl='kubectl logs'
+alias ke='kubectl exec -it'
+
+# Enable kubectl autocompletion
+source &lt;(kubectl completion bash)
+complete -o default -F __start_kubectl k
+
+# Set default editor
+export KUBE_EDITOR=vi</code></pre>
+
+<h3>Vim Settings (~/.vimrc)</h3>
+<pre><code>set tabstop=2
+set shiftwidth=2
+set expandtab
+set number
+set autoindent</code></pre>
+
+<div class="exam-note"><strong>EXAM:</strong> Switch context at the start of EVERY question: <code>kubectl config use-context &lt;context-name&gt;</code></div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="imperative">2. Imperative Commands &mdash; Speed Reference</h1>
+<p>Use imperative commands with <code>--dry-run=client -o yaml</code> to generate YAML fast, then edit as needed.</p>
+
+<h3>Pod</h3>
+<pre><code>k run &lt;name&gt; --image=&lt;img&gt;
+k run &lt;name&gt; --image=&lt;img&gt; --restart=Never
+k run &lt;name&gt; --image=&lt;img&gt; --dry-run=client -o yaml &gt; pod.yaml
+k run &lt;name&gt; --image=&lt;img&gt; --port=80
+k run &lt;name&gt; --image=&lt;img&gt; --labels="app=web,env=prod"
+k run &lt;name&gt; --image=&lt;img&gt; --command -- sleep 3600
+k run &lt;name&gt; --image=&lt;img&gt; -- &lt;arg1&gt; &lt;arg2&gt;</code></pre>
+
+<h3>Deployment</h3>
+<pre><code>k create deployment &lt;name&gt; --image=&lt;img&gt; [--replicas=N]
+k create deployment &lt;name&gt; --image=&lt;img&gt; --dry-run=client -o yaml &gt; deploy.yaml
+k scale deployment &lt;name&gt; --replicas=N
+k set image deployment/&lt;name&gt; &lt;container&gt;=&lt;img&gt;
+k rollout status deployment/&lt;name&gt;
+k rollout history deployment/&lt;name&gt;
+k rollout undo deployment/&lt;name&gt;
+k rollout undo deployment/&lt;name&gt; --to-revision=2</code></pre>
+
+<h3>Service</h3>
+<pre><code>k expose deployment &lt;name&gt; --port=&lt;port&gt; [--name=&lt;svc-name&gt;]
+k expose deployment &lt;name&gt; --port=80 --type=NodePort
+k expose pod &lt;name&gt; --port=80
+k create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml
+k expose deployment &lt;name&gt; --port=80 --type=ClusterIP --dry-run=client -o yaml</code></pre>
+
+<h3>Namespace</h3>
+<pre><code>k create namespace &lt;name&gt;
+k create ns &lt;name&gt;</code></pre>
+
+<h3>ConfigMap &amp; Secret</h3>
+<pre><code>k create configmap &lt;name&gt; --from-literal=KEY=val [--from-literal=KEY2=val2]
+k create configmap &lt;name&gt; --from-file=path/to/file
+k create configmap &lt;name&gt; --from-file=key=path
+k create secret generic &lt;name&gt; --from-literal=KEY=val
+k create secret generic &lt;name&gt; --from-file=key=path
+k create secret tls &lt;name&gt; --cert=tls.crt --key=tls.key
+k create secret docker-registry regcred \
+  --docker-server=&lt;url&gt; --docker-username=&lt;user&gt; \
+  --docker-password=&lt;pass&gt; --docker-email=&lt;email&gt;</code></pre>
+
+<h3>ServiceAccount</h3>
+<pre><code>k create serviceaccount &lt;name&gt;
+k create sa &lt;name&gt;
+k create token &lt;sa-name&gt;    # short-lived token (K8s 1.24+)</code></pre>
+
+<h3>Job &amp; CronJob</h3>
+<pre><code>k create job &lt;name&gt; --image=busybox -- echo hello
+k create job &lt;name&gt; --image=busybox --dry-run=client -o yaml -- echo hello
+k create cronjob &lt;name&gt; --image=busybox --schedule="0 * * * *" -- echo hi
+k create cronjob &lt;name&gt; --image=busybox --schedule="*/5 * * * *" --dry-run=client -o yaml -- echo hi</code></pre>
+
+<h3>RBAC</h3>
+<pre><code>k create role &lt;name&gt; --verb=get,list,create,delete --resource=pods -n &lt;ns&gt;
+k create rolebinding &lt;name&gt; --role=&lt;role&gt; --user=&lt;user&gt; -n &lt;ns&gt;
+k create rolebinding &lt;name&gt; --role=&lt;role&gt; --serviceaccount=&lt;ns&gt;:&lt;sa&gt; -n &lt;ns&gt;
+k create clusterrole &lt;name&gt; --verb=get,list --resource=nodes
+k create clusterrolebinding &lt;name&gt; --clusterrole=&lt;name&gt; --user=&lt;user&gt;
+k create clusterrolebinding &lt;name&gt; --clusterrole=&lt;name&gt; --serviceaccount=&lt;ns&gt;:&lt;sa&gt;</code></pre>
+
+<h3>Ingress</h3>
+<pre><code>k create ingress &lt;name&gt; --rule="host/path=svc:80" --dry-run=client -o yaml</code></pre>
+
+<h3>Generate → Edit → Apply Pattern</h3>
+<pre><code>k run mypod --image=nginx --dry-run=client -o yaml &gt; mypod.yaml
+vi mypod.yaml   # add labels, resources, volumes, etc.
+k apply -f mypod.yaml
+
+# Edit running resource
+k edit deployment nginx
+
+# Force replace (immutable fields)
+k replace --force -f pod.yaml
+
+# Delete stuck pod
+k delete pod x --force --grace-period=0</code></pre>
+
+<div class="tip"><strong>TIP:</strong> Always add <code>-n &lt;namespace&gt;</code> or <code>--namespace=&lt;ns&gt;</code> for namespace-scoped resources.</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="kubectl-ref">3. kubectl Quick Reference</h1>
+
+<h3>Inspect &amp; Debug</h3>
+<pre><code>k get pods -A -o wide
+k get all -n &lt;ns&gt;
+k describe pod &lt;name&gt;
+k logs &lt;pod&gt; [-c &lt;container&gt;] [--previous] [-f]
+k exec -it &lt;pod&gt; -- sh
+k exec -it &lt;pod&gt; -c &lt;container&gt; -- sh
+k get events --sort-by='.lastTimestamp'
+k get events -A --sort-by='.lastTimestamp'
+k top nodes
+k top pods --sort-by=memory
+k top pods --sort-by=cpu</code></pre>
+
+<h3>Docs in Terminal (Exam Allowed)</h3>
+<pre><code>k explain pod
+k explain pod.spec.containers
+k explain pod.spec.containers.resources
+k explain deployment.spec --recursive
+k api-resources          # list all resource types
+k api-resources --namespaced=true
+k api-resources --namespaced=false
+k api-versions           # list all API versions</code></pre>
+
+<h3>Edit / Patch / Delete</h3>
+<pre><code>k edit deploy &lt;name&gt;
+k patch svc s1 -p '{"spec":{"type":"NodePort"}}'
+k replace --force -f pod.yaml
+k delete pod x --force --grace-period=0</code></pre>
+
+<h3>Label / Annotate</h3>
+<pre><code>k label pod &lt;name&gt; env=prod
+k label pod &lt;name&gt; env=staging --overwrite
+k label pod &lt;name&gt; env-                      # remove label
+k label node &lt;name&gt; disk=ssd
+k annotate pod &lt;name&gt; key=value
+k get pods --selector app=web
+k get pods --selector app=web,env=prod       # AND logic
+k get pods --show-labels
+k get pods -L app,env                        # show as columns
+k get pods --selector env=production --no-headers | wc -l</code></pre>
+
+<h3>Context &amp; Namespace</h3>
+<pre><code>k config use-context &lt;ctx&gt;
+k config current-context
+k config get-contexts
+k config set-context --current --namespace=dev
+k config view</code></pre>
+
+<h3>Node Maintenance</h3>
+<pre><code>k cordon &lt;node&gt;
+k drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data
+k drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data --force
+k uncordon &lt;node&gt;</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="core">4. Core Concepts &mdash; Cluster Architecture</h1>
+
+<h2>Control Plane Components</h2>
+<p><strong>kube-apiserver:</strong> Front-end REST API. Only component that talks to etcd. Authenticates, authorizes, validates requests.</p>
+<p><strong>etcd:</strong> Distributed key-value store. Uses RAFT consensus. Single source of truth. Backup with etcdctl snapshot.</p>
+<p><strong>kube-scheduler:</strong> Watches unscheduled pods. Filtering (predicates) → Scoring (priorities) → Binding.</p>
+<p><strong>kube-controller-manager:</strong> Runs controllers (Node, Replication, Endpoints). Reconciliation loop: current state → desired state.</p>
+<p><strong>cloud-controller-manager:</strong> Cloud-specific logic (nodes, LBs, routes).</p>
+
+<h2>Worker Node Components</h2>
+<p><strong>kubelet:</strong> Agent on each node. Registers node, ensures containers run. Reads PodSpecs from API server or static files.</p>
+<p><strong>kube-proxy:</strong> Network proxy. Programs iptables/IPVS for Service routing.</p>
+<p><strong>Container Runtime:</strong> containerd or CRI-O (Docker removed in K8s 1.24+). Uses CRI standard.</p>
+
+<h3>crictl Commands (CRI debugging)</h3>
+<pre><code>crictl ps -a                        # list all containers
+crictl images                       # list images
+crictl pods                         # list pods
+crictl logs &lt;container-id&gt;          # view logs
+crictl inspect &lt;container-id&gt;       # inspect container</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="pod-yaml">5. Pod YAML Skeleton (Complete)</h1>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+  namespace: default
+  labels:
+    app: myapp
+spec:
+  serviceAccountName: my-sa
+  nodeSelector:
+    disk: ssd
+  tolerations:
+  - key: "node-role"
+    operator: "Exists"
+    effect: "NoSchedule"
+  initContainers:
+  - name: init
+    image: busybox
+    command: ['sh','-c','sleep 5']
+  containers:
+  - name: app
+    image: nginx:1.21
+    ports:
+    - containerPort: 80
+    command: ["sleep"]          # overrides ENTRYPOINT
+    args: ["3600"]              # overrides CMD
+    env:
+    - name: KEY
+      value: val
+    - name: FROM_CM
+      valueFrom:
+        configMapKeyRef:
+          name: my-cm
+          key: APP_KEY
+    - name: FROM_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: my-secret
+          key: DB_PASS
+    envFrom:
+    - configMapRef:
+        name: my-cm
+    - secretRef:
+        name: my-secret
+    resources:
+      requests: { cpu: 100m, memory: 128Mi }
+      limits:   { cpu: 500m, memory: 256Mi }
+    livenessProbe:
+      httpGet: { path: /healthz, port: 80 }
+      initialDelaySeconds: 10
+      periodSeconds: 20
+    readinessProbe:
+      httpGet: { path: /ready, port: 80 }
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    volumeMounts:
+    - name: data
+      mountPath: /data
+    - name: config-vol
+      mountPath: /etc/config
+    securityContext:
+      runAsUser: 1000
+      runAsNonRoot: true
+      readOnlyRootFilesystem: true
+      capabilities:
+        add: ["NET_ADMIN"]
+        drop: ["ALL"]
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: my-pvc
+  - name: config-vol
+    configMap:
+      name: my-cm</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="deploy-svc">6. Deployment + Service YAML</h1>
+
+<h2>Deployment</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: { maxSurge: 1, maxUnavailable: 0 }
+  selector:
+    matchLabels: { app: webapp }
+  template:
+    metadata:
+      labels: { app: webapp }
+    spec:
+      containers:
+      - name: webapp
+        image: nginx:1.21
+        ports: [{ containerPort: 80 }]
+        resources:
+          requests: { cpu: 100m, memory: 128Mi }
+          limits:   { cpu: 500m, memory: 256Mi }</code></pre>
+
+<h2>Service (NodePort)</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-svc
+spec:
+  type: NodePort
+  selector: { app: webapp }
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30080</code></pre>
+
+<h2>Service (ClusterIP)</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: v1
+kind: Service
+metadata:
+  name: back-end
+spec:
+  type: ClusterIP
+  ports:
+  - targetPort: 80
+    port: 80
+  selector:
+    app: myapp</code></pre>
+
+<p><strong>Service Types:</strong> ClusterIP (internal, default) | NodePort (node port 30000-32767) | LoadBalancer (cloud LB)</p>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="scheduling">7. Scheduling &mdash; Taints, Tolerations, Affinity, nodeSelector</h1>
+
+<h2>Taints &amp; Tolerations</h2>
+<p>Taints on <strong>NODES</strong> repel pods. Tolerations on <strong>PODS</strong> allow them onto tainted nodes.</p>
+<p><strong>Effects:</strong> NoSchedule | PreferNoSchedule | NoExecute (evicts existing pods)</p>
+<pre><code># Apply a taint
+k taint nodes node01 app=blue:NoSchedule
+
+# Remove a taint (trailing minus)
+k taint nodes node01 app=blue:NoSchedule-
+
+# Remove control-plane taint (single-node clusters)
+k taint nodes controlplane node-role.kubernetes.io/control-plane:NoSchedule-
+
+# Check taints
+k describe node node01 | grep -i taint</code></pre>
+
+<h3>Toleration in Pod YAML</h3>
+<span class="yaml-label">YAML</span>
+<pre><code>tolerations:
+- key: "app"
+  operator: "Equal"       # or "Exists" (matches any value)
+  value: "blue"
+  effect: "NoSchedule"
+# NoExecute toleration with grace period:
+- key: "node.kubernetes.io/not-ready"
+  operator: "Exists"
+  effect: "NoExecute"
+  tolerationSeconds: 300</code></pre>
+
+<h2>nodeSelector (Simplest)</h2>
+<pre><code># Label a node
+k label nodes node01 size=Large
+k label nodes node01 size-     # remove label</code></pre>
+<span class="yaml-label">YAML</span>
+<pre><code>spec:
+  nodeSelector:
+    size: Large</code></pre>
+
+<h2>Node Affinity (Advanced)</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:   # HARD rule
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: size
+            operator: In          # In, NotIn, Exists, DoesNotExist, Gt, Lt
+            values: [Large, Medium]
+      preferredDuringSchedulingIgnoredDuringExecution:  # SOFT rule
+      - weight: 50
+        preference:
+          matchExpressions:
+          - key: disktype
+            operator: In
+            values: [ssd]</code></pre>
+
+<h2>Manual Scheduling (nodeName)</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>spec:
+  nodeName: node02        # bypasses scheduler entirely</code></pre>
+<div class="exam-note"><strong>EXAM:</strong> nodeName can only be set at creation time. To move a pod: export YAML → edit → delete → recreate.</div>
+
+<h2>Dedicated Nodes Pattern (Taint + Affinity)</h2>
+<pre><code># Step 1: Taint the node
+k taint nodes node01 dedicated=team-a:NoSchedule
+
+# Step 2: Label the node
+k label nodes node01 dedicated=team-a
+
+# Step 3: Pod spec with BOTH toleration AND node affinity</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="resources">8. Resource Limits, LimitRange, ResourceQuota</h1>
+
+<h2>Resource Requests &amp; Limits</h2>
+<p><strong>Requests</strong> = guaranteed allocation (scheduler uses). <strong>Limits</strong> = max at runtime.</p>
+<p>CPU &gt; limit → <strong>throttled</strong> (never killed). Memory &gt; limit → <strong>OOMKilled</strong> (exit 137).</p>
+<p>CPU: 1 = 1 vCPU, 500m = 0.5 CPU. Memory: Mi (mebibytes), Gi (gibibytes).</p>
+
+<span class="yaml-label">YAML</span>
+<pre><code>resources:
+  requests:
+    memory: "64Mi"
+    cpu: "250m"
+  limits:
+    memory: "128Mi"
+    cpu: "500m"</code></pre>
+
+<p><strong>QoS Classes:</strong> Guaranteed (requests==limits) &gt; Burstable (requests&lt;limits) &gt; BestEffort (no requests/limits)</p>
+<pre><code>k get pod x -o jsonpath='{.status.qosClass}'
+k top nodes
+k top pods --sort-by=memory
+k describe node node01 | grep -A 10 "Allocated resources"</code></pre>
+
+<h2>LimitRange (per-container defaults)</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-cpu-limits
+  namespace: dev
+spec:
+  limits:
+  - type: Container
+    default:          { cpu: "500m", memory: "128Mi" }
+    defaultRequest:   { cpu: "250m", memory: "64Mi" }
+    max:              { cpu: "2", memory: "1Gi" }
+    min:              { cpu: "100m", memory: "16Mi" }</code></pre>
+
+<h2>ResourceQuota (namespace-total)</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-quota
+  namespace: dev
+spec:
+  hard:
+    pods: "10"
+    requests.cpu: "4"
+    requests.memory: 4Gi
+    limits.cpu: "8"
+    limits.memory: 8Gi
+    services: "5"
+    persistentvolumeclaims: "4"</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="ds-job">9. DaemonSet, Job, CronJob</h1>
+
+<h2>DaemonSet</h2>
+<p>One pod per node (all or subset via nodeSelector). Use for: log collectors, node monitoring, CNI/CSI plugins.</p>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: monitoring-daemon
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels: { app: monitoring-daemon }
+  template:
+    metadata:
+      labels: { app: monitoring-daemon }
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: agent
+        image: prom/node-exporter
+        resources:
+          limits: { memory: "200Mi", cpu: "100m" }</code></pre>
+
+<pre><code>k get ds -A
+k describe ds monitoring-daemon -n kube-system
+k rollout undo ds monitoring-daemon -n kube-system</code></pre>
+
+<h2>Job</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: batch/v1
+kind: Job
+metadata: { name: pi-job }
+spec:
+  completions: 3
+  parallelism: 2
+  backoffLimit: 4
+  template:
+    spec:
+      containers:
+      - name: pi
+        image: perl
+        command: ["perl","-Mbignum=bpi","-wle","print bpi(2000)"]
+      restartPolicy: Never</code></pre>
+
+<h2>CronJob</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: batch/v1
+kind: CronJob
+metadata: { name: backup }
+spec:
+  schedule: "0 2 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup
+            image: busybox
+            command: ["/bin/sh","-c","date"]
+          restartPolicy: OnFailure</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="static-pods">10. Static Pods</h1>
+<p>Managed by kubelet directly from <code>/etc/kubernetes/manifests/</code>. Not through API server. Control-plane components are static pods via kubeadm.</p>
+<p>To delete: remove the manifest file. <code>kubectl delete</code> will NOT work permanently.</p>
+<p>Naming: node name appended (e.g., <code>kube-apiserver-controlplane</code>).</p>
+
+<pre><code># Find static pod path
+ps aux | grep kubelet | grep config
+cat /var/lib/kubelet/config.yaml | grep staticPodPath
+# Default: /etc/kubernetes/manifests/
+
+# Create a static pod
+cat &lt;&lt;EOF &gt; /etc/kubernetes/manifests/static-nginx.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: static-nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    ports:
+    - containerPort: 80
+EOF
+
+# Delete a static pod
+rm /etc/kubernetes/manifests/static-nginx.yaml
+
+# Verify it's static (ownerReferences.kind == Node)
+k get pod kube-apiserver-controlplane -n kube-system \
+  -o jsonpath='{.metadata.ownerReferences[*].kind}'</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="cm-secret">11. ConfigMaps &amp; Secrets</h1>
+
+<h2>ConfigMap</h2>
+<pre><code>k create configmap app-config --from-literal=APP_COLOR=blue --from-literal=APP_MODE=prod
+k create configmap app-config --from-file=app.properties
+k get cm
+k describe cm app-config</code></pre>
+
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  APP_COLOR: blue
+  APP_MODE: prod</code></pre>
+
+<h3>Inject into Pod</h3>
+<span class="yaml-label">YAML</span>
+<pre><code># All keys as env vars
+envFrom:
+- configMapRef:
+    name: app-config
+
+# Single key
+env:
+- name: APP_COLOR
+  valueFrom:
+    configMapKeyRef:
+      name: app-config
+      key: APP_COLOR
+
+# As volume (files)
+volumes:
+- name: config-vol
+  configMap:
+    name: app-config</code></pre>
+
+<h2>Secret</h2>
+<pre><code>k create secret generic app-secret --from-literal=DB_Host=mysql --from-literal=DB_Password=pass123
+k create secret tls webapp-tls --cert=tls.crt --key=tls.key
+k create secret docker-registry regcred \
+  --docker-server=private-registry.io \
+  --docker-username=user --docker-password=pass --docker-email=user@org.com
+k get secret app-secret -o yaml
+echo -n "bX1zcWw=" | base64 --decode     # decode secret value
+echo -n "myvalue" | base64               # encode for YAML</code></pre>
+
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret
+data:
+  DB_Host: bX1zcWw=          # base64 encoded
+  DB_Password: cGFzd3Jk
+
+# Inject same as ConfigMap:
+# envFrom: - secretRef: name: app-secret
+# OR env: - valueFrom: secretKeyRef: name/key</code></pre>
+
+<h3>Pull from Private Registry</h3>
+<span class="yaml-label">YAML</span>
+<pre><code>spec:
+  containers:
+  - name: app
+    image: private-registry.io/apps/internal-app
+  imagePullSecrets:
+  - name: regcred</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="multi-container">12. Multi-Container Pods &amp; Init Containers</h1>
+
+<h2>Patterns</h2>
+<p><strong>Sidecar:</strong> auxiliary (log shipper, proxy). <strong>Ambassador:</strong> proxy to external. <strong>Adapter:</strong> transforms output.</p>
+
+<h3>Sidecar Example</h3>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: app-with-sidecar
+spec:
+  containers:
+  - name: app
+    image: busybox
+    command: ['sh', '-c', 'while true; do echo "$(date) INFO running" &gt;&gt; /var/log/app.log; sleep 5; done']
+    volumeMounts:
+    - name: log-volume
+      mountPath: /var/log
+  - name: sidecar
+    image: busybox
+    command: ['sh', '-c', 'tail -f /var/log/app.log']
+    volumeMounts:
+    - name: log-volume
+      mountPath: /var/log
+  volumes:
+  - name: log-volume
+    emptyDir: {}</code></pre>
+
+<h2>Init Containers</h2>
+<p>Run to completion <strong>BEFORE</strong> main containers. Sequential. Failure → pod restarts.</p>
+<span class="yaml-label">YAML</span>
+<pre><code>spec:
+  initContainers:
+  - name: init-myservice
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup myservice; do echo waiting; sleep 2; done']
+  - name: init-mydb
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup mydb; do echo waiting; sleep 2; done']
+  containers:
+  - name: myapp
+    image: busybox:1.28
+    command: ['sh', '-c', 'echo running &amp;&amp; sleep 3600']</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="probes">13. Probes &mdash; Liveness &amp; Readiness</h1>
+<p><strong>livenessProbe:</strong> fails → container restarted. <strong>readinessProbe:</strong> fails → removed from Service endpoints.</p>
+<p><strong>Types:</strong> httpGet, exec, tcpSocket</p>
+
+<span class="yaml-label">YAML</span>
+<pre><code>containers:
+- name: app
+  image: myapp:1.0
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: 8080
+    initialDelaySeconds: 15
+    periodSeconds: 20
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+# Exec probe:
+  livenessProbe:
+    exec:
+      command: ["cat", "/tmp/healthy"]
+    initialDelaySeconds: 5
+
+# TCP probe:
+  readinessProbe:
+    tcpSocket:
+      port: 3306
+    initialDelaySeconds: 10</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="rollouts">14. Rolling Updates &amp; Rollbacks</h1>
+<p><strong>Strategies:</strong> RollingUpdate (default, gradual) | Recreate (kill all, then create new)</p>
+
+<pre><code>k rollout status deployment/myapp
+k rollout history deployment/myapp
+k set image deployment/myapp nginx=nginx:1.25
+k rollout undo deployment/myapp
+k rollout undo deployment/myapp --to-revision=2
+k rollout pause deployment/myapp
+k rollout resume deployment/myapp</code></pre>
+
+<span class="yaml-label">YAML</span>
+<pre><code>spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1           # max extra pods during rollout
+      maxUnavailable: 0     # all existing pods stay until new ones ready</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="hpa">15. HPA &mdash; Horizontal Pod Autoscaler</h1>
+<p>Scales Deployment replicas based on CPU/memory. Requires Metrics Server. Pods <strong>MUST</strong> have <code>resources.requests</code>.</p>
+
+<pre><code>k autoscale deployment myapp --min=2 --max=10 --cpu-percent=80
+k get hpa
+k describe hpa myapp</code></pre>
+
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: myapp-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: myapp
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="rbac">16. RBAC &mdash; Roles, Bindings, ServiceAccounts</h1>
+
+<h2>Imperative (Fastest in Exam)</h2>
+<pre><code>k create role dev-role --verb=get,list,create,delete --resource=pods -n dev
+k create rolebinding dev-bind --role=dev-role --user=jane -n dev
+
+k create clusterrole node-viewer --verb=get,list --resource=nodes
+k create clusterrolebinding node-bind --clusterrole=node-viewer --user=jane
+
+# Check permissions
+k auth can-i create pods --as=jane -n dev
+k auth can-i '*' '*' --as=system:serviceaccount:default:my-sa
+k auth can-i list pods -n dev --as system:serviceaccount:dev:app-sa</code></pre>
+
+<h2>Role YAML</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: developer
+  namespace: dev
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "create", "delete"]
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["create"]</code></pre>
+
+<h2>RoleBinding YAML</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dev-binding
+  namespace: dev
+subjects:
+- kind: User
+  name: jane
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: developer
+  apiGroup: rbac.authorization.k8s.io</code></pre>
+
+<h2>ClusterRole + ClusterRoleBinding</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-admin-role
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "list", "delete", "create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cluster-admin-binding
+subjects:
+- kind: User
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin-role
+  apiGroup: rbac.authorization.k8s.io</code></pre>
+
+<h2>ServiceAccount</h2>
+<pre><code>k create sa dashboard-sa
+k create token dashboard-sa    # short-lived token (1.24+)</code></pre>
+<span class="yaml-label">YAML</span>
+<pre><code>spec:
+  serviceAccountName: dashboard-sa
+  automountServiceAccountToken: false   # opt-out</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="tls-csr">17. TLS &amp; Certificates &mdash; CSR Workflow</h1>
+
+<h2>Key Certificate Files (kubeadm)</h2>
+<p>All under <code>/etc/kubernetes/pki/</code>:</p>
+<ul>
+  <li><code>ca.crt / ca.key</code> — Cluster CA (root of trust)</li>
+  <li><code>apiserver.crt / apiserver.key</code> — API server TLS</li>
+  <li><code>apiserver-kubelet-client.crt</code> — API server → kubelet client cert</li>
+  <li><code>apiserver-etcd-client.crt</code> — API server → etcd client cert</li>
+  <li><code>etcd/ca.crt, etcd/server.crt</code> — etcd own CA and server cert</li>
+</ul>
+
+<h2>Certificate Inspection</h2>
+<pre><code>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -text -noout
+# Check: Not Before / Not After (expiry), Subject, Issuer, SAN
+openssl x509 -in /etc/kubernetes/pki/apiserver.crt -text -noout | grep -A2 Validity</code></pre>
+
+<h2>Create User Certificate (CSR Workflow)</h2>
+<pre><code># 1. Generate key and CSR
+openssl genrsa -out jane.key 2048
+openssl req -new -key jane.key -subj "/CN=jane/O=dev" -out jane.csr
+
+# 2. Base64 encode the CSR
+cat jane.csr | base64 | tr -d '\n'</code></pre>
+
+<span class="yaml-label">YAML</span>
+<pre><code># 3. CSR Object
+apiVersion: certificates.k8s.io/v1
+kind: CertificateSigningRequest
+metadata: { name: jane }
+spec:
+  request: &lt;base64-encoded-csr&gt;
+  signerName: kubernetes.io/kube-apiserver-client
+  usages: [client auth]</code></pre>
+
+<pre><code># 4. Approve and extract
+k certificate approve jane
+k get csr jane -o jsonpath='{.status.certificate}' | base64 -d &gt; jane.crt
+
+# 5. Configure kubeconfig
+k config set-credentials jane --client-certificate=jane.crt --client-key=jane.key
+k config set-context jane-ctx --cluster=kubernetes --user=jane
+k config use-context jane-ctx
+
+# Deny a CSR
+k certificate deny bad-user</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="kubeconfig">18. kubeconfig</h1>
+<p>Default: <code>~/.kube/config</code>. Contains: clusters (API server + CA), users (certs/tokens), contexts (cluster + user + ns).</p>
+
+<pre><code>k config view
+k config view --kubeconfig=my-config
+k config get-contexts
+k config current-context
+k config use-context &lt;context&gt;
+k config set-context --current --namespace=dev
+k config set-credentials user --client-certificate=user.crt --client-key=user.key
+k config set-context user-ctx --cluster=kubernetes --user=user</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="security-ctx">19. Security Contexts</h1>
+<p>Pod-level or container-level. Container overrides pod. Capabilities only at container level.</p>
+
+<span class="yaml-label">YAML</span>
+<pre><code>spec:
+  securityContext:           # Pod-level
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+  containers:
+  - name: ubuntu
+    image: ubuntu
+    securityContext:          # Container-level (overrides pod)
+      runAsUser: 1000
+      runAsNonRoot: true
+      readOnlyRootFilesystem: true
+      capabilities:
+        add: ["NET_ADMIN", "SYS_TIME"]
+        drop: ["ALL"]</code></pre>
+
+<pre><code>k exec my-pod -- whoami
+k exec my-pod -- id</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="netpol">20. NetworkPolicy</h1>
+<p>Controls ingress/egress to pods. Requires CNI with policy support (Calico, Cilium). Default: allow all. Once policy selects pod → deny all not explicitly allowed.</p>
+
+<h2>Default Deny All</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: prod
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress</code></pre>
+
+<h2>Allow Specific Ingress</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-api-to-db
+  namespace: prod
+spec:
+  podSelector:
+    matchLabels: { app: db }
+  policyTypes: [Ingress, Egress]
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels: { app: api }
+    - namespaceSelector:
+        matchLabels: { env: prod }
+    ports: [{ protocol: TCP, port: 3306 }]
+  egress:
+  - to:
+    - podSelector:
+        matchLabels: { app: cache }
+    ports: [{ protocol: TCP, port: 6379 }]</code></pre>
+
+<h3>Cross-namespace &amp; IP Block</h3>
+<span class="yaml-label">YAML</span>
+<pre><code># Cross-namespace access
+ingress:
+- from:
+  - namespaceSelector:
+      matchLabels:
+        name: monitoring
+
+# External CIDR access
+ingress:
+- from:
+  - ipBlock:
+      cidr: 203.0.113.0/24
+      except:
+      - 203.0.113.128/25</code></pre>
+
+<pre><code># Test from debug pod
+k run test --rm -it --image=busybox:1.28 --restart=Never -- sh
+nc -zv db 3306
+wget -qO- http://web.default.svc.cluster.local:80</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="storage">21. Storage &mdash; PV, PVC, StorageClass</h1>
+
+<h2>PersistentVolume (PV)</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv1
+spec:
+  capacity: { storage: 1Gi }
+  accessModes: [ReadWriteOnce]        # RWO, ROX, RWX
+  persistentVolumeReclaimPolicy: Retain   # Retain, Delete, Recycle
+  hostPath: { path: /mnt/data }</code></pre>
+
+<h2>PersistentVolumeClaim (PVC)</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc1
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests: { storage: 500Mi }
+  storageClassName: ""     # empty = static binding only</code></pre>
+
+<h2>Using PVC in Pod</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>spec:
+  containers:
+  - name: app
+    image: nginx
+    volumeMounts:
+    - name: data
+      mountPath: /data
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: pvc1</code></pre>
+
+<h2>StorageClass (Dynamic Provisioning)</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata: { name: fast }
+provisioner: kubernetes.io/gce-pd
+parameters: { type: pd-ssd }
+reclaimPolicy: Delete
+allowVolumeExpansion: true</code></pre>
+
+<pre><code>k get pv
+k get pvc
+k get sc
+k describe pv pv1
+k describe pvc pvc1</code></pre>
+
+<p><strong>AccessModes:</strong> RWO (ReadWriteOnce) | ROX (ReadOnlyMany) | RWX (ReadWriteMany)</p>
+<p><strong>Volume Types:</strong> emptyDir (temp), hostPath (node), persistentVolumeClaim (persist), configMap, secret</p>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="networking">22. Services &amp; Networking</h1>
+<p>Every Pod gets unique IP. Pods talk without NAT. Service = stable VIP + load balancing.</p>
+
+<h2>Service Types</h2>
+<p><strong>ClusterIP</strong> (default): internal VIP. <strong>NodePort:</strong> node IP + port (30000-32767). <strong>LoadBalancer:</strong> cloud LB.</p>
+
+<h2>Linux Networking Commands (CKA)</h2>
+<pre><code>ip link                              # list interfaces
+ip addr                              # show IPs
+ip route show                        # routing table
+ip route add 192.168.2.0/24 via 192.168.1.1
+ip route add default via 192.168.1.1
+cat /proc/sys/net/ipv4/ip_forward    # 0=disabled, 1=enabled
+echo 1 &gt; /proc/sys/net/ipv4/ip_forward</code></pre>
+
+<h2>CNI (Container Network Interface)</h2>
+<pre><code>ls /etc/cni/net.d/                   # CNI config
+ls /opt/cni/bin/                     # CNI binaries
+k get node -o jsonpath='{.spec.podCIDR}'</code></pre>
+
+<h2>Service Debugging</h2>
+<pre><code>k get svc,endpoints &lt;svc-name&gt;
+# Empty endpoints → wrong selector
+iptables-save | grep &lt;service-name&gt;
+k logs -n kube-system -l k8s-app=kube-proxy</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="dns">23. DNS &amp; CoreDNS</h1>
+<p><strong>CoreDNS:</strong> cluster internal DNS. Runs as pods in kube-system. Config in coredns ConfigMap (Corefile).</p>
+<p><strong>FQDN:</strong> Service → <code>my-svc.my-ns.svc.cluster.local</code> | Pod → <code>1-2-3-4.my-ns.pod.cluster.local</code></p>
+
+<pre><code># Test DNS
+k run -it --rm debug --image=busybox:1.28 -- nslookup kubernetes
+k run -it --rm debug --image=busybox:1.28 -- nslookup &lt;svc&gt;.&lt;ns&gt;.svc.cluster.local
+
+# Check CoreDNS
+k get pods -n kube-system -l k8s-app=kube-dns
+k get configmap coredns -n kube-system -o yaml
+k logs &lt;coredns-pod&gt; -n kube-system</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="ingress">24. Ingress</h1>
+<p>Requires Ingress Controller (e.g., nginx-ingress). Manages external HTTP/HTTPS access.</p>
+
+<h2>Path-based Routing</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /wear
+        pathType: Prefix
+        backend:
+          service: { name: wear-service, port: { number: 80 } }
+      - path: /watch
+        pathType: Prefix
+        backend:
+          service: { name: watch-service, port: { number: 80 } }</code></pre>
+
+<h2>Host-based Routing</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>spec:
+  rules:
+  - host: wear.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: { name: wear-svc, port: { number: 80 } }
+  - host: watch.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: { name: watch-svc, port: { number: 80 } }</code></pre>
+
+<h2>Ingress with TLS</h2>
+<pre><code>k create secret tls webapp-tls --cert=tls.crt --key=tls.key -n apps</code></pre>
+<span class="yaml-label">YAML</span>
+<pre><code>spec:
+  tls:
+  - hosts:
+    - webapp.example.com
+    secretName: webapp-tls
+  rules:
+  - host: webapp.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: { name: webapp-svc, port: { number: 80 } }</code></pre>
+
+<pre><code>k create ingress my-ingress --rule="host/path=svc:80" --dry-run=client -o yaml
+k get ingress
+k describe ingress app-ingress</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="etcd">25. ETCD Backup &amp; Restore</h1>
+<div class="exam-note"><strong>EXAM:</strong> This appears in almost every CKA exam. Memorize the command with cert paths.</div>
+
+<h2>Backup</h2>
+<pre><code>ETCDCTL_API=3 etcdctl snapshot save /tmp/etcd.db \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key
+
+# Verify
+ETCDCTL_API=3 etcdctl snapshot status /tmp/etcd.db</code></pre>
+
+<h2>Restore</h2>
+<pre><code># Restore to new data directory
+etcdutl snapshot restore /tmp/etcd.db --data-dir=/var/lib/etcd-restored
+
+# Update etcd static pod manifest
+vi /etc/kubernetes/manifests/etcd.yaml
+# Change: hostPath.path → /var/lib/etcd-restored
+
+# Restart kubelet
+systemctl daemon-reload
+systemctl restart kubelet</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="upgrade">26. Cluster Upgrade (kubeadm)</h1>
+<p><strong>Rule:</strong> Upgrade one minor version at a time. Control plane first, then workers.</p>
+
+<h2>Control Plane</h2>
+<pre><code># 1. Upgrade kubeadm
+apt-mark unhold kubeadm
+apt-get update &amp;&amp; apt-get install -y kubeadm=1.XX.0-*
+apt-mark hold kubeadm
+
+# 2. Plan and apply
+kubeadm upgrade plan
+kubeadm upgrade apply v1.XX.0
+
+# 3. Drain control plane node
+kubectl drain &lt;cp-node&gt; --ignore-daemonsets --delete-emptydir-data
+
+# 4. Upgrade kubelet and kubectl
+apt-mark unhold kubelet kubectl
+apt-get install -y kubelet=1.XX.0-* kubectl=1.XX.0-*
+apt-mark hold kubelet kubectl
+systemctl daemon-reload &amp;&amp; systemctl restart kubelet
+
+# 5. Uncordon
+kubectl uncordon &lt;cp-node&gt;</code></pre>
+
+<h2>Worker Nodes</h2>
+<pre><code># From control plane:
+kubectl drain &lt;worker&gt; --ignore-daemonsets --delete-emptydir-data
+
+# On worker node:
+apt-mark unhold kubeadm kubelet
+apt-get install -y kubeadm=1.XX.0-* kubelet=1.XX.0-*
+kubeadm upgrade node
+systemctl daemon-reload &amp;&amp; systemctl restart kubelet
+apt-mark hold kubeadm kubelet
+
+# From control plane:
+kubectl uncordon &lt;worker&gt;</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="node-maint">27. Node Maintenance &mdash; Cordon, Drain, Uncordon</h1>
+<p><strong>cordon</strong> = no new pods | <strong>drain</strong> = cordon + evict | <strong>uncordon</strong> = allow scheduling again</p>
+<p>If node is down &gt; 5 min, pods may be terminated by controller.</p>
+
+<pre><code>kubectl cordon &lt;node&gt;                          # mark unschedulable
+kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data
+kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data --force
+kubectl uncordon &lt;node&gt;                        # re-enable scheduling
+
+# Typical workflow:
+# 1. drain → 2. perform maintenance → 3. uncordon → 4. verify with kubectl get nodes</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="pdb">28. PodDisruptionBudget (PDB)</h1>
+<p>Limits voluntary disruptions. <code>drain</code> respects PDBs.</p>
+
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: myapp-pdb
+spec:
+  minAvailable: 2       # OR maxUnavailable: 1
+  selector:
+    matchLabels: { app: myapp }</code></pre>
+
+<pre><code>k get pdb
+k describe pdb myapp-pdb</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="troubleshoot">29. Troubleshooting Checklist (30% of Exam)</h1>
+
+<h2>Application Failure</h2>
+<pre><code># 1. Check pod status
+k get pods -o wide
+k describe pod &lt;name&gt;
+
+# 2. Check logs (current + previous crashed instance)
+k logs &lt;pod&gt; -c &lt;container&gt; --previous
+
+# 3. Check Service &amp; Endpoints
+k get svc,endpoints &lt;svc-name&gt;
+# Empty endpoints → wrong selector. Compare:
+k describe svc &lt;name&gt;      # see Selector
+k get pods --show-labels    # see pod labels
+
+# 4. Exec into pod
+k exec -it &lt;pod&gt; -- sh</code></pre>
+
+<h2>Control Plane Failure</h2>
+<pre><code># Static pods in kube-system
+k get pods -n kube-system
+k logs kube-apiserver-master -n kube-system
+k logs kube-scheduler-master -n kube-system
+k logs kube-controller-manager-master -n kube-system
+
+# Check etcd
+ETCDCTL_API=3 etcdctl endpoint health \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key</code></pre>
+
+<h2>Worker Node Failure</h2>
+<pre><code>k get nodes
+k describe node &lt;node&gt;        # check Conditions, LastHeartbeatTime
+
+# On the node:
+systemctl status kubelet
+journalctl -u kubelet -f
+systemctl status containerd
+
+# Common fixes:
+systemctl start kubelet
+systemctl daemon-reload &amp;&amp; systemctl restart kubelet
+
+# Check kubelet config
+cat /var/lib/kubelet/config.yaml
+cat /etc/kubernetes/kubelet.conf
+
+# Check certs
+openssl x509 -in /var/lib/kubelet/&lt;node&gt;.crt -text -noout</code></pre>
+
+<h2>Network Troubleshooting</h2>
+<pre><code># 1. Check CNI pods
+k get pods -n kube-system   # Calico/Flannel/Weave running?
+
+# 2. Check CoreDNS
+k get pods -n kube-system -l k8s-app=kube-dns
+
+# 3. Test DNS
+k run dns-test --image=busybox:1.28 --rm -it --restart=Never -- nslookup kubernetes
+
+# 4. Check kube-proxy
+k get ds kube-proxy -n kube-system
+iptables -L -t nat | grep &lt;svc&gt;
+
+# 5. Check IP forwarding
+cat /proc/sys/net/ipv4/ip_forward
+
+# 6. Debug from inside cluster
+k run netshoot --image=nicolaka/netshoot -it --rm --restart=Never -- bash
+
+# 7. Required ports: 6443 (API), 2379-2380 (etcd), 10250-10252 (kubelet,etc), 30000-32767 (NodePort)
+
+# 8. Certificate validity
+openssl x509 -in /etc/kubernetes/pki/apiserver.crt -text -noout | grep -A2 Validity</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="jsonpath">30. JSONPath &amp; Output Formatting</h1>
+
+<pre><code># Single value
+k get pod x -o jsonpath='{.spec.nodeName}'
+
+# All pod names
+k get pods -o jsonpath='{.items[*].metadata.name}'
+
+# Range (formatted output)
+k get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.capacity.cpu}{"\n"}{end}'
+
+# Filter
+k get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}'
+
+# Custom columns
+k get pods -A -o custom-columns=NAME:.metadata.name,NODE:.spec.nodeName,IMAGE:.spec.containers[0].image
+
+# Sort
+k get pods --sort-by=.metadata.creationTimestamp
+k get nodes --sort-by=.status.capacity.cpu
+k get pods --sort-by='.status.containerStatuses[0].restartCount'
+
+# Output to file (exam)
+k get nodes -o json &gt; /opt/output.json
+k get nodes -o jsonpath='{.items[*].status.nodeInfo.osImage}' &gt; /opt/os.txt
+
+# Count
+k get pods -A --no-headers | wc -l
+
+# All images running in cluster
+k get pods -A -o jsonpath='{range .items[*]}{.spec.containers[*].image}{"\n"}{end}' | sort | uniq
+
+# Find pod's node
+k get pod &lt;name&gt; -o jsonpath='{.spec.nodeName}'
+
+# Decode secret
+k get secret &lt;name&gt; -o jsonpath='{.data.password}' | base64 --decode</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="helm">31. Helm</h1>
+<p>Package manager for Kubernetes. Charts = templated YAML. Helm 3 (no Tiller). Release = deployed chart instance.</p>
+
+<pre><code># Add repo
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+
+# Install
+helm install my-nginx bitnami/nginx
+helm install my-nginx bitnami/nginx -f values.yaml
+helm install my-nginx bitnami/nginx --set service.port=8080
+
+# List releases
+helm list
+helm list -A
+
+# Upgrade
+helm upgrade my-nginx bitnami/nginx --set replicaCount=3
+
+# Rollback
+helm rollback my-nginx 1
+
+# Uninstall
+helm uninstall my-nginx
+
+# Template (render without installing)
+helm template my-nginx bitnami/nginx -f values.yaml
+
+# Show default values
+helm show values bitnami/nginx</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="kustomize">32. Kustomize</h1>
+<p>Built into kubectl. Patch-based customization without templating. Uses <code>kustomization.yaml</code>.</p>
+
+<span class="yaml-label">YAML</span>
+<pre><code># Base: kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+  - service.yaml
+
+# Overlay: overlays/prod/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+patches:
+  - target:
+      kind: Deployment
+      name: myapp
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 5
+images:
+  - name: myapp
+    newTag: v2.0</code></pre>
+
+<pre><code>kubectl apply -k overlays/prod
+kubectl kustomize overlays/prod   # preview without applying</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="kubeadm">33. kubeadm Installation</h1>
+
+<h2>Prerequisites (All Nodes)</h2>
+<pre><code># Disable swap
+sudo swapoff -a
+sed -i '/ swap / s/^/#/' /etc/fstab
+
+# Kernel modules
+cat &lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
+overlay
+br_netfilter
+EOF
+sudo modprobe overlay
+sudo modprobe br_netfilter
+
+# Sysctl
+cat &lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+EOF
+sudo sysctl --system
+
+# Install packages
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl</code></pre>
+
+<h2>Control Plane Init</h2>
+<pre><code>sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=&lt;master-ip&gt;
+
+# Copy kubeconfig
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+# Install CNI (e.g. Flannel)
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml</code></pre>
+
+<h2>Join Workers</h2>
+<pre><code># Use token from kubeadm init output:
+sudo kubeadm join &lt;master-ip&gt;:6443 --token &lt;token&gt; --discovery-token-ca-cert-hash sha256:&lt;hash&gt;
+
+# If token expired:
+kubeadm token create --print-join-command</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="crd">34. CRDs &amp; Operators</h1>
+<p>Custom Resource Definitions (CRDs) extend the API with custom types.</p>
+<p>Operators = CRD + Controller that manages lifecycle (install, upgrade, backup).</p>
+
+<pre><code>k get crd
+k get &lt;custom-resource-name&gt;
+k describe crd &lt;name&gt;</code></pre>
+
+<h2>Extension Interfaces</h2>
+<p><strong>CNI</strong> (Container Network Interface): pod networking plugins (Calico, Flannel, Weave)</p>
+<p><strong>CSI</strong> (Container Storage Interface): storage drivers for PVs</p>
+<p><strong>CRI</strong> (Container Runtime Interface): container runtimes (containerd, CRI-O)</p>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="practice">35. Practice Scenarios &amp; Mock Questions</h1>
+
+<h2>Scenario 1: Deployment + Service</h2>
+<p><strong>Task:</strong> Create deployment nginx-deploy --image=nginx:1.21 --replicas=3 -n app. Expose as ClusterIP service nginx-svc on port 80.</p>
+<h3>Solution:</h3>
+<pre><code>k create deployment nginx-deploy --image=nginx:1.21 --replicas=3 -n app
+k expose deployment nginx-deploy --name=nginx-svc --port=80 -n app
+k get deploy,svc -n app</code></pre>
+
+<h2>Scenario 2: RBAC &mdash; read-only pods</h2>
+<p><strong>Task:</strong> Create Role allowing get,list on pods in dev namespace. Bind to user jane.</p>
+<h3>Solution:</h3>
+<pre><code>k create role pod-reader --verb=get,list --resource=pods -n dev
+k create rolebinding jane-pod-reader --role=pod-reader --user=jane -n dev
+k auth can-i get pods --as=jane -n dev</code></pre>
+
+<h2>Scenario 3: Static Pod</h2>
+<p><strong>Task:</strong> Create static pod static-busybox (busybox, sleep 3600) on control plane.</p>
+<h3>Solution:</h3>
+<pre><code>cat &lt;&lt;EOF &gt; /etc/kubernetes/manifests/static-busybox.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: static-busybox
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+    command: ["sleep", "3600"]
+EOF</code></pre>
+
+<h2>Scenario 4: etcd Backup</h2>
+<p><strong>Task:</strong> Snapshot etcd to /tmp/etcd-snapshot.db with correct certs.</p>
+<h3>Solution:</h3>
+<pre><code>ETCDCTL_API=3 etcdctl snapshot save /tmp/etcd-snapshot.db \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key</code></pre>
+
+<h2>Scenario 5: PV + PVC + Pod</h2>
+<p><strong>Task:</strong> PV pv-log 100Mi RWX hostPath /pv/log. PVC claim-log-1 50Mi RWX. Pod logger (nginx) mount at /var/log/nginx.</p>
+<h3>Solution:</h3>
+<span class="yaml-label">YAML</span>
+<pre><code># PV
+apiVersion: v1
+kind: PersistentVolume
+metadata: { name: pv-log }
+spec:
+  capacity: { storage: 100Mi }
+  accessModes: [ReadWriteMany]
+  hostPath: { path: /pv/log }
+---
+# PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: { name: claim-log-1 }
+spec:
+  accessModes: [ReadWriteMany]
+  resources: { requests: { storage: 50Mi } }
+---
+# Pod
+apiVersion: v1
+kind: Pod
+metadata: { name: logger }
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts: [{ name: log-vol, mountPath: /var/log/nginx }]
+  volumes:
+  - name: log-vol
+    persistentVolumeClaim: { claimName: claim-log-1 }</code></pre>
+
+<h2>Scenario 6: NetworkPolicy &mdash; deny all + allow specific</h2>
+<p><strong>Task:</strong> Namespace secure. Select pods app=db. Allow ingress only from app=api on TCP 5432.</p>
+<h3>Solution:</h3>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-policy
+  namespace: secure
+spec:
+  podSelector: { matchLabels: { app: db } }
+  policyTypes: [Ingress]
+  ingress:
+  - from:
+    - podSelector: { matchLabels: { app: api } }
+    ports: [{ protocol: TCP, port: 5432 }]</code></pre>
+
+<h2>Scenario 7: Cluster Upgrade (v1.30 → v1.31)</h2>
+<p><strong>Task:</strong> Upgrade control plane to v1.31.0.</p>
+<h3>Solution:</h3>
+<pre><code>sudo apt-mark unhold kubeadm
+sudo apt-get update &amp;&amp; sudo apt-get install -y kubeadm=1.31.0-*
+sudo apt-mark hold kubeadm
+sudo kubeadm upgrade plan
+sudo kubeadm upgrade apply v1.31.0
+kubectl drain &lt;cp-node&gt; --ignore-daemonsets
+sudo apt-mark unhold kubelet kubectl
+sudo apt-get install -y kubelet=1.31.0-* kubectl=1.31.0-*
+sudo apt-mark hold kubelet kubectl
+sudo systemctl daemon-reload &amp;&amp; sudo systemctl restart kubelet
+kubectl uncordon &lt;cp-node&gt;</code></pre>
+
+<h2>Scenario 8: Ingress with TLS</h2>
+<p><strong>Task:</strong> Create TLS secret webapp-tls. Ingress webapp-ingress TLS on webapp.example.com → webapp-svc:80.</p>
+<h3>Solution:</h3>
+<pre><code>k create secret tls webapp-tls --cert=tls.crt --key=tls.key -n apps</code></pre>
+<span class="yaml-label">YAML</span>
+<pre><code>spec:
+  tls:
+  - hosts: [webapp.example.com]
+    secretName: webapp-tls
+  rules:
+  - host: webapp.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: { name: webapp-svc, port: { number: 80 } }</code></pre>
+
+<h2>Scenario 9: Multi-container Pod Logs</h2>
+<p><strong>Task:</strong> Stream previous logs from sidecar container in myapp-pod.</p>
+<h3>Solution:</h3>
+<pre><code>kubectl logs myapp-pod -c sidecar --previous -f</code></pre>
+
+<h2>Scenario 10: JSONPath Queries</h2>
+<p><strong>Task:</strong> List nodes sorted by CPU. Custom columns for pods. Get InternalIP of all nodes.</p>
+<h3>Solution:</h3>
+<pre><code># Nodes sorted by CPU
+k get nodes --sort-by=.status.capacity.cpu
+
+# Custom columns
+k get pods -A -o=custom-columns='NAME:.metadata.name,IMAGE:.spec.containers[*].image'
+
+# InternalIP
+k get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}'</code></pre>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════ -->
+<h1 id="exam-tips">36. Exam Tips &amp; Common Mistakes</h1>
+
+<h2>Time Management</h2>
+<p>2 hours, ~17 questions. Average ~7 min/question. Flag hard ones, return later. High-weight first (troubleshooting = 30%).</p>
+
+<h2>Essential Bookmarks for Exam</h2>
+<ul>
+  <li>kubernetes.io/docs/reference/kubectl/cheatsheet/</li>
+  <li>kubernetes.io/docs/concepts/ (Workloads, Services, Storage, Config)</li>
+  <li>kubernetes.io/docs/tasks/ (Administer Cluster, Manage TLS, Configure Pods)</li>
+  <li>kubernetes.io/docs/reference/ (API Reference)</li>
+</ul>
+
+<h2>Common Mistakes to Avoid</h2>
+<ul>
+  <li>Forgetting to switch context: <code>k config use-context &lt;context&gt;</code> — each question may use different cluster</li>
+  <li>Wrong namespace — always check and use <code>-n &lt;ns&gt;</code></li>
+  <li>YAML indentation errors — use <code>k apply -f</code> and read the error</li>
+  <li>Not verifying — always <code>k get</code> / <code>k describe</code> to confirm</li>
+  <li>Spending too long on one question — flag and move on</li>
+  <li>Forgetting <code>--dry-run=client -o yaml</code> — fastest way to generate templates</li>
+</ul>
+
+<h2>Useful One-Liners</h2>
+<pre><code># All pods with node info
+k get pods -A -o wide
+
+# Events sorted by time
+k get events -A --sort-by='.lastTimestamp'
+
+# Watch pods live
+k get pods -w
+
+# Delete stuck Terminating pod
+k delete pod &lt;name&gt; --force --grace-period=0
+
+# All images in cluster
+k get pods -A -o jsonpath='{range .items[*]}{.spec.containers[*].image}{"\n"}{end}' | sort | uniq
+
+# Quick test pod
+k run tmp --image=busybox:1.28 --rm -it --restart=Never -- sh
+
+# Decode secret
+k get secret &lt;name&gt; -o jsonpath='{.data.password}' | base64 --decode
+
+# Find static pod path
+grep staticPodPath /var/lib/kubelet/config.yaml
+
+# Component health
+k get --raw='/readyz?verbose'</code></pre>
+
+<h2>Priority Classes (Pod Scheduling)</h2>
+<span class="yaml-label">YAML</span>
+<pre><code>apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: { name: high-priority }
+value: 1000000
+globalDefault: false
+preemptionPolicy: PreemptLowerPriority
+
+# Use in Pod:
+spec:
+  priorityClassName: high-priority</code></pre>
+
+<h2>Admission Controllers</h2>
+<p>Intercept API requests after auth. <strong>Validating:</strong> accept/reject (PodSecurity, ResourceQuota). <strong>Mutating:</strong> modify (DefaultStorageClass, ServiceAccount). Configure via <code>--enable-admission-plugins</code> on kube-apiserver.</p>
+
+<h2>API Groups Quick Reference</h2>
+<pre><code># Core group (no prefix):  apiVersion: v1
+# Pod, Service, ConfigMap, Secret, Namespace, PV, PVC, Endpoints
+
+# apps group:  apiVersion: apps/v1
+# Deployment, ReplicaSet, DaemonSet, StatefulSet
+
+# batch group:  apiVersion: batch/v1
+# Job, CronJob
+
+# networking group:  apiVersion: networking.k8s.io/v1
+# NetworkPolicy, Ingress
+
+# rbac group:  apiVersion: rbac.authorization.k8s.io/v1
+# Role, ClusterRole, RoleBinding, ClusterRoleBinding
+
+# storage group:  apiVersion: storage.k8s.io/v1
+# StorageClass
+
+# policy group:  apiVersion: policy/v1
+# PodDisruptionBudget
+
+# autoscaling group:  apiVersion: autoscaling/v2
+# HorizontalPodAutoscaler
+
+# certificates group:  apiVersion: certificates.k8s.io/v1
+# CertificateSigningRequest
+
+# scheduling group:  apiVersion: scheduling.k8s.io/v1
+# PriorityClass
+
+k api-resources          # full list
+k api-versions           # all API versions</code></pre>
+
+</main>
+
+<!-- ═══════════ Sidebar Active Link Tracking ═══════════ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const links = document.querySelectorAll('nav a');
+  const sections = [];
+  links.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) sections.push({ el, a });
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(a => a.classList.remove('active'));
+        const match = sections.find(s => s.el === entry.target);
+        if (match) match.a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s.el));
+});
+</script>
+
+</body>
+</html>
