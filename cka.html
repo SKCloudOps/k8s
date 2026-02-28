@@ -2101,13 +2101,12 @@ k describe ingress app-ingress</code></pre>
       allow scheduling again</p>
     <p>If node is down &gt; 5 min, pods may be terminated by controller.</p>
 
-    <pre><code>kubectl cordon &lt;node&gt;                          # mark unschedulable
-kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data
-kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data --force
-kubectl uncordon &lt;node&gt;                        # re-enable scheduling
-
-# Typical workflow:
-# 1. drain → 2. perform maintenance → 3. uncordon → 4. verify with kubectl get nodes</code></pre>
+    <div class="cmd-table">
+      <div class="cmd-row"><code>kubectl cordon &lt;node&gt;</code><span class="tip-icon" data-tip="Marks node unschedulable. Prevents new pods. Existing pods unaffected.">i</span></div>
+      <div class="cmd-row"><code>kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data</code><span class="tip-icon" data-tip="Gracefully evicts all pods. Waits for graceful termination. Respects PDB. DaemonSets ignored, emptyDir volumes deleted.">i</span></div>
+      <div class="cmd-row"><code>kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data --force</code><span class="tip-icon" data-tip="Force drains without grace period. Use only when pods are stuck terminating.">i</span></div>
+      <div class="cmd-row"><code>kubectl uncordon &lt;node&gt;</code><span class="tip-icon" data-tip="Re-enables scheduling. Node accepts new pods.">i</span></div>
+    </div>
 
     <hr>
 
@@ -2140,6 +2139,11 @@ k describe pdb myapp-pdb</code></pre>
       <code>maxUnavailable</code> (max pods that can be down). Cannot use both.
     </div>
 
+    <div class="cmd-table">
+      <div class="cmd-row"><code>k get pdb</code><span class="tip-icon" data-tip="Lists all PodDisruptionBudgets in namespace.">i</span></div>
+      <div class="cmd-row"><code>k describe pdb myapp-pdb</code><span class="tip-icon" data-tip="Shows PDB details: minAvailable, maxUnavailable, and status.">i</span></div>
+    </div>
+
     <span class="yaml-label">YAML</span>
     <pre><code>apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -2149,9 +2153,6 @@ spec:
   minAvailable: 2       # OR maxUnavailable: 1
   selector:
     matchLabels: { app: myapp }</code></pre>
-
-    <pre><code>k get pdb
-k describe pdb myapp-pdb</code></pre>
 
     <hr>
 
