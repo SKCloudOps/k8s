@@ -126,13 +126,19 @@
       font-weight: 600;
       cursor: pointer;
       font-family: 'Outfit', sans-serif;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       transition: background 0.15s;
     }
 
-    #cka-nav-show:hover { background: #1565c0; }
+    #cka-nav-show:hover {
+      background: #1565c0;
+    }
 
-    body.cka-nav-hidden #cka-nav-show { display: inline-flex; align-items: center; gap: 0.35rem; }
+    body.cka-nav-hidden #cka-nav-show {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
 
     nav h2 {
       font-size: .85rem;
@@ -195,30 +201,115 @@
     }
 
     pre {
-      background: var(--code-bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: .8rem 1rem;
+      background: #1e1e2e;
+      border: 1px solid #313244;
+      border-left: 3px solid #89b4fa;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.2rem;
       overflow-x: auto;
       font-family: 'JetBrains Mono', 'Consolas', monospace;
-      font-size: .78rem;
-      line-height: 1.55;
-      color: #1a1a2e;
-      margin: .5rem 0 1rem;
+      font-size: .8rem;
+      line-height: 1.7;
+      color: #cdd6f4;
+      margin: .5rem 0 1.2rem;
+      position: relative;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+      tab-size: 2;
     }
 
     code {
       font-family: 'JetBrains Mono', 'Consolas', monospace;
-      background: var(--code-bg);
-      padding: .15em .35em;
-      border-radius: 3px;
-      font-size: .85em;
+      background: #e8eaf1;
+      padding: .15em .4em;
+      border-radius: 4px;
+      font-size: .84em;
+      color: #1e1e2e;
     }
 
     pre code {
       background: none;
       padding: 0;
       font-size: inherit;
+      color: inherit;
+    }
+
+    /* ── YAML Syntax Highlighting ── */
+    .hl-key {
+      color: #89dceb;
+    }
+
+    .hl-string {
+      color: #f9e2af;
+    }
+
+    .hl-value {
+      color: #a6e3a1;
+    }
+
+    .hl-comment {
+      color: #6c7086;
+      font-style: italic;
+    }
+
+    .hl-bool,
+    .hl-null {
+      color: #cba6f7;
+      font-weight: 500;
+    }
+
+    .hl-number {
+      color: #fab387;
+    }
+
+    .hl-punctuation {
+      color: #9399b2;
+    }
+
+    .hl-anchor {
+      color: #f38ba8;
+    }
+
+    .hl-tag {
+      color: #74c7ec;
+    }
+
+    /* ── Copy Button on Code Blocks ── */
+    .code-wrapper {
+      position: relative;
+    }
+
+    .code-copy-btn {
+      position: absolute;
+      top: 0.45rem;
+      right: 0.5rem;
+      background: #313244;
+      color: #a6adc8;
+      border: 1px solid #45475a;
+      border-radius: 5px;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.68rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s, background 0.15s, color 0.15s;
+      z-index: 2;
+      letter-spacing: 0.3px;
+    }
+
+    .code-wrapper:hover .code-copy-btn {
+      opacity: 1;
+    }
+
+    .code-copy-btn:hover {
+      background: #585b70;
+      color: #cdd6f4;
+    }
+
+    .code-copy-btn.copied {
+      background: #a6e3a1;
+      color: #1e1e2e;
+      border-color: #a6e3a1;
     }
 
     .tip,
@@ -258,14 +349,20 @@
 
     .yaml-label {
       display: inline-block;
-      background: var(--accent);
-      color: #fff;
-      font-size: .7rem;
-      padding: .1rem .5rem;
-      border-radius: 3px;
-      margin-bottom: .25rem;
-      font-weight: 600;
-      letter-spacing: .5px;
+      background: linear-gradient(135deg, #89b4fa, #74c7ec);
+      color: #1e1e2e;
+      font-size: .68rem;
+      padding: .15rem .6rem;
+      border-radius: 4px 4px 0 0;
+      margin-bottom: 0;
+      font-weight: 700;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+    }
+
+    .yaml-label+pre {
+      margin-top: 0;
+      border-top-left-radius: 0;
     }
 
     .imp-label {
@@ -373,6 +470,7 @@
       overflow: visible;
       margin: 0.75rem 0 2.5rem;
     }
+
     .cmd-row {
       display: flex;
       align-items: flex-start;
@@ -383,10 +481,24 @@
       transition: background 0.15s;
       gap: 0.75rem;
     }
-    .cmd-row:first-child { border-radius: 7px 7px 0 0; }
-    .cmd-row:last-child { border-bottom: none; border-radius: 0 0 7px 7px; }
-    .cmd-row:only-child { border-radius: 7px; }
-    .cmd-row:hover { background: var(--surface2); }
+
+    .cmd-row:first-child {
+      border-radius: 7px 7px 0 0;
+    }
+
+    .cmd-row:last-child {
+      border-bottom: none;
+      border-radius: 0 0 7px 7px;
+    }
+
+    .cmd-row:only-child {
+      border-radius: 7px;
+    }
+
+    .cmd-row:hover {
+      background: var(--surface2);
+    }
+
     .cmd-row code {
       background: none;
       padding: 0;
@@ -398,6 +510,7 @@
       overflow-wrap: break-word;
       color: #1e293b;
     }
+
     .tip-icon {
       flex-shrink: 0;
       width: 18px;
@@ -416,6 +529,7 @@
       position: relative;
       user-select: none;
     }
+
     .tip-icon::after {
       content: attr(data-tip);
       position: absolute;
@@ -432,12 +546,13 @@
       width: 300px;
       white-space: normal;
       z-index: 1000;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       pointer-events: none;
       opacity: 0;
       transform: translateY(-4px);
       transition: opacity 0.18s, transform 0.18s;
     }
+
     .tip-icon:hover::after {
       opacity: 1;
       transform: translateY(0);
@@ -522,28 +637,65 @@
 
     <h3>Shell Aliases (~/.bashrc)</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>alias k=kubectl</code><span class="tip-icon" data-tip="Master alias for kubectl. Saves keystrokes on every command. Type 'k' instead of 'kubectl' throughout the exam.">i</span></div>
-      <div class="cmd-row"><code>alias kn='kubectl config set-context --current --namespace'</code><span class="tip-icon" data-tip="Quick namespace switch. Usage: kn &lt;namespace&gt;. Sets default namespace for all subsequent commands without -n flag.">i</span></div>
-      <div class="cmd-row"><code>alias kgp='kubectl get pods'</code><span class="tip-icon" data-tip="Fast pod listing. Shows all pods in current namespace with status, restarts, and ready state. Add -A for all namespaces.">i</span></div>
-      <div class="cmd-row"><code>alias kgs='kubectl get svc'</code><span class="tip-icon" data-tip="Lists all Services in current namespace with cluster IPs, external IPs, and ports. Useful for quick service endpoint checks.">i</span></div>
-      <div class="cmd-row"><code>alias kgn='kubectl get nodes'</code><span class="tip-icon" data-tip="Lists all worker nodes with their status (Ready/NotReady), roles, and age. Add -o wide for IP addresses and container runtime.">i</span></div>
-      <div class="cmd-row"><code>alias kga='kubectl get all'</code><span class="tip-icon" data-tip="Shows all resources (pods, services, deployments, etc.) in current namespace at a glance. Useful for quick cluster overview.">i</span></div>
-      <div class="cmd-row"><code>alias kaf='kubectl apply -f'</code><span class="tip-icon" data-tip="Quickly apply YAML files. Usage: kaf &lt;file.yaml&gt;. Idempotent — safe to run multiple times.">i</span></div>
-      <div class="cmd-row"><code>alias kdp='kubectl describe pod'</code><span class="tip-icon" data-tip="Detailed pod inspection showing spec, status, events, and errors. Essential for debugging pod failures on the exam.">i</span></div>
-      <div class="cmd-row"><code>alias kl='kubectl logs'</code><span class="tip-icon" data-tip="View container logs. Usage: kl &lt;pod&gt; [&lt;container&gt;]. Add -f to tail (follow) logs in real time. Add -p for previous (crashed) container logs.">i</span></div>
-      <div class="cmd-row"><code>alias ke='kubectl exec -it'</code><span class="tip-icon" data-tip="Execute interactive commands inside a pod. Usage: ke &lt;pod&gt; -- /bin/bash or /bin/sh. Essential for container debugging.">i</span></div>
-      <div class="cmd-row"><code>source &lt;(kubectl completion bash)</code><span class="tip-icon" data-tip="Enables kubectl bash autocompletion. After running, press TAB to autocomplete resource names, flags, and subcommands. Must source this in ~/.bashrc.">i</span></div>
-      <div class="cmd-row"><code>complete -o default -F __start_kubectl k</code><span class="tip-icon" data-tip="Extends autocompletion to the 'k' alias. Without this, TAB won't work after your alias. Run this after sourcing kubectl completion.">i</span></div>
-      <div class="cmd-row"><code>export KUBE_EDITOR=vi</code><span class="tip-icon" data-tip="Sets default editor for 'kubectl edit' commands. vi is preferred on exam systems as it's always available. Change to nano if you prefer.">i</span></div>
+      <div class="cmd-row"><code>alias k=kubectl</code><span class="tip-icon"
+          data-tip="Master alias for kubectl. Saves keystrokes on every command. Type 'k' instead of 'kubectl' throughout the exam.">i</span>
+      </div>
+      <div class="cmd-row"><code>alias kn='kubectl config set-context --current --namespace'</code><span
+          class="tip-icon"
+          data-tip="Quick namespace switch. Usage: kn &lt;namespace&gt;. Sets default namespace for all subsequent commands without -n flag.">i</span>
+      </div>
+      <div class="cmd-row"><code>alias kgp='kubectl get pods'</code><span class="tip-icon"
+          data-tip="Fast pod listing. Shows all pods in current namespace with status, restarts, and ready state. Add -A for all namespaces.">i</span>
+      </div>
+      <div class="cmd-row"><code>alias kgs='kubectl get svc'</code><span class="tip-icon"
+          data-tip="Lists all Services in current namespace with cluster IPs, external IPs, and ports. Useful for quick service endpoint checks.">i</span>
+      </div>
+      <div class="cmd-row"><code>alias kgn='kubectl get nodes'</code><span class="tip-icon"
+          data-tip="Lists all worker nodes with their status (Ready/NotReady), roles, and age. Add -o wide for IP addresses and container runtime.">i</span>
+      </div>
+      <div class="cmd-row"><code>alias kga='kubectl get all'</code><span class="tip-icon"
+          data-tip="Shows all resources (pods, services, deployments, etc.) in current namespace at a glance. Useful for quick cluster overview.">i</span>
+      </div>
+      <div class="cmd-row"><code>alias kaf='kubectl apply -f'</code><span class="tip-icon"
+          data-tip="Quickly apply YAML files. Usage: kaf &lt;file.yaml&gt;. Idempotent — safe to run multiple times.">i</span>
+      </div>
+      <div class="cmd-row"><code>alias kdp='kubectl describe pod'</code><span class="tip-icon"
+          data-tip="Detailed pod inspection showing spec, status, events, and errors. Essential for debugging pod failures on the exam.">i</span>
+      </div>
+      <div class="cmd-row"><code>alias kl='kubectl logs'</code><span class="tip-icon"
+          data-tip="View container logs. Usage: kl &lt;pod&gt; [&lt;container&gt;]. Add -f to tail (follow) logs in real time. Add -p for previous (crashed) container logs.">i</span>
+      </div>
+      <div class="cmd-row"><code>alias ke='kubectl exec -it'</code><span class="tip-icon"
+          data-tip="Execute interactive commands inside a pod. Usage: ke &lt;pod&gt; -- /bin/bash or /bin/sh. Essential for container debugging.">i</span>
+      </div>
+      <div class="cmd-row"><code>source &lt;(kubectl completion bash)</code><span class="tip-icon"
+          data-tip="Enables kubectl bash autocompletion. After running, press TAB to autocomplete resource names, flags, and subcommands. Must source this in ~/.bashrc.">i</span>
+      </div>
+      <div class="cmd-row"><code>complete -o default -F __start_kubectl k</code><span class="tip-icon"
+          data-tip="Extends autocompletion to the 'k' alias. Without this, TAB won't work after your alias. Run this after sourcing kubectl completion.">i</span>
+      </div>
+      <div class="cmd-row"><code>export KUBE_EDITOR=vi</code><span class="tip-icon"
+          data-tip="Sets default editor for 'kubectl edit' commands. vi is preferred on exam systems as it's always available. Change to nano if you prefer.">i</span>
+      </div>
     </div>
 
     <h3>Vim Settings (~/.vimrc)</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>set tabstop=2</code><span class="tip-icon" data-tip="Display tab characters as 2-space width. Essential for YAML editing where indentation must be exact (YAML uses 2-space indent).">i</span></div>
-      <div class="cmd-row"><code>set shiftwidth=2</code><span class="tip-icon" data-tip="Auto-indent uses 2 spaces when you press Tab or use the &gt;&gt; command. Maintains YAML formatting requirements.">i</span></div>
-      <div class="cmd-row"><code>set expandtab</code><span class="tip-icon" data-tip="Convert all Tab key presses into spaces instead of literal tab characters. Required for YAML — never mix tabs and spaces.">i</span></div>
-      <div class="cmd-row"><code>set number</code><span class="tip-icon" data-tip="Display line numbers on the left margin. Helps navigate large YAML files and quickly find errors by line number.">i</span></div>
-      <div class="cmd-row"><code>set autoindent</code><span class="tip-icon" data-tip="Automatically indent new lines to match the previous line's indentation. Speeds up YAML multi-line writing.">i</span></div>
+      <div class="cmd-row"><code>set tabstop=2</code><span class="tip-icon"
+          data-tip="Display tab characters as 2-space width. Essential for YAML editing where indentation must be exact (YAML uses 2-space indent).">i</span>
+      </div>
+      <div class="cmd-row"><code>set shiftwidth=2</code><span class="tip-icon"
+          data-tip="Auto-indent uses 2 spaces when you press Tab or use the &gt;&gt; command. Maintains YAML formatting requirements.">i</span>
+      </div>
+      <div class="cmd-row"><code>set expandtab</code><span class="tip-icon"
+          data-tip="Convert all Tab key presses into spaces instead of literal tab characters. Required for YAML — never mix tabs and spaces.">i</span>
+      </div>
+      <div class="cmd-row"><code>set number</code><span class="tip-icon"
+          data-tip="Display line numbers on the left margin. Helps navigate large YAML files and quickly find errors by line number.">i</span>
+      </div>
+      <div class="cmd-row"><code>set autoindent</code><span class="tip-icon"
+          data-tip="Automatically indent new lines to match the previous line's indentation. Speeds up YAML multi-line writing.">i</span>
+      </div>
     </div>
 
     <div class="exam-note"><strong>EXAM:</strong> Switch context at the start of EVERY question:
@@ -559,91 +711,230 @@
 
     <h3>Pod</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k run &lt;name&gt; --image=&lt;img&gt;</code><span class="tip-icon" data-tip="Creates a Pod with default restart policy (Always). Kubernetes restarts the container on failure. Quick way to spin up a running pod.">i</span></div>
-      <div class="cmd-row"><code>k run &lt;name&gt; --image=&lt;img&gt; --restart=Never</code><span class="tip-icon" data-tip="Creates a standalone Pod that does NOT restart on failure. Ideal for one-off debug tasks or exam quick tests.">i</span></div>
-      <div class="cmd-row"><code>k run &lt;name&gt; --image=&lt;img&gt; --dry-run=client -o yaml &gt; pod.yaml</code><span class="tip-icon" data-tip="Generates Pod YAML without creating any resource. --dry-run=client is client-side only (no API call). Redirect &gt; saves to file so you can edit before applying.">i</span></div>
-      <div class="cmd-row"><code>k run &lt;name&gt; --image=&lt;img&gt; --port=80</code><span class="tip-icon" data-tip="Declares containerPort 80 in the Pod spec. Does NOT create a Service or open a firewall rule — purely informational metadata.">i</span></div>
-      <div class="cmd-row"><code>k run &lt;name&gt; --image=&lt;img&gt; --labels=&quot;app=web,env=prod&quot;</code><span class="tip-icon" data-tip="Attaches key=value labels to the Pod. Labels are used by Selectors, Services, NetworkPolicies, and scheduling rules to target specific pods.">i</span></div>
-      <div class="cmd-row"><code>k run &lt;name&gt; --image=&lt;img&gt; --command -- sleep 3600</code><span class="tip-icon" data-tip="Overrides the container ENTRYPOINT (maps to spec.containers[].command). Everything after -- is the new command. Use to keep pods running for debugging.">i</span></div>
-      <div class="cmd-row"><code>k run &lt;name&gt; --image=&lt;img&gt; -- &lt;arg1&gt; &lt;arg2&gt;</code><span class="tip-icon" data-tip="Passes arguments to the container's default ENTRYPOINT (maps to spec.containers[].args / Docker CMD). Does NOT override the entrypoint itself.">i</span></div>
+      <div class="cmd-row"><code>k run &lt;name&gt; --image=&lt;img&gt;</code><span class="tip-icon"
+          data-tip="Creates a Pod with default restart policy (Always). Kubernetes restarts the container on failure. Quick way to spin up a running pod.">i</span>
+      </div>
+      <div class="cmd-row"><code>k run &lt;name&gt; --image=&lt;img&gt; --restart=Never</code><span class="tip-icon"
+          data-tip="Creates a standalone Pod that does NOT restart on failure. Ideal for one-off debug tasks or exam quick tests.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k run &lt;name&gt; --image=&lt;img&gt; --dry-run=client -o yaml &gt; pod.yaml</code><span class="tip-icon"
+          data-tip="Generates Pod YAML without creating any resource. --dry-run=client is client-side only (no API call). Redirect &gt; saves to file so you can edit before applying.">i</span>
+      </div>
+      <div class="cmd-row"><code>k run &lt;name&gt; --image=&lt;img&gt; --port=80</code><span class="tip-icon"
+          data-tip="Declares containerPort 80 in the Pod spec. Does NOT create a Service or open a firewall rule — purely informational metadata.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k run &lt;name&gt; --image=&lt;img&gt; --labels=&quot;app=web,env=prod&quot;</code><span class="tip-icon"
+          data-tip="Attaches key=value labels to the Pod. Labels are used by Selectors, Services, NetworkPolicies, and scheduling rules to target specific pods.">i</span>
+      </div>
+      <div class="cmd-row"><code>k run &lt;name&gt; --image=&lt;img&gt; --command -- sleep 3600</code><span
+          class="tip-icon"
+          data-tip="Overrides the container ENTRYPOINT (maps to spec.containers[].command). Everything after -- is the new command. Use to keep pods running for debugging.">i</span>
+      </div>
+      <div class="cmd-row"><code>k run &lt;name&gt; --image=&lt;img&gt; -- &lt;arg1&gt; &lt;arg2&gt;</code><span
+          class="tip-icon"
+          data-tip="Passes arguments to the container's default ENTRYPOINT (maps to spec.containers[].args / Docker CMD). Does NOT override the entrypoint itself.">i</span>
+      </div>
     </div>
 
     <h3>Deployment</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create deployment &lt;name&gt; --image=&lt;img&gt; [--replicas=N]</code><span class="tip-icon" data-tip="Creates a Deployment managing N replicas of the container with rolling-update and self-healing support. Default replicas=1 if omitted.">i</span></div>
-      <div class="cmd-row"><code>k create deployment &lt;name&gt; --image=&lt;img&gt; --dry-run=client -o yaml &gt; deploy.yaml</code><span class="tip-icon" data-tip="Outputs Deployment YAML to file without creating it. Edit the file to add env vars, resources, volumes, etc., then apply.">i</span></div>
-      <div class="cmd-row"><code>k scale deployment &lt;name&gt; --replicas=N</code><span class="tip-icon" data-tip="Immediately adjusts the desired replica count. Kubernetes adds or removes pods to match the new count.">i</span></div>
-      <div class="cmd-row"><code>k set image deployment/&lt;name&gt; &lt;container&gt;=&lt;img&gt;</code><span class="tip-icon" data-tip="Updates the image of a named container in the Deployment. Triggers a rolling update — old pods are gradually replaced with new ones.">i</span></div>
-      <div class="cmd-row"><code>k rollout status deployment/&lt;name&gt;</code><span class="tip-icon" data-tip="Watches and reports the rollout progress in real time. Exits with code 0 on success, non-zero on failure. Useful in CI/CD pipelines.">i</span></div>
-      <div class="cmd-row"><code>k rollout history deployment/&lt;name&gt;</code><span class="tip-icon" data-tip="Lists revision history of the Deployment. Add --revision=N to see details of a specific revision. Requires --record flag or change-cause annotation to see useful messages.">i</span></div>
-      <div class="cmd-row"><code>k rollout undo deployment/&lt;name&gt;</code><span class="tip-icon" data-tip="Rolls back to the immediately previous revision. Safe way to recover from a bad image update without downtime.">i</span></div>
-      <div class="cmd-row"><code>k rollout undo deployment/&lt;name&gt; --to-revision=2</code><span class="tip-icon" data-tip="Rolls back to a specific revision number. Check available revisions first with 'k rollout history deployment/&lt;name&gt;'.">i</span></div>
+      <div class="cmd-row"><code>k create deployment &lt;name&gt; --image=&lt;img&gt; [--replicas=N]</code><span
+          class="tip-icon"
+          data-tip="Creates a Deployment managing N replicas of the container with rolling-update and self-healing support. Default replicas=1 if omitted.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create deployment &lt;name&gt; --image=&lt;img&gt; --dry-run=client -o yaml &gt; deploy.yaml</code><span
+          class="tip-icon"
+          data-tip="Outputs Deployment YAML to file without creating it. Edit the file to add env vars, resources, volumes, etc., then apply.">i</span>
+      </div>
+      <div class="cmd-row"><code>k scale deployment &lt;name&gt; --replicas=N</code><span class="tip-icon"
+          data-tip="Immediately adjusts the desired replica count. Kubernetes adds or removes pods to match the new count.">i</span>
+      </div>
+      <div class="cmd-row"><code>k set image deployment/&lt;name&gt; &lt;container&gt;=&lt;img&gt;</code><span
+          class="tip-icon"
+          data-tip="Updates the image of a named container in the Deployment. Triggers a rolling update — old pods are gradually replaced with new ones.">i</span>
+      </div>
+      <div class="cmd-row"><code>k rollout status deployment/&lt;name&gt;</code><span class="tip-icon"
+          data-tip="Watches and reports the rollout progress in real time. Exits with code 0 on success, non-zero on failure. Useful in CI/CD pipelines.">i</span>
+      </div>
+      <div class="cmd-row"><code>k rollout history deployment/&lt;name&gt;</code><span class="tip-icon"
+          data-tip="Lists revision history of the Deployment. Add --revision=N to see details of a specific revision. Requires --record flag or change-cause annotation to see useful messages.">i</span>
+      </div>
+      <div class="cmd-row"><code>k rollout undo deployment/&lt;name&gt;</code><span class="tip-icon"
+          data-tip="Rolls back to the immediately previous revision. Safe way to recover from a bad image update without downtime.">i</span>
+      </div>
+      <div class="cmd-row"><code>k rollout undo deployment/&lt;name&gt; --to-revision=2</code><span class="tip-icon"
+          data-tip="Rolls back to a specific revision number. Check available revisions first with 'k rollout history deployment/&lt;name&gt;'.">i</span>
+      </div>
     </div>
 
     <h3>Service</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k expose deployment &lt;name&gt; --port=&lt;port&gt; [--name=&lt;svc-name&gt;]</code><span class="tip-icon" data-tip="Creates a ClusterIP Service targeting the Deployment's pods. --port is the Service port. --name overrides the default Service name (same as Deployment).">i</span></div>
-      <div class="cmd-row"><code>k expose deployment &lt;name&gt; --port=80 --type=NodePort</code><span class="tip-icon" data-tip="Creates a NodePort Service. Kubernetes assigns a random port (30000–32767) on every node that forwards to the pods. Use --node-port=XXXXX to set a specific one.">i</span></div>
-      <div class="cmd-row"><code>k expose pod &lt;name&gt; --port=80</code><span class="tip-icon" data-tip="Creates a ClusterIP Service targeting a single named Pod by its label selector. Useful for quickly testing connectivity to a specific pod.">i</span></div>
-      <div class="cmd-row"><code>k create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml</code><span class="tip-icon" data-tip="Generates a NodePort Service YAML with an explicit node-port 30080 and tcp mapping 80:80 (servicePort:targetPort). Unlike 'expose', this lets you set the nodePort imperatively.">i</span></div>
-      <div class="cmd-row"><code>k expose deployment &lt;name&gt; --port=80 --type=ClusterIP --dry-run=client -o yaml</code><span class="tip-icon" data-tip="Generates ClusterIP Service YAML without creating it. Edit the output to add targetPort, selector tweaks, or annotations, then apply.">i</span></div>
+      <div class="cmd-row">
+        <code>k expose deployment &lt;name&gt; --port=&lt;port&gt; [--name=&lt;svc-name&gt;]</code><span
+          class="tip-icon"
+          data-tip="Creates a ClusterIP Service targeting the Deployment's pods. --port is the Service port. --name overrides the default Service name (same as Deployment).">i</span>
+      </div>
+      <div class="cmd-row"><code>k expose deployment &lt;name&gt; --port=80 --type=NodePort</code><span class="tip-icon"
+          data-tip="Creates a NodePort Service. Kubernetes assigns a random port (30000–32767) on every node that forwards to the pods. Use --node-port=XXXXX to set a specific one.">i</span>
+      </div>
+      <div class="cmd-row"><code>k expose pod &lt;name&gt; --port=80</code><span class="tip-icon"
+          data-tip="Creates a ClusterIP Service targeting a single named Pod by its label selector. Useful for quickly testing connectivity to a specific pod.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml</code><span
+          class="tip-icon"
+          data-tip="Generates a NodePort Service YAML with an explicit node-port 30080 and tcp mapping 80:80 (servicePort:targetPort). Unlike 'expose', this lets you set the nodePort imperatively.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k expose deployment &lt;name&gt; --port=80 --type=ClusterIP --dry-run=client -o yaml</code><span
+          class="tip-icon"
+          data-tip="Generates ClusterIP Service YAML without creating it. Edit the output to add targetPort, selector tweaks, or annotations, then apply.">i</span>
+      </div>
     </div>
 
     <h3>Namespace</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create namespace &lt;name&gt;</code><span class="tip-icon" data-tip="Creates a Namespace to logically isolate resources. Teams, environments (dev/staging/prod), or projects are commonly separated by namespace.">i</span></div>
-      <div class="cmd-row"><code>k create ns &lt;name&gt;</code><span class="tip-icon" data-tip="Shorthand alias for 'kubectl create namespace'. Functionally identical — saves keystrokes on the exam.">i</span></div>
+      <div class="cmd-row"><code>k create namespace &lt;name&gt;</code><span class="tip-icon"
+          data-tip="Creates a Namespace to logically isolate resources. Teams, environments (dev/staging/prod), or projects are commonly separated by namespace.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create ns &lt;name&gt;</code><span class="tip-icon"
+          data-tip="Shorthand alias for 'kubectl create namespace'. Functionally identical — saves keystrokes on the exam.">i</span>
+      </div>
     </div>
 
     <h3>ConfigMap &amp; Secret</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create configmap &lt;name&gt; --from-literal=KEY=val [--from-literal=KEY2=val2]</code><span class="tip-icon" data-tip="Creates a ConfigMap with inline key/value pairs. Each --from-literal adds one entry. Inject into pods as env vars (envFrom) or as volume files.">i</span></div>
-      <div class="cmd-row"><code>k create configmap &lt;name&gt; --from-file=path/to/file</code><span class="tip-icon" data-tip="Creates a ConfigMap where the filename becomes the key and the file contents become the value. Mount as a volume to make the file available inside the pod.">i</span></div>
-      <div class="cmd-row"><code>k create configmap &lt;name&gt; --from-file=key=path</code><span class="tip-icon" data-tip="Same as --from-file but overrides the key name. Useful when you want a specific key name regardless of the actual filename.">i</span></div>
-      <div class="cmd-row"><code>k create secret generic &lt;name&gt; --from-literal=KEY=val</code><span class="tip-icon" data-tip="Creates a generic Secret. Values are base64-encoded automatically by Kubernetes. Access in pods via env vars or volume mounts.">i</span></div>
-      <div class="cmd-row"><code>k create secret generic &lt;name&gt; --from-file=key=path</code><span class="tip-icon" data-tip="Creates a Secret from a file on disk, e.g. a private key or config file. File contents are base64-encoded and stored under the specified key.">i</span></div>
-      <div class="cmd-row"><code>k create secret tls &lt;name&gt; --cert=tls.crt --key=tls.key</code><span class="tip-icon" data-tip="Creates a TLS type Secret with tls.crt and tls.key entries. Used by Ingress resources to terminate HTTPS. Certificate must be valid PEM format.">i</span></div>
-      <div class="cmd-row"><code>k create secret docker-registry regcred --docker-server=&lt;url&gt; --docker-username=&lt;user&gt; --docker-password=&lt;pass&gt; --docker-email=&lt;email&gt;</code><span class="tip-icon" data-tip="Creates an imagePullSecret for private container registries. Reference it in a Pod spec under imagePullSecrets to allow pulling private images.">i</span></div>
+      <div class="cmd-row">
+        <code>k create configmap &lt;name&gt; --from-literal=KEY=val [--from-literal=KEY2=val2]</code><span
+          class="tip-icon"
+          data-tip="Creates a ConfigMap with inline key/value pairs. Each --from-literal adds one entry. Inject into pods as env vars (envFrom) or as volume files.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create configmap &lt;name&gt; --from-file=path/to/file</code><span class="tip-icon"
+          data-tip="Creates a ConfigMap where the filename becomes the key and the file contents become the value. Mount as a volume to make the file available inside the pod.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create configmap &lt;name&gt; --from-file=key=path</code><span class="tip-icon"
+          data-tip="Same as --from-file but overrides the key name. Useful when you want a specific key name regardless of the actual filename.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create secret generic &lt;name&gt; --from-literal=KEY=val</code><span
+          class="tip-icon"
+          data-tip="Creates a generic Secret. Values are base64-encoded automatically by Kubernetes. Access in pods via env vars or volume mounts.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create secret generic &lt;name&gt; --from-file=key=path</code><span class="tip-icon"
+          data-tip="Creates a Secret from a file on disk, e.g. a private key or config file. File contents are base64-encoded and stored under the specified key.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create secret tls &lt;name&gt; --cert=tls.crt --key=tls.key</code><span
+          class="tip-icon"
+          data-tip="Creates a TLS type Secret with tls.crt and tls.key entries. Used by Ingress resources to terminate HTTPS. Certificate must be valid PEM format.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create secret docker-registry regcred --docker-server=&lt;url&gt; --docker-username=&lt;user&gt; --docker-password=&lt;pass&gt; --docker-email=&lt;email&gt;</code><span
+          class="tip-icon"
+          data-tip="Creates an imagePullSecret for private container registries. Reference it in a Pod spec under imagePullSecrets to allow pulling private images.">i</span>
+      </div>
     </div>
 
     <h3>ServiceAccount</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create serviceaccount &lt;name&gt;</code><span class="tip-icon" data-tip="Creates a ServiceAccount that pods can use to authenticate to the Kubernetes API. Assign RBAC roles/bindings to control what the pod can do.">i</span></div>
-      <div class="cmd-row"><code>k create sa &lt;name&gt;</code><span class="tip-icon" data-tip="Shorthand alias for 'kubectl create serviceaccount'. Functionally identical — saves keystrokes on the exam.">i</span></div>
-      <div class="cmd-row"><code>k create token &lt;sa-name&gt;    # short-lived token (K8s 1.24+)</code><span class="tip-icon" data-tip="Generates a short-lived JWT token for a ServiceAccount (TokenRequest API). Use --duration to set expiry. Replaces the old auto-mounted long-lived secret tokens removed in K8s 1.24.">i</span></div>
+      <div class="cmd-row"><code>k create serviceaccount &lt;name&gt;</code><span class="tip-icon"
+          data-tip="Creates a ServiceAccount that pods can use to authenticate to the Kubernetes API. Assign RBAC roles/bindings to control what the pod can do.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create sa &lt;name&gt;</code><span class="tip-icon"
+          data-tip="Shorthand alias for 'kubectl create serviceaccount'. Functionally identical — saves keystrokes on the exam.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create token &lt;sa-name&gt;    # short-lived token (K8s 1.24+)</code><span
+          class="tip-icon"
+          data-tip="Generates a short-lived JWT token for a ServiceAccount (TokenRequest API). Use --duration to set expiry. Replaces the old auto-mounted long-lived secret tokens removed in K8s 1.24.">i</span>
+      </div>
     </div>
 
     <h3>Job &amp; CronJob</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create job &lt;name&gt; --image=busybox -- echo hello</code><span class="tip-icon" data-tip="Creates a Job that runs 'echo hello' once and completes. Jobs guarantee the pod runs to successful completion (exit 0). Kubernetes retries on failure.">i</span></div>
-      <div class="cmd-row"><code>k create job &lt;name&gt; --image=busybox --dry-run=client -o yaml -- echo hello</code><span class="tip-icon" data-tip="Generates Job YAML without creating it. Edit to add completions, parallelism, backoffLimit, or activeDeadlineSeconds before applying.">i</span></div>
-      <div class="cmd-row"><code>k create cronjob &lt;name&gt; --image=busybox --schedule=&quot;0 * * * *&quot; -- echo hi</code><span class="tip-icon" data-tip="Creates a CronJob that runs 'echo hi' at the top of every hour (cron syntax: min hour dom month dow). Each run spawns a new Job.">i</span></div>
-      <div class="cmd-row"><code>k create cronjob &lt;name&gt; --image=busybox --schedule=&quot;*/5 * * * *&quot; --dry-run=client -o yaml -- echo hi</code><span class="tip-icon" data-tip="Generates CronJob YAML. Edit to add concurrencyPolicy (Allow/Forbid/Replace), successfulJobsHistoryLimit, or failedJobsHistoryLimit before applying.">i</span></div>
+      <div class="cmd-row"><code>k create job &lt;name&gt; --image=busybox -- echo hello</code><span class="tip-icon"
+          data-tip="Creates a Job that runs 'echo hello' once and completes. Jobs guarantee the pod runs to successful completion (exit 0). Kubernetes retries on failure.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create job &lt;name&gt; --image=busybox --dry-run=client -o yaml -- echo hello</code><span
+          class="tip-icon"
+          data-tip="Generates Job YAML without creating it. Edit to add completions, parallelism, backoffLimit, or activeDeadlineSeconds before applying.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create cronjob &lt;name&gt; --image=busybox --schedule=&quot;0 * * * *&quot; -- echo hi</code><span
+          class="tip-icon"
+          data-tip="Creates a CronJob that runs 'echo hi' at the top of every hour (cron syntax: min hour dom month dow). Each run spawns a new Job.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create cronjob &lt;name&gt; --image=busybox --schedule=&quot;*/5 * * * *&quot; --dry-run=client -o yaml -- echo hi</code><span
+          class="tip-icon"
+          data-tip="Generates CronJob YAML. Edit to add concurrencyPolicy (Allow/Forbid/Replace), successfulJobsHistoryLimit, or failedJobsHistoryLimit before applying.">i</span>
+      </div>
     </div>
 
     <h3>RBAC</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create role &lt;name&gt; --verb=get,list,create,delete --resource=pods -n &lt;ns&gt;</code><span class="tip-icon" data-tip="Creates a namespaced Role granting specific verbs on a resource. Verbs: get, list, watch, create, update, patch, delete. Must then bind with RoleBinding to take effect.">i</span></div>
-      <div class="cmd-row"><code>k create rolebinding &lt;name&gt; --role=&lt;role&gt; --user=&lt;user&gt; -n &lt;ns&gt;</code><span class="tip-icon" data-tip="Binds a Role to a user in a specific namespace. The user gains all permissions defined in the Role — but only within that namespace.">i</span></div>
-      <div class="cmd-row"><code>k create rolebinding &lt;name&gt; --role=&lt;role&gt; --serviceaccount=&lt;ns&gt;:&lt;sa&gt; -n &lt;ns&gt;</code><span class="tip-icon" data-tip="Binds a Role to a ServiceAccount (format: namespace:serviceaccount-name). Used to grant pods (via their SA) access to namespace resources.">i</span></div>
-      <div class="cmd-row"><code>k create clusterrole &lt;name&gt; --verb=get,list --resource=nodes</code><span class="tip-icon" data-tip="Creates a cluster-scoped Role. ClusterRoles can grant access to non-namespaced resources (nodes, PVs, namespaces) or be reused across all namespaces.">i</span></div>
-      <div class="cmd-row"><code>k create clusterrolebinding &lt;name&gt; --clusterrole=&lt;name&gt; --user=&lt;user&gt;</code><span class="tip-icon" data-tip="Binds a ClusterRole to a user cluster-wide. The user can perform the allowed actions on matching resources in ALL namespaces and cluster-scoped resources.">i</span></div>
-      <div class="cmd-row"><code>k create clusterrolebinding &lt;name&gt; --clusterrole=&lt;name&gt; --serviceaccount=&lt;ns&gt;:&lt;sa&gt;</code><span class="tip-icon" data-tip="Binds a ClusterRole to a ServiceAccount cluster-wide. Common for operators or system components that need cross-namespace or node-level access.">i</span></div>
+      <div class="cmd-row">
+        <code>k create role &lt;name&gt; --verb=get,list,create,delete --resource=pods -n &lt;ns&gt;</code><span
+          class="tip-icon"
+          data-tip="Creates a namespaced Role granting specific verbs on a resource. Verbs: get, list, watch, create, update, patch, delete. Must then bind with RoleBinding to take effect.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create rolebinding &lt;name&gt; --role=&lt;role&gt; --user=&lt;user&gt; -n &lt;ns&gt;</code><span
+          class="tip-icon"
+          data-tip="Binds a Role to a user in a specific namespace. The user gains all permissions defined in the Role — but only within that namespace.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create rolebinding &lt;name&gt; --role=&lt;role&gt; --serviceaccount=&lt;ns&gt;:&lt;sa&gt; -n &lt;ns&gt;</code><span
+          class="tip-icon"
+          data-tip="Binds a Role to a ServiceAccount (format: namespace:serviceaccount-name). Used to grant pods (via their SA) access to namespace resources.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create clusterrole &lt;name&gt; --verb=get,list --resource=nodes</code><span
+          class="tip-icon"
+          data-tip="Creates a cluster-scoped Role. ClusterRoles can grant access to non-namespaced resources (nodes, PVs, namespaces) or be reused across all namespaces.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create clusterrolebinding &lt;name&gt; --clusterrole=&lt;name&gt; --user=&lt;user&gt;</code><span
+          class="tip-icon"
+          data-tip="Binds a ClusterRole to a user cluster-wide. The user can perform the allowed actions on matching resources in ALL namespaces and cluster-scoped resources.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create clusterrolebinding &lt;name&gt; --clusterrole=&lt;name&gt; --serviceaccount=&lt;ns&gt;:&lt;sa&gt;</code><span
+          class="tip-icon"
+          data-tip="Binds a ClusterRole to a ServiceAccount cluster-wide. Common for operators or system components that need cross-namespace or node-level access.">i</span>
+      </div>
     </div>
 
     <h3>Ingress</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create ingress &lt;name&gt; --rule=&quot;host/path=svc:80&quot; --dry-run=client -o yaml</code><span class="tip-icon" data-tip="Generates Ingress YAML. Rule format: host/path=serviceName:port. Omit host for a default path rule. Always dry-run first and edit to add TLS, annotations (nginx class), or multiple rules.">i</span></div>
+      <div class="cmd-row">
+        <code>k create ingress &lt;name&gt; --rule=&quot;host/path=svc:80&quot; --dry-run=client -o yaml</code><span
+          class="tip-icon"
+          data-tip="Generates Ingress YAML. Rule format: host/path=serviceName:port. Omit host for a default path rule. Always dry-run first and edit to add TLS, annotations (nginx class), or multiple rules.">i</span>
+      </div>
     </div>
 
     <h3>Generate → Edit → Apply Pattern</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k run mypod --image=nginx --dry-run=client -o yaml &gt; mypod.yaml</code><span class="tip-icon" data-tip="Step 1: Generate base YAML scaffold using imperative command. --dry-run=client prevents any API call; -o yaml outputs YAML; &gt; saves to file.">i</span></div>
-      <div class="cmd-row"><code>vi mypod.yaml   # add labels, resources, volumes, etc.</code><span class="tip-icon" data-tip="Step 2: Edit the generated YAML to add fields that have no imperative flag: resource limits, volumeMounts, env vars, readiness probes, init containers, etc.">i</span></div>
-      <div class="cmd-row"><code>k apply -f mypod.yaml</code><span class="tip-icon" data-tip="Step 3: Apply the edited YAML. 'apply' is idempotent — run again to update. On the exam this is the recommended way to create/update resources from files.">i</span></div>
-      <div class="cmd-row"><code>k edit deployment nginx</code><span class="tip-icon" data-tip="Opens the live resource YAML in your editor ($KUBE_EDITOR or vi). Changes are applied on save. Cannot change immutable fields (e.g., pod spec in some cases).">i</span></div>
-      <div class="cmd-row"><code>k replace --force -f pod.yaml</code><span class="tip-icon" data-tip="Deletes the existing resource and recreates it from file. Use when you need to change immutable fields (e.g., containerPort). WARNING: causes a brief outage.">i</span></div>
-      <div class="cmd-row"><code>k delete pod x --force --grace-period=0</code><span class="tip-icon" data-tip="Immediately terminates a stuck or terminating pod without waiting for graceful shutdown. --grace-period=0 skips the default 30s drain. Use sparingly.">i</span></div>
+      <div class="cmd-row"><code>k run mypod --image=nginx --dry-run=client -o yaml &gt; mypod.yaml</code><span
+          class="tip-icon"
+          data-tip="Step 1: Generate base YAML scaffold using imperative command. --dry-run=client prevents any API call; -o yaml outputs YAML; &gt; saves to file.">i</span>
+      </div>
+      <div class="cmd-row"><code>vi mypod.yaml   # add labels, resources, volumes, etc.</code><span class="tip-icon"
+          data-tip="Step 2: Edit the generated YAML to add fields that have no imperative flag: resource limits, volumeMounts, env vars, readiness probes, init containers, etc.">i</span>
+      </div>
+      <div class="cmd-row"><code>k apply -f mypod.yaml</code><span class="tip-icon"
+          data-tip="Step 3: Apply the edited YAML. 'apply' is idempotent — run again to update. On the exam this is the recommended way to create/update resources from files.">i</span>
+      </div>
+      <div class="cmd-row"><code>k edit deployment nginx</code><span class="tip-icon"
+          data-tip="Opens the live resource YAML in your editor ($KUBE_EDITOR or vi). Changes are applied on save. Cannot change immutable fields (e.g., pod spec in some cases).">i</span>
+      </div>
+      <div class="cmd-row"><code>k replace --force -f pod.yaml</code><span class="tip-icon"
+          data-tip="Deletes the existing resource and recreates it from file. Use when you need to change immutable fields (e.g., containerPort). WARNING: causes a brief outage.">i</span>
+      </div>
+      <div class="cmd-row"><code>k delete pod x --force --grace-period=0</code><span class="tip-icon"
+          data-tip="Immediately terminates a stuck or terminating pod without waiting for graceful shutdown. --grace-period=0 skips the default 30s drain. Use sparingly.">i</span>
+      </div>
     </div>
 
     <div class="tip"><strong>TIP:</strong> Always add <code>-n &lt;namespace&gt;</code> or
@@ -657,68 +948,159 @@
 
     <h3>Inspect &amp; Debug</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k get pods -A -o wide</code><span class="tip-icon" data-tip="Lists all pods in ALL namespaces (-A = --all-namespaces). -o wide adds extra columns: node name, IP, nominated node. Great for a cluster-wide overview.">i</span></div>
-      <div class="cmd-row"><code>k get all -n &lt;ns&gt;</code><span class="tip-icon" data-tip="Shows Pods, Services, Deployments, ReplicaSets, StatefulSets, DaemonSets, Jobs, and CronJobs in the given namespace. Does NOT include ConfigMaps, Secrets, PVCs etc.">i</span></div>
-      <div class="cmd-row"><code>k describe pod &lt;name&gt;</code><span class="tip-icon" data-tip="Prints detailed info: events, conditions, container state, resource requests/limits, volumes, node assignment. First place to look when a pod is stuck in Pending or CrashLoopBackOff.">i</span></div>
-      <div class="cmd-row"><code>k logs &lt;pod&gt; [-c &lt;container&gt;] [--previous] [-f]</code><span class="tip-icon" data-tip="Streams container stdout/stderr. -c selects a container in multi-container pods. --previous fetches logs of the last crashed container. -f follows/tails live output.">i</span></div>
-      <div class="cmd-row"><code>k exec -it &lt;pod&gt; -- sh</code><span class="tip-icon" data-tip="Opens an interactive shell inside the running container. -i keeps stdin open, -t allocates a pseudo-TTY. Use 'bash' instead of 'sh' if the image has bash.">i</span></div>
-      <div class="cmd-row"><code>k exec -it &lt;pod&gt; -c &lt;container&gt; -- sh</code><span class="tip-icon" data-tip="Same as above but targets a specific container by name. Required in multi-container pods (sidecars, init containers that are still running, etc.).">i</span></div>
-      <div class="cmd-row"><code>k get events --sort-by='.lastTimestamp'</code><span class="tip-icon" data-tip="Lists cluster events sorted by time (newest last). Crucial for diagnosing image pull failures, scheduling errors, OOM kills, and node issues in the current namespace.">i</span></div>
-      <div class="cmd-row"><code>k get events -A --sort-by='.lastTimestamp'</code><span class="tip-icon" data-tip="Same as above but across all namespaces. Add --field-selector type=Warning to filter only warning events and reduce noise.">i</span></div>
-      <div class="cmd-row"><code>k top nodes</code><span class="tip-icon" data-tip="Shows live CPU and memory usage per node. Requires metrics-server to be installed. Use to identify resource pressure before scheduling new workloads.">i</span></div>
-      <div class="cmd-row"><code>k top pods --sort-by=memory</code><span class="tip-icon" data-tip="Lists pod resource usage sorted by memory consumption. Useful for spotting memory leaks or oversized pods that could be evicted.">i</span></div>
-      <div class="cmd-row"><code>k top pods --sort-by=cpu</code><span class="tip-icon" data-tip="Lists pod resource usage sorted by CPU consumption. Add -A for all namespaces. Add -n &lt;ns&gt; to scope to a namespace.">i</span></div>
+      <div class="cmd-row"><code>k get pods -A -o wide</code><span class="tip-icon"
+          data-tip="Lists all pods in ALL namespaces (-A = --all-namespaces). -o wide adds extra columns: node name, IP, nominated node. Great for a cluster-wide overview.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get all -n &lt;ns&gt;</code><span class="tip-icon"
+          data-tip="Shows Pods, Services, Deployments, ReplicaSets, StatefulSets, DaemonSets, Jobs, and CronJobs in the given namespace. Does NOT include ConfigMaps, Secrets, PVCs etc.">i</span>
+      </div>
+      <div class="cmd-row"><code>k describe pod &lt;name&gt;</code><span class="tip-icon"
+          data-tip="Prints detailed info: events, conditions, container state, resource requests/limits, volumes, node assignment. First place to look when a pod is stuck in Pending or CrashLoopBackOff.">i</span>
+      </div>
+      <div class="cmd-row"><code>k logs &lt;pod&gt; [-c &lt;container&gt;] [--previous] [-f]</code><span
+          class="tip-icon"
+          data-tip="Streams container stdout/stderr. -c selects a container in multi-container pods. --previous fetches logs of the last crashed container. -f follows/tails live output.">i</span>
+      </div>
+      <div class="cmd-row"><code>k exec -it &lt;pod&gt; -- sh</code><span class="tip-icon"
+          data-tip="Opens an interactive shell inside the running container. -i keeps stdin open, -t allocates a pseudo-TTY. Use 'bash' instead of 'sh' if the image has bash.">i</span>
+      </div>
+      <div class="cmd-row"><code>k exec -it &lt;pod&gt; -c &lt;container&gt; -- sh</code><span class="tip-icon"
+          data-tip="Same as above but targets a specific container by name. Required in multi-container pods (sidecars, init containers that are still running, etc.).">i</span>
+      </div>
+      <div class="cmd-row"><code>k get events --sort-by='.lastTimestamp'</code><span class="tip-icon"
+          data-tip="Lists cluster events sorted by time (newest last). Crucial for diagnosing image pull failures, scheduling errors, OOM kills, and node issues in the current namespace.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get events -A --sort-by='.lastTimestamp'</code><span class="tip-icon"
+          data-tip="Same as above but across all namespaces. Add --field-selector type=Warning to filter only warning events and reduce noise.">i</span>
+      </div>
+      <div class="cmd-row"><code>k top nodes</code><span class="tip-icon"
+          data-tip="Shows live CPU and memory usage per node. Requires metrics-server to be installed. Use to identify resource pressure before scheduling new workloads.">i</span>
+      </div>
+      <div class="cmd-row"><code>k top pods --sort-by=memory</code><span class="tip-icon"
+          data-tip="Lists pod resource usage sorted by memory consumption. Useful for spotting memory leaks or oversized pods that could be evicted.">i</span>
+      </div>
+      <div class="cmd-row"><code>k top pods --sort-by=cpu</code><span class="tip-icon"
+          data-tip="Lists pod resource usage sorted by CPU consumption. Add -A for all namespaces. Add -n &lt;ns&gt; to scope to a namespace.">i</span>
+      </div>
     </div>
 
     <h3>Docs in Terminal (Exam Allowed)</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k explain pod</code><span class="tip-icon" data-tip="Displays the API schema and description for the Pod resource. Shows top-level fields, types, and a short description. No internet needed — works offline in the exam.">i</span></div>
-      <div class="cmd-row"><code>k explain pod.spec.containers</code><span class="tip-icon" data-tip="Drills into the containers array field of pod.spec. Shows all container sub-fields (image, ports, env, command, args, etc.) with their types and descriptions.">i</span></div>
-      <div class="cmd-row"><code>k explain pod.spec.containers.resources</code><span class="tip-icon" data-tip="Shows the resources field structure: requests (guaranteed minimum) and limits (maximum CPU/memory). Use to confirm the exact field names before writing YAML.">i</span></div>
-      <div class="cmd-row"><code>k explain deployment.spec --recursive</code><span class="tip-icon" data-tip="Prints the entire field tree of deployment.spec in a collapsed hierarchy. --recursive shows all nested fields at once — great for discovering deeply nested field names quickly.">i</span></div>
-      <div class="cmd-row"><code>k api-resources          # list all resource types</code><span class="tip-icon" data-tip="Lists every resource type the cluster supports: shortName, API group, namespaced flag, and kind. Use to find the correct resource name and group (e.g., 'ingresses' in 'networking.k8s.io').">i</span></div>
-      <div class="cmd-row"><code>k api-resources --namespaced=true</code><span class="tip-icon" data-tip="Filters to only namespace-scoped resources (pods, deployments, services, etc.). Helpful to confirm whether a resource type requires -n &lt;namespace&gt;.">i</span></div>
-      <div class="cmd-row"><code>k api-resources --namespaced=false</code><span class="tip-icon" data-tip="Filters to only cluster-scoped resources (nodes, PersistentVolumes, ClusterRoles, Namespaces, etc.). These exist outside any namespace.">i</span></div>
-      <div class="cmd-row"><code>k api-versions           # list all API versions</code><span class="tip-icon" data-tip="Lists all API groups and versions available in the cluster (e.g., apps/v1, networking.k8s.io/v1). Use this to set the correct apiVersion in YAML manifests.">i</span></div>
+      <div class="cmd-row"><code>k explain pod</code><span class="tip-icon"
+          data-tip="Displays the API schema and description for the Pod resource. Shows top-level fields, types, and a short description. No internet needed — works offline in the exam.">i</span>
+      </div>
+      <div class="cmd-row"><code>k explain pod.spec.containers</code><span class="tip-icon"
+          data-tip="Drills into the containers array field of pod.spec. Shows all container sub-fields (image, ports, env, command, args, etc.) with their types and descriptions.">i</span>
+      </div>
+      <div class="cmd-row"><code>k explain pod.spec.containers.resources</code><span class="tip-icon"
+          data-tip="Shows the resources field structure: requests (guaranteed minimum) and limits (maximum CPU/memory). Use to confirm the exact field names before writing YAML.">i</span>
+      </div>
+      <div class="cmd-row"><code>k explain deployment.spec --recursive</code><span class="tip-icon"
+          data-tip="Prints the entire field tree of deployment.spec in a collapsed hierarchy. --recursive shows all nested fields at once — great for discovering deeply nested field names quickly.">i</span>
+      </div>
+      <div class="cmd-row"><code>k api-resources          # list all resource types</code><span class="tip-icon"
+          data-tip="Lists every resource type the cluster supports: shortName, API group, namespaced flag, and kind. Use to find the correct resource name and group (e.g., 'ingresses' in 'networking.k8s.io').">i</span>
+      </div>
+      <div class="cmd-row"><code>k api-resources --namespaced=true</code><span class="tip-icon"
+          data-tip="Filters to only namespace-scoped resources (pods, deployments, services, etc.). Helpful to confirm whether a resource type requires -n &lt;namespace&gt;.">i</span>
+      </div>
+      <div class="cmd-row"><code>k api-resources --namespaced=false</code><span class="tip-icon"
+          data-tip="Filters to only cluster-scoped resources (nodes, PersistentVolumes, ClusterRoles, Namespaces, etc.). These exist outside any namespace.">i</span>
+      </div>
+      <div class="cmd-row"><code>k api-versions           # list all API versions</code><span class="tip-icon"
+          data-tip="Lists all API groups and versions available in the cluster (e.g., apps/v1, networking.k8s.io/v1). Use this to set the correct apiVersion in YAML manifests.">i</span>
+      </div>
     </div>
 
     <h3>Edit / Patch / Delete</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k edit deploy &lt;name&gt;</code><span class="tip-icon" data-tip="Opens the live Deployment YAML in your $KUBE_EDITOR (default: vi). Changes apply on save. Cannot change immutable fields; use 'replace --force' for those.">i</span></div>
-      <div class="cmd-row"><code>k patch svc s1 -p '{&quot;spec&quot;:{&quot;type&quot;:&quot;NodePort&quot;}}'</code><span class="tip-icon" data-tip="Applies a strategic merge patch to a resource inline without opening an editor. Ideal for changing a single field quickly. -p accepts JSON. Use --type=json for JSON Patch or --type=merge for a plain merge patch.">i</span></div>
-      <div class="cmd-row"><code>k replace --force -f pod.yaml</code><span class="tip-icon" data-tip="Deletes the existing resource immediately, then recreates it from file. Required to change immutable fields (e.g., container ports). Causes a brief outage — use only when necessary.">i</span></div>
-      <div class="cmd-row"><code>k delete pod x --force --grace-period=0</code><span class="tip-icon" data-tip="Immediately terminates a Pod, bypassing the default 30-second graceful shutdown window. Use on stuck or Terminating pods. Data in emptyDir volumes is lost immediately.">i</span></div>
+      <div class="cmd-row"><code>k edit deploy &lt;name&gt;</code><span class="tip-icon"
+          data-tip="Opens the live Deployment YAML in your $KUBE_EDITOR (default: vi). Changes apply on save. Cannot change immutable fields; use 'replace --force' for those.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k patch svc s1 -p '{&quot;spec&quot;:{&quot;type&quot;:&quot;NodePort&quot;}}'</code><span
+          class="tip-icon"
+          data-tip="Applies a strategic merge patch to a resource inline without opening an editor. Ideal for changing a single field quickly. -p accepts JSON. Use --type=json for JSON Patch or --type=merge for a plain merge patch.">i</span>
+      </div>
+      <div class="cmd-row"><code>k replace --force -f pod.yaml</code><span class="tip-icon"
+          data-tip="Deletes the existing resource immediately, then recreates it from file. Required to change immutable fields (e.g., container ports). Causes a brief outage — use only when necessary.">i</span>
+      </div>
+      <div class="cmd-row"><code>k delete pod x --force --grace-period=0</code><span class="tip-icon"
+          data-tip="Immediately terminates a Pod, bypassing the default 30-second graceful shutdown window. Use on stuck or Terminating pods. Data in emptyDir volumes is lost immediately.">i</span>
+      </div>
     </div>
 
     <h3>Label / Annotate</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k label pod &lt;name&gt; env=prod</code><span class="tip-icon" data-tip="Adds or sets the label 'env=prod' on the pod. Labels are key/value metadata used by selectors in Services, NetworkPolicies, and scheduling rules.">i</span></div>
-      <div class="cmd-row"><code>k label pod &lt;name&gt; env=staging --overwrite</code><span class="tip-icon" data-tip="Updates an existing label value. Without --overwrite, kubectl rejects the command if the label key already exists to prevent accidental overwrites.">i</span></div>
-      <div class="cmd-row"><code>k label pod &lt;name&gt; env-                      # remove label</code><span class="tip-icon" data-tip="Removes the 'env' label from the pod. The trailing dash (-) is the kubectl syntax to delete a label key. Does not affect other labels.">i</span></div>
-      <div class="cmd-row"><code>k label node &lt;name&gt; disk=ssd</code><span class="tip-icon" data-tip="Adds a label to a node. Node labels are used by nodeSelector and nodeAffinity in pod specs to constrain scheduling to specific nodes.">i</span></div>
-      <div class="cmd-row"><code>k annotate pod &lt;name&gt; key=value</code><span class="tip-icon" data-tip="Adds a non-identifying annotation to the pod. Annotations store arbitrary metadata (build info, owner, URLs) not used for selection — unlike labels.">i</span></div>
-      <div class="cmd-row"><code>k get pods --selector app=web</code><span class="tip-icon" data-tip="Filters pods by label selector. Only pods with 'app=web' are returned. Equivalent to -l app=web. Works with any resource type.">i</span></div>
-      <div class="cmd-row"><code>k get pods --selector app=web,env=prod       # AND logic</code><span class="tip-icon" data-tip="Multiple comma-separated selectors are ANDed — returns pods that match ALL conditions. There is no built-in OR selector in kubectl; use -o json | jq for complex filtering.">i</span></div>
-      <div class="cmd-row"><code>k get pods --show-labels</code><span class="tip-icon" data-tip="Adds a LABELS column to the output showing all key=value pairs on each pod. Useful to inspect what labels are currently set before running a selector.">i</span></div>
-      <div class="cmd-row"><code>k get pods -L app,env                        # show as columns</code><span class="tip-icon" data-tip="Shows specific label keys as individual columns in the output. Cleaner than --show-labels when you only care about a few specific labels.">i</span></div>
-      <div class="cmd-row"><code>k get pods --selector env=production --no-headers | wc -l</code><span class="tip-icon" data-tip="Counts pods matching the selector. --no-headers suppresses the header row so wc -l counts only data lines. Common exam pattern for 'how many pods are in production?'">i</span></div>
+      <div class="cmd-row"><code>k label pod &lt;name&gt; env=prod</code><span class="tip-icon"
+          data-tip="Adds or sets the label 'env=prod' on the pod. Labels are key/value metadata used by selectors in Services, NetworkPolicies, and scheduling rules.">i</span>
+      </div>
+      <div class="cmd-row"><code>k label pod &lt;name&gt; env=staging --overwrite</code><span class="tip-icon"
+          data-tip="Updates an existing label value. Without --overwrite, kubectl rejects the command if the label key already exists to prevent accidental overwrites.">i</span>
+      </div>
+      <div class="cmd-row"><code>k label pod &lt;name&gt; env-                      # remove label</code><span
+          class="tip-icon"
+          data-tip="Removes the 'env' label from the pod. The trailing dash (-) is the kubectl syntax to delete a label key. Does not affect other labels.">i</span>
+      </div>
+      <div class="cmd-row"><code>k label node &lt;name&gt; disk=ssd</code><span class="tip-icon"
+          data-tip="Adds a label to a node. Node labels are used by nodeSelector and nodeAffinity in pod specs to constrain scheduling to specific nodes.">i</span>
+      </div>
+      <div class="cmd-row"><code>k annotate pod &lt;name&gt; key=value</code><span class="tip-icon"
+          data-tip="Adds a non-identifying annotation to the pod. Annotations store arbitrary metadata (build info, owner, URLs) not used for selection — unlike labels.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get pods --selector app=web</code><span class="tip-icon"
+          data-tip="Filters pods by label selector. Only pods with 'app=web' are returned. Equivalent to -l app=web. Works with any resource type.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get pods --selector app=web,env=prod       # AND logic</code><span class="tip-icon"
+          data-tip="Multiple comma-separated selectors are ANDed — returns pods that match ALL conditions. There is no built-in OR selector in kubectl; use -o json | jq for complex filtering.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get pods --show-labels</code><span class="tip-icon"
+          data-tip="Adds a LABELS column to the output showing all key=value pairs on each pod. Useful to inspect what labels are currently set before running a selector.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get pods -L app,env                        # show as columns</code><span
+          class="tip-icon"
+          data-tip="Shows specific label keys as individual columns in the output. Cleaner than --show-labels when you only care about a few specific labels.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get pods --selector env=production --no-headers | wc -l</code><span class="tip-icon"
+          data-tip="Counts pods matching the selector. --no-headers suppresses the header row so wc -l counts only data lines. Common exam pattern for 'how many pods are in production?'">i</span>
+      </div>
     </div>
 
     <h3>Context &amp; Namespace</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k config use-context &lt;ctx&gt;</code><span class="tip-icon" data-tip="Switches the active kubeconfig context. Each context bundles a cluster, user, and namespace. On the CKA exam you are always told to switch context first — do this before every task.">i</span></div>
-      <div class="cmd-row"><code>k config current-context</code><span class="tip-icon" data-tip="Prints the name of the currently active context. Run this to confirm you are on the right cluster before executing exam tasks.">i</span></div>
-      <div class="cmd-row"><code>k config get-contexts</code><span class="tip-icon" data-tip="Lists all contexts defined in your kubeconfig with their cluster, user, and namespace. The active context is marked with an asterisk (*) in the CURRENT column.">i</span></div>
-      <div class="cmd-row"><code>k config set-context --current --namespace=dev</code><span class="tip-icon" data-tip="Sets a default namespace for the current context so you don't need -n dev on every command. Lasts for the life of the context or until changed.">i</span></div>
-      <div class="cmd-row"><code>k config view</code><span class="tip-icon" data-tip="Prints the full merged kubeconfig file (clusters, users, contexts). Use --minify to show only the active context. Add -o jsonpath to extract a specific field.">i</span></div>
+      <div class="cmd-row"><code>k config use-context &lt;ctx&gt;</code><span class="tip-icon"
+          data-tip="Switches the active kubeconfig context. Each context bundles a cluster, user, and namespace. On the CKA exam you are always told to switch context first — do this before every task.">i</span>
+      </div>
+      <div class="cmd-row"><code>k config current-context</code><span class="tip-icon"
+          data-tip="Prints the name of the currently active context. Run this to confirm you are on the right cluster before executing exam tasks.">i</span>
+      </div>
+      <div class="cmd-row"><code>k config get-contexts</code><span class="tip-icon"
+          data-tip="Lists all contexts defined in your kubeconfig with their cluster, user, and namespace. The active context is marked with an asterisk (*) in the CURRENT column.">i</span>
+      </div>
+      <div class="cmd-row"><code>k config set-context --current --namespace=dev</code><span class="tip-icon"
+          data-tip="Sets a default namespace for the current context so you don't need -n dev on every command. Lasts for the life of the context or until changed.">i</span>
+      </div>
+      <div class="cmd-row"><code>k config view</code><span class="tip-icon"
+          data-tip="Prints the full merged kubeconfig file (clusters, users, contexts). Use --minify to show only the active context. Add -o jsonpath to extract a specific field.">i</span>
+      </div>
     </div>
 
     <h3>Node Maintenance</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k cordon &lt;node&gt;</code><span class="tip-icon" data-tip="Marks the node as unschedulable (SchedulingDisabled). Existing pods continue to run; no new pods will be scheduled on this node. First step before draining for maintenance.">i</span></div>
-      <div class="cmd-row"><code>k drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data</code><span class="tip-icon" data-tip="Evicts all pods from the node (respecting PodDisruptionBudgets). --ignore-daemonsets skips DaemonSet-managed pods (they cannot be removed). --delete-emptydir-data allows evicting pods with emptyDir volumes (data is lost).">i</span></div>
-      <div class="cmd-row"><code>k drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data --force</code><span class="tip-icon" data-tip="Same as above but also evicts pods not managed by a controller (bare pods). Without --force, drain refuses to evict unmanaged pods since they won't be rescheduled.">i</span></div>
-      <div class="cmd-row"><code>k uncordon &lt;node&gt;</code><span class="tip-icon" data-tip="Re-enables scheduling on the node after maintenance. The node becomes eligible to receive new pods again. Run after kubeadm upgrade or node patching is complete.">i</span></div>
+      <div class="cmd-row"><code>k cordon &lt;node&gt;</code><span class="tip-icon"
+          data-tip="Marks the node as unschedulable (SchedulingDisabled). Existing pods continue to run; no new pods will be scheduled on this node. First step before draining for maintenance.">i</span>
+      </div>
+      <div class="cmd-row"><code>k drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data</code><span
+          class="tip-icon"
+          data-tip="Evicts all pods from the node (respecting PodDisruptionBudgets). --ignore-daemonsets skips DaemonSet-managed pods (they cannot be removed). --delete-emptydir-data allows evicting pods with emptyDir volumes (data is lost).">i</span>
+      </div>
+      <div class="cmd-row"><code>k drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data --force</code><span
+          class="tip-icon"
+          data-tip="Same as above but also evicts pods not managed by a controller (bare pods). Without --force, drain refuses to evict unmanaged pods since they won't be rescheduled.">i</span>
+      </div>
+      <div class="cmd-row"><code>k uncordon &lt;node&gt;</code><span class="tip-icon"
+          data-tip="Re-enables scheduling on the node after maintenance. The node becomes eligible to receive new pods again. Run after kubeadm upgrade or node patching is complete.">i</span>
+      </div>
     </div>
 
     <hr>
@@ -745,11 +1127,21 @@
 
     <h3>crictl Commands (CRI debugging)</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>crictl ps -a</code><span class="tip-icon" data-tip="Lists all containers on the node, including both running and stopped. Shows container ID, image, state, and name. Essential for debugging CRI issues when kubectl commands fail.">i</span></div>
-      <div class="cmd-row"><code>crictl images</code><span class="tip-icon" data-tip="Lists all container images cached on the node. Shows image ID, repository tag, and size. Use to verify if an image is already present or check for disk space issues.">i</span></div>
-      <div class="cmd-row"><code>crictl pods</code><span class="tip-icon" data-tip="Lists all pods on the node (even if not in API server). Shows pod ID, name, namespace, and state. Useful when investigating pods that don't appear in kubectl get pods.">i</span></div>
-      <div class="cmd-row"><code>crictl logs &lt;container-id&gt;</code><span class="tip-icon" data-tip="Fetches container logs directly from the CRI runtime. Use when kubectl logs fails due to API issues or for containers in non-Running state.">i</span></div>
-      <div class="cmd-row"><code>crictl inspect &lt;container-id&gt;</code><span class="tip-icon" data-tip="Prints detailed metadata about a container including image, mounts, network namespace, environment variables, and runtime config. JSON output — useful for scripting.">i</span></div>
+      <div class="cmd-row"><code>crictl ps -a</code><span class="tip-icon"
+          data-tip="Lists all containers on the node, including both running and stopped. Shows container ID, image, state, and name. Essential for debugging CRI issues when kubectl commands fail.">i</span>
+      </div>
+      <div class="cmd-row"><code>crictl images</code><span class="tip-icon"
+          data-tip="Lists all container images cached on the node. Shows image ID, repository tag, and size. Use to verify if an image is already present or check for disk space issues.">i</span>
+      </div>
+      <div class="cmd-row"><code>crictl pods</code><span class="tip-icon"
+          data-tip="Lists all pods on the node (even if not in API server). Shows pod ID, name, namespace, and state. Useful when investigating pods that don't appear in kubectl get pods.">i</span>
+      </div>
+      <div class="cmd-row"><code>crictl logs &lt;container-id&gt;</code><span class="tip-icon"
+          data-tip="Fetches container logs directly from the CRI runtime. Use when kubectl logs fails due to API issues or for containers in non-Running state.">i</span>
+      </div>
+      <div class="cmd-row"><code>crictl inspect &lt;container-id&gt;</code><span class="tip-icon"
+          data-tip="Prints detailed metadata about a container including image, mounts, network namespace, environment variables, and runtime config. JSON output — useful for scripting.">i</span>
+      </div>
     </div>
 
     <hr>
@@ -983,10 +1375,19 @@ spec:
     </p>
     <p><strong>Effects:</strong> NoSchedule | PreferNoSchedule | NoExecute (evicts existing pods)</p>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k taint nodes node01 app=blue:NoSchedule</code><span class="tip-icon" data-tip="Adds a taint to a node. Format: key=value:Effect. NoSchedule prevents new pods unless they tolerate the taint. Existing pods are NOT affected — use NoExecute for that.">i</span></div>
-      <div class="cmd-row"><code>k taint nodes node01 app=blue:NoSchedule-</code><span class="tip-icon" data-tip="Removes a specific taint from a node. The trailing minus (-) must match the exact taint (key=value:Effect). Without it, the taint is added instead of removed.">i</span></div>
-      <div class="cmd-row"><code>k taint nodes controlplane node-role.kubernetes.io/control-plane:NoSchedule-</code><span class="tip-icon" data-tip="Removes the control-plane taint that prevents user pods from scheduling on the control plane. Essential for setting up single-node clusters (e.g. minikube, lab environments).">i</span></div>
-      <div class="cmd-row"><code>k describe node node01 | grep -i taint</code><span class="tip-icon" data-tip="Shows all taints on a node along with their effects and toleration seconds. Useful to verify current taints before scheduling pods or applying tolerations.">i</span></div>
+      <div class="cmd-row"><code>k taint nodes node01 app=blue:NoSchedule</code><span class="tip-icon"
+          data-tip="Adds a taint to a node. Format: key=value:Effect. NoSchedule prevents new pods unless they tolerate the taint. Existing pods are NOT affected — use NoExecute for that.">i</span>
+      </div>
+      <div class="cmd-row"><code>k taint nodes node01 app=blue:NoSchedule-</code><span class="tip-icon"
+          data-tip="Removes a specific taint from a node. The trailing minus (-) must match the exact taint (key=value:Effect). Without it, the taint is added instead of removed.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k taint nodes controlplane node-role.kubernetes.io/control-plane:NoSchedule-</code><span class="tip-icon"
+          data-tip="Removes the control-plane taint that prevents user pods from scheduling on the control plane. Essential for setting up single-node clusters (e.g. minikube, lab environments).">i</span>
+      </div>
+      <div class="cmd-row"><code>k describe node node01 | grep -i taint</code><span class="tip-icon"
+          data-tip="Shows all taints on a node along with their effects and toleration seconds. Useful to verify current taints before scheduling pods or applying tolerations.">i</span>
+      </div>
     </div>
 
     <h3>Toleration in Pod YAML</h3>
@@ -1004,8 +1405,12 @@ spec:
 
     <h2>nodeSelector (Simplest)</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k label nodes node01 size=Large</code><span class="tip-icon" data-tip="Adds a label to a node for use with nodeSelector or nodeAffinity. Format: key=value. Labels persist until explicitly removed or the node is deleted.">i</span></div>
-      <div class="cmd-row"><code>k label nodes node01 size-</code><span class="tip-icon" data-tip="Removes the 'size' label from a node. The trailing dash (-) deletes the label key. Pods previously constrained by nodeSelector to this label can now scatter to other nodes.">i</span></div>
+      <div class="cmd-row"><code>k label nodes node01 size=Large</code><span class="tip-icon"
+          data-tip="Adds a label to a node for use with nodeSelector or nodeAffinity. Format: key=value. Labels persist until explicitly removed or the node is deleted.">i</span>
+      </div>
+      <div class="cmd-row"><code>k label nodes node01 size-</code><span class="tip-icon"
+          data-tip="Removes the 'size' label from a node. The trailing dash (-) deletes the label key. Pods previously constrained by nodeSelector to this label can now scatter to other nodes.">i</span>
+      </div>
     </div>
     <h3>⚡ Imperative → YAML Workflow</h3>
     <div class="imp-block">
@@ -1059,9 +1464,15 @@ k apply -f pod.yaml</code></pre>
 
     <h2>Dedicated Nodes Pattern (Taint + Affinity)</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k taint nodes node01 dedicated=team-a:NoSchedule</code><span class="tip-icon" data-tip="Step 1: Taint the node to repel general pods. Only pods with the matching toleration can be scheduled.">i</span></div>
-      <div class="cmd-row"><code>k label nodes node01 dedicated=team-a</code><span class="tip-icon" data-tip="Step 2: Label the node with the same key. Used for nodeAffinity to ensure only the team's pods (with toleration) land on this node.">i</span></div>
-      <div class="cmd-row"><code>Pod spec: toleration + nodeAffinity (see YAML)</code><span class="tip-icon" data-tip="Step 3: Pod must have a matching toleration (to pass the taint) AND nodeAffinity/nodeSelector pointing to the label. Together they guarantee the pod only runs on dedicated nodes.">i</span></div>
+      <div class="cmd-row"><code>k taint nodes node01 dedicated=team-a:NoSchedule</code><span class="tip-icon"
+          data-tip="Step 1: Taint the node to repel general pods. Only pods with the matching toleration can be scheduled.">i</span>
+      </div>
+      <div class="cmd-row"><code>k label nodes node01 dedicated=team-a</code><span class="tip-icon"
+          data-tip="Step 2: Label the node with the same key. Used for nodeAffinity to ensure only the team's pods (with toleration) land on this node.">i</span>
+      </div>
+      <div class="cmd-row"><code>Pod spec: toleration + nodeAffinity (see YAML)</code><span class="tip-icon"
+          data-tip="Step 3: Pod must have a matching toleration (to pass the taint) AND nodeAffinity/nodeSelector pointing to the label. Together they guarantee the pod only runs on dedicated nodes.">i</span>
+      </div>
     </div>
 
     <hr>
@@ -1087,10 +1498,18 @@ k apply -f pod.yaml</code></pre>
     <p><strong>QoS Classes:</strong> Guaranteed (requests==limits) &gt; Burstable (requests&lt;limits) &gt; BestEffort
       (no requests/limits)</p>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k get pod x -o jsonpath='{.status.qosClass}'</code><span class="tip-icon" data-tip="Checks the QoS class assigned to a pod. Returns: Guaranteed, Burstable, or BestEffort. Determines eviction priority during node memory pressure.">i</span></div>
-      <div class="cmd-row"><code>k top nodes</code><span class="tip-icon" data-tip="Shows current CPU and memory usage per node. Requires metrics-server addon. Helps identify resource constraints before scheduling new pods.">i</span></div>
-      <div class="cmd-row"><code>k top pods --sort-by=memory</code><span class="tip-icon" data-tip="Lists pods sorted by memory consumption (highest first). Add -A for all namespaces. Use to spot memory hogs and potential leaks.">i</span></div>
-      <div class="cmd-row"><code>k describe node node01 | grep -A 10 "Allocated resources"</code><span class="tip-icon" data-tip="Shows total node capacity and allocated/requested resources from running pods. Helps determine how much headroom remains for new pods.">i</span></div>
+      <div class="cmd-row"><code>k get pod x -o jsonpath='{.status.qosClass}'</code><span class="tip-icon"
+          data-tip="Checks the QoS class assigned to a pod. Returns: Guaranteed, Burstable, or BestEffort. Determines eviction priority during node memory pressure.">i</span>
+      </div>
+      <div class="cmd-row"><code>k top nodes</code><span class="tip-icon"
+          data-tip="Shows current CPU and memory usage per node. Requires metrics-server addon. Helps identify resource constraints before scheduling new pods.">i</span>
+      </div>
+      <div class="cmd-row"><code>k top pods --sort-by=memory</code><span class="tip-icon"
+          data-tip="Lists pods sorted by memory consumption (highest first). Add -A for all namespaces. Use to spot memory hogs and potential leaks.">i</span>
+      </div>
+      <div class="cmd-row"><code>k describe node node01 | grep -A 10 "Allocated resources"</code><span class="tip-icon"
+          data-tip="Shows total node capacity and allocated/requested resources from running pods. Helps determine how much headroom remains for new pods.">i</span>
+      </div>
     </div>
 
     <h2>LimitRange (per-container defaults)</h2>
@@ -1282,11 +1701,24 @@ spec:
     <p>Naming: node name appended (e.g., <code>kube-apiserver-controlplane</code>).</p>
 
     <div class="cmd-table">
-      <div class="cmd-row"><code>ps aux | grep kubelet | grep config</code><span class="tip-icon" data-tip="Finds the kubelet process and identifies the config file path. Look for --config=/var/lib/kubelet/config.yaml to confirm the kubelet config location.">i</span></div>
-      <div class="cmd-row"><code>cat /var/lib/kubelet/config.yaml | grep staticPodPath</code><span class="tip-icon" data-tip="Extracts the staticPodPath setting from kubelet config. Default is usually /etc/kubernetes/manifests/. This is where kubelet watches for pod YAML files.">i</span></div>
-      <div class="cmd-row"><code>cat &lt;&lt;EOF &gt; /etc/kubernetes/manifests/static-nginx.yaml</code><span class="tip-icon" data-tip="Creates a static pod YAML file in the kubelet watch directory. The kubelet automatically detects and runs it. No need to kubectl apply — kubelet manages it directly.">i</span></div>
-      <div class="cmd-row"><code>rm /etc/kubernetes/manifests/static-nginx.yaml</code><span class="tip-icon" data-tip="Deletes the static pod. The kubelet detects the deletion and terminates the pod. kubectl delete pod won't work permanently because kubelet will recreate it from the file.">i</span></div>
-      <div class="cmd-row"><code>k get pod kube-apiserver-controlplane -n kube-system -o jsonpath='{.metadata.ownerReferences[*].kind}'</code><span class="tip-icon" data-tip="Verifies the pod is static by checking its ownerReference. Static pods have ownerReferences.kind == 'Node', while API pods have 'ReplicaSet' or other controllers.">i</span></div>
+      <div class="cmd-row"><code>ps aux | grep kubelet | grep config</code><span class="tip-icon"
+          data-tip="Finds the kubelet process and identifies the config file path. Look for --config=/var/lib/kubelet/config.yaml to confirm the kubelet config location.">i</span>
+      </div>
+      <div class="cmd-row"><code>cat /var/lib/kubelet/config.yaml | grep staticPodPath</code><span class="tip-icon"
+          data-tip="Extracts the staticPodPath setting from kubelet config. Default is usually /etc/kubernetes/manifests/. This is where kubelet watches for pod YAML files.">i</span>
+      </div>
+      <div class="cmd-row"><code>cat &lt;&lt;EOF &gt; /etc/kubernetes/manifests/static-nginx.yaml</code><span
+          class="tip-icon"
+          data-tip="Creates a static pod YAML file in the kubelet watch directory. The kubelet automatically detects and runs it. No need to kubectl apply — kubelet manages it directly.">i</span>
+      </div>
+      <div class="cmd-row"><code>rm /etc/kubernetes/manifests/static-nginx.yaml</code><span class="tip-icon"
+          data-tip="Deletes the static pod. The kubelet detects the deletion and terminates the pod. kubectl delete pod won't work permanently because kubelet will recreate it from the file.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k get pod kube-apiserver-controlplane -n kube-system -o jsonpath='{.metadata.ownerReferences[*].kind}'</code><span
+          class="tip-icon"
+          data-tip="Verifies the pod is static by checking its ownerReference. Static pods have ownerReferences.kind == 'Node', while API pods have 'ReplicaSet' or other controllers.">i</span>
+      </div>
     </div>
 
     <hr>
@@ -1300,15 +1732,33 @@ spec:
       <strong>ConfigMaps are best created imperatively:</strong>
     </div>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create configmap app-config --from-literal=APP_COLOR=blue --from-literal=APP_MODE=prod</code><span class="tip-icon" data-tip="Creates ConfigMap from inline key=value pairs. Each --from-literal creates one entry. Fastest method for exam, especially for small configs.">i</span></div>
-      <div class="cmd-row"><code>k create configmap app-config --from-file=app.properties</code><span class="tip-icon" data-tip="Creates ConfigMap from a file. The filename becomes the key, file contents become the value. Use --from-file=key=path to customize the key name.">i</span></div>
-      <div class="cmd-row"><code>k create configmap app-config --from-file=config-key=/path/to/file</code><span class="tip-icon" data-tip="Creates ConfigMap with a specific key name. Format: --from-file=KEY=path. Useful when the source filename doesn't match the desired config key.">i</span></div>
-      <div class="cmd-row"><code>k create configmap app-config --from-literal=APP_COLOR=blue --dry-run=client -o yaml &gt; cm.yaml</code><span class="tip-icon" data-tip="Generates ConfigMap YAML without creating it. Useful to inspect or modify before applying. After reviewing, run kubectl apply -f cm.yaml.">i</span></div>
-      <div class="cmd-row"><code>k get cm</code><span class="tip-icon" data-tip="Lists all ConfigMaps in current namespace. Add -n &lt;namespace&gt; for a specific namespace, or -A for all namespaces.">i</span></div>
-      <div class="cmd-row"><code>k describe cm app-config</code><span class="tip-icon" data-tip="Shows ConfigMap contents (key=value pairs) and metadata. Essential for verifying the config was created with correct data.">i</span></div>
+      <div class="cmd-row">
+        <code>k create configmap app-config --from-literal=APP_COLOR=blue --from-literal=APP_MODE=prod</code><span
+          class="tip-icon"
+          data-tip="Creates ConfigMap from inline key=value pairs. Each --from-literal creates one entry. Fastest method for exam, especially for small configs.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create configmap app-config --from-file=app.properties</code><span class="tip-icon"
+          data-tip="Creates ConfigMap from a file. The filename becomes the key, file contents become the value. Use --from-file=key=path to customize the key name.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create configmap app-config --from-file=config-key=/path/to/file</code><span
+          class="tip-icon"
+          data-tip="Creates ConfigMap with a specific key name. Format: --from-file=KEY=path. Useful when the source filename doesn't match the desired config key.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create configmap app-config --from-literal=APP_COLOR=blue --dry-run=client -o yaml &gt; cm.yaml</code><span
+          class="tip-icon"
+          data-tip="Generates ConfigMap YAML without creating it. Useful to inspect or modify before applying. After reviewing, run kubectl apply -f cm.yaml.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get cm</code><span class="tip-icon"
+          data-tip="Lists all ConfigMaps in current namespace. Add -n &lt;namespace&gt; for a specific namespace, or -A for all namespaces.">i</span>
+      </div>
+      <div class="cmd-row"><code>k describe cm app-config</code><span class="tip-icon"
+          data-tip="Shows ConfigMap contents (key=value pairs) and metadata. Essential for verifying the config was created with correct data.">i</span>
+      </div>
     </div>
     <p><strong>Pod injection:</strong> After creating ConfigMap, generate pod YAML and add <code>envFrom</code> or
-      <code>env.valueFrom.configMapKeyRef</code> under the container, or mount as volume.</p>
+      <code>env.valueFrom.configMapKeyRef</code> under the container, or mount as volume.
+    </p>
 
     <span class="yaml-label">YAML</span>
     <pre><code>apiVersion: v1
@@ -1346,16 +1796,40 @@ volumes:
       <strong>All 3 secret types can be created imperatively:</strong>
     </div>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create secret generic app-secret --from-literal=DB_Host=mysql --from-literal=DB_Password=pass123</code><span class="tip-icon" data-tip="Creates a generic Secret with literal key=value pairs. Values are automatically base64-encoded by Kubernetes. This is the most common secret type for app credentials.">i</span></div>
-      <div class="cmd-row"><code>k create secret tls webapp-tls --cert=tls.crt --key=tls.key</code><span class="tip-icon" data-tip="Creates a TLS-type Secret for Ingress HTTPS termination. Requires valid PEM-format certificate and private key files. Kubernetes auto-encodes both files in base64.">i</span></div>
-      <div class="cmd-row"><code>k create secret docker-registry regcred --docker-server=private-registry.io --docker-username=user --docker-password=pass --docker-email=user@org.com</code><span class="tip-icon" data-tip="Creates a docker-registry type Secret for pulling images from private registries. Used via imagePullSecrets in pod spec. Automatically base64-encodes credentials.">i</span></div>
-      <div class="cmd-row"><code>k create secret generic app-secret --from-literal=DB_Host=mysql --dry-run=client -o yaml &gt; secret.yaml</code><span class="tip-icon" data-tip="Generates Secret YAML without creating it. Values in output are already base64-encoded. Review before applying with kubectl apply -f secret.yaml.">i</span></div>
-      <div class="cmd-row"><code>k get secret app-secret -o yaml</code><span class="tip-icon" data-tip="Shows Secret contents as YAML. Data values appear base64-encoded — decode them with echo -n 'encoded' | base64 --decode to verify contents.">i</span></div>
-      <div class="cmd-row"><code>echo -n "bX1zcWw=" | base64 --decode</code><span class="tip-icon" data-tip="Decodes a base64-encoded secret value back to plain text. Use to verify secret contents are correct.">i</span></div>
-      <div class="cmd-row"><code>echo -n "myvalue" | base64</code><span class="tip-icon" data-tip="Encodes a value to base64 for manual YAML creation. If writing secrets in YAML directly (not imperative), encode all values first and put them under 'data:' section.">i</span></div>
+      <div class="cmd-row">
+        <code>k create secret generic app-secret --from-literal=DB_Host=mysql --from-literal=DB_Password=pass123</code><span
+          class="tip-icon"
+          data-tip="Creates a generic Secret with literal key=value pairs. Values are automatically base64-encoded by Kubernetes. This is the most common secret type for app credentials.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create secret tls webapp-tls --cert=tls.crt --key=tls.key</code><span
+          class="tip-icon"
+          data-tip="Creates a TLS-type Secret for Ingress HTTPS termination. Requires valid PEM-format certificate and private key files. Kubernetes auto-encodes both files in base64.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create secret docker-registry regcred --docker-server=private-registry.io --docker-username=user --docker-password=pass --docker-email=user@org.com</code><span
+          class="tip-icon"
+          data-tip="Creates a docker-registry type Secret for pulling images from private registries. Used via imagePullSecrets in pod spec. Automatically base64-encodes credentials.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create secret generic app-secret --from-literal=DB_Host=mysql --dry-run=client -o yaml &gt; secret.yaml</code><span
+          class="tip-icon"
+          data-tip="Generates Secret YAML without creating it. Values in output are already base64-encoded. Review before applying with kubectl apply -f secret.yaml.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get secret app-secret -o yaml</code><span class="tip-icon"
+          data-tip="Shows Secret contents as YAML. Data values appear base64-encoded — decode them with echo -n 'encoded' | base64 --decode to verify contents.">i</span>
+      </div>
+      <div class="cmd-row"><code>echo -n "bX1zcWw=" | base64 --decode</code><span class="tip-icon"
+          data-tip="Decodes a base64-encoded secret value back to plain text. Use to verify secret contents are correct.">i</span>
+      </div>
+      <div class="cmd-row"><code>echo -n "myvalue" | base64</code><span class="tip-icon"
+          data-tip="Encodes a value to base64 for manual YAML creation. If writing secrets in YAML directly (not imperative), encode all values first and put them under 'data:' section.">i</span>
+      </div>
     </div>
-    <p><strong>Key advantage:</strong> Imperative command <strong>auto-encodes values to base64</strong>. If writing YAML
-      manually, you must encode with <code>echo -n "value" | base64</code>, or use <code>stringData:</code> instead of <code>data:</code> to avoid manual encoding.</p>
+    <p><strong>Key advantage:</strong> Imperative command <strong>auto-encodes values to base64</strong>. If writing
+      YAML
+      manually, you must encode with <code>echo -n "value" | base64</code>, or use <code>stringData:</code> instead of
+      <code>data:</code> to avoid manual encoding.
+    </p>
 
     <span class="yaml-label">YAML</span>
     <pre><code>apiVersion: v1
@@ -1543,19 +2017,38 @@ k explain pod.spec.containers.readinessProbe</code></pre>
       <strong>Rolling updates are fully imperative — no YAML editing needed:</strong>
     </div>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k set image deployment/myapp nginx=nginx:1.25</code><span class="tip-icon" data-tip="Updates the image of a named container in the Deployment. Triggers a rolling update — old pods are gradually replaced with new ones. Format: deployment/name container=image.">i</span></div>
-      <div class="cmd-row"><code>k rollout status deployment/myapp</code><span class="tip-icon" data-tip="Watches and reports rolling update progress in real time. Exit code 0 on success, non-zero on failure. Exits when rollout completes or timeout reached.">i</span></div>
-      <div class="cmd-row"><code>k rollout history deployment/myapp</code><span class="tip-icon" data-tip="Lists revision history of the Deployment. Shows revision numbers. Add --revision=N to see details of a specific revision (requires --record or change-cause annotation).">i</span></div>
-      <div class="cmd-row"><code>k rollout undo deployment/myapp</code><span class="tip-icon" data-tip="Rolls back to the immediately previous revision. Safe way to recover from a bad image update without downtime. Does not delete the intermediate revisions.">i</span></div>
-      <div class="cmd-row"><code>k rollout undo deployment/myapp --to-revision=2</code><span class="tip-icon" data-tip="Rolls back to a specific revision number. Check available revisions first with 'k rollout history deployment/name'. Revision 2 becomes the new current revision.">i</span></div>
-      <div class="cmd-row"><code>k rollout pause deployment/myapp</code><span class="tip-icon" data-tip="Pauses the rolling update. Useful for canary deployments: update one pod, test it, then resume to roll out the rest. Paused deployments don't process scale changes.">i</span></div>
-      <div class="cmd-row"><code>k rollout resume deployment/myapp</code><span class="tip-icon" data-tip="Resumes a paused rolling update. The deployment continues rolling out pods until it reaches the desired replica count.">i</span></div>
+      <div class="cmd-row"><code>k set image deployment/myapp nginx=nginx:1.25</code><span class="tip-icon"
+          data-tip="Updates the image of a named container in the Deployment. Triggers a rolling update — old pods are gradually replaced with new ones. Format: deployment/name container=image.">i</span>
+      </div>
+      <div class="cmd-row"><code>k rollout status deployment/myapp</code><span class="tip-icon"
+          data-tip="Watches and reports rolling update progress in real time. Exit code 0 on success, non-zero on failure. Exits when rollout completes or timeout reached.">i</span>
+      </div>
+      <div class="cmd-row"><code>k rollout history deployment/myapp</code><span class="tip-icon"
+          data-tip="Lists revision history of the Deployment. Shows revision numbers. Add --revision=N to see details of a specific revision (requires --record or change-cause annotation).">i</span>
+      </div>
+      <div class="cmd-row"><code>k rollout undo deployment/myapp</code><span class="tip-icon"
+          data-tip="Rolls back to the immediately previous revision. Safe way to recover from a bad image update without downtime. Does not delete the intermediate revisions.">i</span>
+      </div>
+      <div class="cmd-row"><code>k rollout undo deployment/myapp --to-revision=2</code><span class="tip-icon"
+          data-tip="Rolls back to a specific revision number. Check available revisions first with 'k rollout history deployment/name'. Revision 2 becomes the new current revision.">i</span>
+      </div>
+      <div class="cmd-row"><code>k rollout pause deployment/myapp</code><span class="tip-icon"
+          data-tip="Pauses the rolling update. Useful for canary deployments: update one pod, test it, then resume to roll out the rest. Paused deployments don't process scale changes.">i</span>
+      </div>
+      <div class="cmd-row"><code>k rollout resume deployment/myapp</code><span class="tip-icon"
+          data-tip="Resumes a paused rolling update. The deployment continues rolling out pods until it reaches the desired replica count.">i</span>
+      </div>
     </div>
     <p><strong>When you need YAML:</strong> Only to set <code>strategy</code> config (<code>maxSurge</code>,
-      <code>maxUnavailable</code>) or change strategy type to <code>Recreate</code>.</p>
+      <code>maxUnavailable</code>) or change strategy type to <code>Recreate</code>.
+    </p>
     <div class="cmd-table" style="margin-top: 1rem;">
-      <div class="cmd-row"><code>k get deployment myapp -o yaml &gt; deploy.yaml</code><span class="tip-icon" data-tip="Exports current Deployment YAML. Edit the spec.strategy block, then reapply with kubectl apply -f deploy.yaml.">i</span></div>
-      <div class="cmd-row"><code>k edit deployment myapp</code><span class="tip-icon" data-tip="Opens live Deployment YAML in your $KUBE_EDITOR (typically vi). Changes are applied on save. Cannot modify immutable fields.">i</span></div>
+      <div class="cmd-row"><code>k get deployment myapp -o yaml &gt; deploy.yaml</code><span class="tip-icon"
+          data-tip="Exports current Deployment YAML. Edit the spec.strategy block, then reapply with kubectl apply -f deploy.yaml.">i</span>
+      </div>
+      <div class="cmd-row"><code>k edit deployment myapp</code><span class="tip-icon"
+          data-tip="Opens live Deployment YAML in your $KUBE_EDITOR (typically vi). Changes are applied on save. Cannot modify immutable fields.">i</span>
+      </div>
     </div>
 
     <span class="yaml-label">YAML</span>
@@ -1626,13 +2119,33 @@ spec:
 
     <h2>Imperative (Fastest in Exam)</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create role dev-role --verb=get,list,create,delete --resource=pods -n dev</code><span class="tip-icon" data-tip="Creates a namespaced Role granting verbs on a resource. Format: --verb=verbs --resource=type. Verbs: get, list, watch, create, update, patch, delete.">i</span></div>
-      <div class="cmd-row"><code>k create rolebinding dev-bind --role=dev-role --user=jane -n dev</code><span class="tip-icon" data-tip="Binds a Role to a user in a namespace. The user gains permissions defined in Role within that namespace only.">i</span></div>
-      <div class="cmd-row"><code>k create clusterrole node-viewer --verb=get,list --resource=nodes</code><span class="tip-icon" data-tip="Creates a cluster-scoped Role granting access to non-namespaced resources (nodes, PVs, namespaces).">i</span></div>
-      <div class="cmd-row"><code>k create clusterrolebinding node-bind --clusterrole=node-viewer --user=jane</code><span class="tip-icon" data-tip="Binds a ClusterRole to a user cluster-wide. User can perform actions on all matching resources in all namespaces.">i</span></div>
-      <div class="cmd-row"><code>k auth can-i create pods --as=jane -n dev</code><span class="tip-icon" data-tip="Tests if user has permission. Returns 'yes' or 'no'. Essential for verifying RBAC before running commands.">i</span></div>
-      <div class="cmd-row"><code>k auth can-i '*' '*' --as=system:serviceaccount:default:my-sa</code><span class="tip-icon" data-tip="Tests if ServiceAccount has full admin permissions. Format: --as=system:serviceaccount:ns:name.">i</span></div>
-      <div class="cmd-row"><code>k auth can-i list pods -n dev --as system:serviceaccount:dev:app-sa</code><span class="tip-icon" data-tip="Tests if a ServiceAccount can list pods in a namespace. Debug pod permissions before deployment.">i</span></div>
+      <div class="cmd-row"><code>k create role dev-role --verb=get,list,create,delete --resource=pods -n dev</code><span
+          class="tip-icon"
+          data-tip="Creates a namespaced Role granting verbs on a resource. Format: --verb=verbs --resource=type. Verbs: get, list, watch, create, update, patch, delete.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create rolebinding dev-bind --role=dev-role --user=jane -n dev</code><span
+          class="tip-icon"
+          data-tip="Binds a Role to a user in a namespace. The user gains permissions defined in Role within that namespace only.">i</span>
+      </div>
+      <div class="cmd-row"><code>k create clusterrole node-viewer --verb=get,list --resource=nodes</code><span
+          class="tip-icon"
+          data-tip="Creates a cluster-scoped Role granting access to non-namespaced resources (nodes, PVs, namespaces).">i</span>
+      </div>
+      <div class="cmd-row"><code>k create clusterrolebinding node-bind --clusterrole=node-viewer --user=jane</code><span
+          class="tip-icon"
+          data-tip="Binds a ClusterRole to a user cluster-wide. User can perform actions on all matching resources in all namespaces.">i</span>
+      </div>
+      <div class="cmd-row"><code>k auth can-i create pods --as=jane -n dev</code><span class="tip-icon"
+          data-tip="Tests if user has permission. Returns 'yes' or 'no'. Essential for verifying RBAC before running commands.">i</span>
+      </div>
+      <div class="cmd-row"><code>k auth can-i '*' '*' --as=system:serviceaccount:default:my-sa</code><span
+          class="tip-icon"
+          data-tip="Tests if ServiceAccount has full admin permissions. Format: --as=system:serviceaccount:ns:name.">i</span>
+      </div>
+      <div class="cmd-row"><code>k auth can-i list pods -n dev --as system:serviceaccount:dev:app-sa</code><span
+          class="tip-icon"
+          data-tip="Tests if a ServiceAccount can list pods in a namespace. Debug pod permissions before deployment.">i</span>
+      </div>
     </div>
 
     <h2>Role YAML</h2>
@@ -1775,11 +2288,21 @@ k config set-context user-ctx --cluster=kubernetes --user=user</code></pre>
       <strong>No imperative flag for security contexts.</strong> Generate and edit:
     </div>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k run secure-pod --image=ubuntu --dry-run=client -o yaml > pod.yaml</code><span class="tip-icon" data-tip="Generates base pod YAML. Add securityContext blocks under spec (pod-level) and containers (container-level).">i</span></div>
-      <div class="cmd-row"><code>k explain pod.spec.securityContext</code><span class="tip-icon" data-tip="Shows pod-level securityContext fields: runAsUser, fsGroup, runAsGroup, seLinuxOptions. Container values override pod-level.">i</span></div>
-      <div class="cmd-row"><code>k explain pod.spec.containers.securityContext.capabilities</code><span class="tip-icon" data-tip="Shows Linux capabilities structure (add/drop). Capabilities can ONLY be set at container level, not pod level.">i</span></div>
-      <div class="cmd-row"><code>k exec my-pod -- whoami</code><span class="tip-icon" data-tip="Shows effective user inside container. Verify runAsUser setting applied correctly.">i</span></div>
-      <div class="cmd-row"><code>k exec my-pod -- id</code><span class="tip-icon" data-tip="Shows user ID, group ID, and group membership inside container. Confirms securityContext worked.">i</span></div>
+      <div class="cmd-row"><code>k run secure-pod --image=ubuntu --dry-run=client -o yaml > pod.yaml</code><span
+          class="tip-icon"
+          data-tip="Generates base pod YAML. Add securityContext blocks under spec (pod-level) and containers (container-level).">i</span>
+      </div>
+      <div class="cmd-row"><code>k explain pod.spec.securityContext</code><span class="tip-icon"
+          data-tip="Shows pod-level securityContext fields: runAsUser, fsGroup, runAsGroup, seLinuxOptions. Container values override pod-level.">i</span>
+      </div>
+      <div class="cmd-row"><code>k explain pod.spec.containers.securityContext.capabilities</code><span class="tip-icon"
+          data-tip="Shows Linux capabilities structure (add/drop). Capabilities can ONLY be set at container level, not pod level.">i</span>
+      </div>
+      <div class="cmd-row"><code>k exec my-pod -- whoami</code><span class="tip-icon"
+          data-tip="Shows effective user inside container. Verify runAsUser setting applied correctly.">i</span></div>
+      <div class="cmd-row"><code>k exec my-pod -- id</code><span class="tip-icon"
+          data-tip="Shows user ID, group ID, and group membership inside container. Confirms securityContext worked.">i</span>
+      </div>
     </div>
     <p><strong>Remember:</strong> <code>capabilities</code> can only be set at <strong>container level</strong>, not pod
       level.
@@ -1916,15 +2439,29 @@ wget -qO- http://web.default.svc.cluster.local:80</code></pre>
       shortcuts:
     </div>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k explain pv.spec --recursive</code><span class="tip-icon" data-tip="Shows entire PersistentVolume spec structure with all fields. Useful for building PV manifests.">i</span></div>
-      <div class="cmd-row"><code>k explain pvc.spec --recursive</code><span class="tip-icon" data-tip="Shows PersistentVolumeClaim spec structure. Check accessModes, resources, storageClassName fields.">i</span></div>
-      <div class="cmd-row"><code>k explain sc --recursive</code><span class="tip-icon" data-tip="Shows StorageClass spec. Reference provisioner, parameters, reclaimPolicy fields.">i</span></div>
-      <div class="cmd-row"><code>k get pv,pvc</code><span class="tip-icon" data-tip="Lists all PersistentVolumes and PersistentVolumeClaims. Shows binding status (Bound/Pending).">i</span></div>
-      <div class="cmd-row"><code>k describe pvc my-pvc</code><span class="tip-icon" data-tip="Shows PVC details including status, events, and binding info. Check Events for binding errors.">i</span></div>
-      <div class="cmd-row"><code>k get pv</code><span class="tip-icon" data-tip="Lists all PersistentVolumes. Shows capacity, access modes, reclaim policy, and binding status.">i</span></div>
-      <div class="cmd-row"><code>k get sc</code><span class="tip-icon" data-tip="Lists all StorageClasses. Shows provisioner and volume expansion allowance.">i</span></div>
-      <div class="cmd-row"><code>k describe pv pv1</code><span class="tip-icon" data-tip="Shows PV details: capacity, access modes, reclaim policy, and current claim binding.">i</span></div>
-      <div class="cmd-row"><code>k describe pvc pvc1</code><span class="tip-icon" data-tip="Shows PVC details: bound PV, size, and events.">i</span></div>
+      <div class="cmd-row"><code>k explain pv.spec --recursive</code><span class="tip-icon"
+          data-tip="Shows entire PersistentVolume spec structure with all fields. Useful for building PV manifests.">i</span>
+      </div>
+      <div class="cmd-row"><code>k explain pvc.spec --recursive</code><span class="tip-icon"
+          data-tip="Shows PersistentVolumeClaim spec structure. Check accessModes, resources, storageClassName fields.">i</span>
+      </div>
+      <div class="cmd-row"><code>k explain sc --recursive</code><span class="tip-icon"
+          data-tip="Shows StorageClass spec. Reference provisioner, parameters, reclaimPolicy fields.">i</span></div>
+      <div class="cmd-row"><code>k get pv,pvc</code><span class="tip-icon"
+          data-tip="Lists all PersistentVolumes and PersistentVolumeClaims. Shows binding status (Bound/Pending).">i</span>
+      </div>
+      <div class="cmd-row"><code>k describe pvc my-pvc</code><span class="tip-icon"
+          data-tip="Shows PVC details including status, events, and binding info. Check Events for binding errors.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get pv</code><span class="tip-icon"
+          data-tip="Lists all PersistentVolumes. Shows capacity, access modes, reclaim policy, and binding status.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get sc</code><span class="tip-icon"
+          data-tip="Lists all StorageClasses. Shows provisioner and volume expansion allowance.">i</span></div>
+      <div class="cmd-row"><code>k describe pv pv1</code><span class="tip-icon"
+          data-tip="Shows PV details: capacity, access modes, reclaim policy, and current claim binding.">i</span></div>
+      <div class="cmd-row"><code>k describe pvc pvc1</code><span class="tip-icon"
+          data-tip="Shows PVC details: bound PV, size, and events.">i</span></div>
     </div>
     <p><strong>PVC → Pod workflow:</strong> Create PV first → Create PVC (must match accessModes &amp; storage) →
       Reference PVC in pod's <code>volumes:</code> section.
@@ -2001,27 +2538,52 @@ k describe pvc pvc1</code></pre>
 
     <h2>Linux Networking Commands (CKA)</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>ip link</code><span class="tip-icon" data-tip="Lists all network interfaces on the node. Shows interface names, MAC addresses, and UP/DOWN status.">i</span></div>
-      <div class="cmd-row"><code>ip addr</code><span class="tip-icon" data-tip="Shows IP addresses assigned to all interfaces. Displays IPv4, IPv6, and their subnets.">i</span></div>
-      <div class="cmd-row"><code>ip route show</code><span class="tip-icon" data-tip="Displays the routing table. Shows destination subnets, next-hop gateways, and which interface forwards traffic.">i</span></div>
-      <div class="cmd-row"><code>ip route add 192.168.2.0/24 via 192.168.1.1</code><span class="tip-icon" data-tip="Adds a static route: traffic to 192.168.2.0/24 goes through gateway 192.168.1.1. Temporary until reboot.">i</span></div>
-      <div class="cmd-row"><code>ip route add default via 192.168.1.1</code><span class="tip-icon" data-tip="Sets the default gateway for all unmatched traffic. Essential for external connectivity.">i</span></div>
-      <div class="cmd-row"><code>cat /proc/sys/net/ipv4/ip_forward</code><span class="tip-icon" data-tip="Checks if IP forwarding is enabled (1=yes, 0=no). Required for inter-node pod communication in Kubernetes.">i</span></div>
-      <div class="cmd-row"><code>echo 1 > /proc/sys/net/ipv4/ip_forward</code><span class="tip-icon" data-tip="Enables IP forwarding temporarily. Required for kubelet to route pod traffic. Persist in /etc/sysctl.conf for reboot.">i</span></div>
+      <div class="cmd-row"><code>ip link</code><span class="tip-icon"
+          data-tip="Lists all network interfaces on the node. Shows interface names, MAC addresses, and UP/DOWN status.">i</span>
+      </div>
+      <div class="cmd-row"><code>ip addr</code><span class="tip-icon"
+          data-tip="Shows IP addresses assigned to all interfaces. Displays IPv4, IPv6, and their subnets.">i</span>
+      </div>
+      <div class="cmd-row"><code>ip route show</code><span class="tip-icon"
+          data-tip="Displays the routing table. Shows destination subnets, next-hop gateways, and which interface forwards traffic.">i</span>
+      </div>
+      <div class="cmd-row"><code>ip route add 192.168.2.0/24 via 192.168.1.1</code><span class="tip-icon"
+          data-tip="Adds a static route: traffic to 192.168.2.0/24 goes through gateway 192.168.1.1. Temporary until reboot.">i</span>
+      </div>
+      <div class="cmd-row"><code>ip route add default via 192.168.1.1</code><span class="tip-icon"
+          data-tip="Sets the default gateway for all unmatched traffic. Essential for external connectivity.">i</span>
+      </div>
+      <div class="cmd-row"><code>cat /proc/sys/net/ipv4/ip_forward</code><span class="tip-icon"
+          data-tip="Checks if IP forwarding is enabled (1=yes, 0=no). Required for inter-node pod communication in Kubernetes.">i</span>
+      </div>
+      <div class="cmd-row"><code>echo 1 > /proc/sys/net/ipv4/ip_forward</code><span class="tip-icon"
+          data-tip="Enables IP forwarding temporarily. Required for kubelet to route pod traffic. Persist in /etc/sysctl.conf for reboot.">i</span>
+      </div>
     </div>
 
     <h2>CNI (Container Network Interface)</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>ls /etc/cni/net.d/</code><span class="tip-icon" data-tip="Lists CNI plugin configuration files (JSON). Each file defines which CNI plugin to use and its settings.">i</span></div>
-      <div class="cmd-row"><code>ls /opt/cni/bin/</code><span class="tip-icon" data-tip="Lists CNI binary executables installed on the node. Examples: flannel, calico, weave binaries.">i</span></div>
-      <div class="cmd-row"><code>k get node -o jsonpath='{.spec.podCIDR}'</code><span class="tip-icon" data-tip="Shows the pod CIDR (subnet) allocated to a node. CNI uses this range to assign IPs to pods.">i</span></div>
+      <div class="cmd-row"><code>ls /etc/cni/net.d/</code><span class="tip-icon"
+          data-tip="Lists CNI plugin configuration files (JSON). Each file defines which CNI plugin to use and its settings.">i</span>
+      </div>
+      <div class="cmd-row"><code>ls /opt/cni/bin/</code><span class="tip-icon"
+          data-tip="Lists CNI binary executables installed on the node. Examples: flannel, calico, weave binaries.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get node -o jsonpath='{.spec.podCIDR}'</code><span class="tip-icon"
+          data-tip="Shows the pod CIDR (subnet) allocated to a node. CNI uses this range to assign IPs to pods.">i</span>
+      </div>
     </div>
 
     <h2>Service Debugging</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k get svc,endpoints &lt;svc-name&gt;</code><span class="tip-icon" data-tip="Shows Service and its Endpoints. Empty endpoints → wrong selector label on pods.">i</span></div>
-      <div class="cmd-row"><code>iptables-save | grep &lt;service-name&gt;</code><span class="tip-icon" data-tip="Shows iptables rules created by kube-proxy for the Service. Confirms service routing configuration on the node.">i</span></div>
-      <div class="cmd-row"><code>k logs -n kube-system -l k8s-app=kube-proxy</code><span class="tip-icon" data-tip="Shows kube-proxy logs on the current host. Check for iptables/IPVS update errors or network rule failures.">i</span></div>
+      <div class="cmd-row"><code>k get svc,endpoints &lt;svc-name&gt;</code><span class="tip-icon"
+          data-tip="Shows Service and its Endpoints. Empty endpoints → wrong selector label on pods.">i</span></div>
+      <div class="cmd-row"><code>iptables-save | grep &lt;service-name&gt;</code><span class="tip-icon"
+          data-tip="Shows iptables rules created by kube-proxy for the Service. Confirms service routing configuration on the node.">i</span>
+      </div>
+      <div class="cmd-row"><code>k logs -n kube-system -l k8s-app=kube-proxy</code><span class="tip-icon"
+          data-tip="Shows kube-proxy logs on the current host. Check for iptables/IPVS update errors or network rule failures.">i</span>
+      </div>
     </div>
 
     <hr>
@@ -2035,11 +2597,23 @@ k describe pvc pvc1</code></pre>
     </p>
 
     <div class="cmd-table">
-      <div class="cmd-row"><code>k run -it --rm debug --image=busybox:1.28 -- nslookup kubernetes</code><span class="tip-icon" data-tip="Launches debug pod and queries DNS for 'kubernetes' service. Verifies CoreDNS is working.">i</span></div>
-      <div class="cmd-row"><code>k run -it --rm debug --image=busybox:1.28 -- nslookup &lt;svc&gt;.&lt;ns&gt;.svc.cluster.local</code><span class="tip-icon" data-tip="Tests DNS resolution of a Service FQDN from debug pod. If fails, check CoreDNS pod status and service selector.">i</span></div>
-      <div class="cmd-row"><code>k get pods -n kube-system -l k8s-app=kube-dns</code><span class="tip-icon" data-tip="Lists CoreDNS pods. Should show 2+ replicas in kube-system. If missing, DNS won't work for the cluster.">i</span></div>
-      <div class="cmd-row"><code>k get configmap coredns -n kube-system -o yaml</code><span class="tip-icon" data-tip="Shows CoreDNS configuration (Corefile). Contains DNS plugins, zones, and custom upstream servers.">i</span></div>
-      <div class="cmd-row"><code>k logs &lt;coredns-pod&gt; -n kube-system</code><span class="tip-icon" data-tip="Shows CoreDNS logs. Check for query failures, update errors, or plugin issues.">i</span></div>
+      <div class="cmd-row"><code>k run -it --rm debug --image=busybox:1.28 -- nslookup kubernetes</code><span
+          class="tip-icon"
+          data-tip="Launches debug pod and queries DNS for 'kubernetes' service. Verifies CoreDNS is working.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k run -it --rm debug --image=busybox:1.28 -- nslookup &lt;svc&gt;.&lt;ns&gt;.svc.cluster.local</code><span
+          class="tip-icon"
+          data-tip="Tests DNS resolution of a Service FQDN from debug pod. If fails, check CoreDNS pod status and service selector.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get pods -n kube-system -l k8s-app=kube-dns</code><span class="tip-icon"
+          data-tip="Lists CoreDNS pods. Should show 2+ replicas in kube-system. If missing, DNS won't work for the cluster.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get configmap coredns -n kube-system -o yaml</code><span class="tip-icon"
+          data-tip="Shows CoreDNS configuration (Corefile). Contains DNS plugins, zones, and custom upstream servers.">i</span>
+      </div>
+      <div class="cmd-row"><code>k logs &lt;coredns-pod&gt; -n kube-system</code><span class="tip-icon"
+          data-tip="Shows CoreDNS logs. Check for query failures, update errors, or plugin issues.">i</span></div>
     </div>
 
     <hr>
@@ -2053,16 +2627,38 @@ k describe pvc pvc1</code></pre>
       <strong>Create Ingress imperatively:</strong>
     </div>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create ingress app-ingress --rule="/wear=wear-service:80"</code><span class="tip-icon" data-tip="Creates Ingress with a single path rule. Format: path=service:port. Traffic to /wear routes to wear-service:80.">i</span></div>
-      <div class="cmd-row"><code>k create ingress app-ingress --rule="/wear=wear-service:80" --annotation nginx.ingress.kubernetes.io/rewrite-target=/</code><span class="tip-icon" data-tip="Creates Ingress with annotation. --annotation sets metadata for the controller. nginx.ingress... rewrites the request path.">i</span></div>
-      <div class="cmd-row"><code>k create ingress app-ingress --rule="/wear=wear-service:80" --rule="/watch=watch-service:80" --dry-run=client -o yaml > ingress.yaml</code><span class="tip-icon" data-tip="Multiple path rules. Each --rule defines a separate path. Generates YAML without creating it for review/editing.">i</span></div>
-      <div class="cmd-row"><code>k create ingress app-ingress --rule="wear.example.com/=wear-svc:80" --rule="watch.example.com/=watch-svc:80"</code><span class="tip-icon" data-tip="Host-based routing. Format: host/path=svc:port. Different subdomains route to different services.">i</span></div>
-      <div class="cmd-row"><code>k create ingress app-ingress --rule="webapp.example.com/=webapp-svc:80,tls=webapp-tls" --dry-run=client -o yaml</code><span class="tip-icon" data-tip="TLS/HTTPS rule. Format: host/path=svc:port,tls=secret-name. Secret must be of type kubernetes.io/tls.">i</span></div>
+      <div class="cmd-row"><code>k create ingress app-ingress --rule="/wear=wear-service:80"</code><span
+          class="tip-icon"
+          data-tip="Creates Ingress with a single path rule. Format: path=service:port. Traffic to /wear routes to wear-service:80.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create ingress app-ingress --rule="/wear=wear-service:80" --annotation nginx.ingress.kubernetes.io/rewrite-target=/</code><span
+          class="tip-icon"
+          data-tip="Creates Ingress with annotation. --annotation sets metadata for the controller. nginx.ingress... rewrites the request path.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create ingress app-ingress --rule="/wear=wear-service:80" --rule="/watch=watch-service:80" --dry-run=client -o yaml > ingress.yaml</code><span
+          class="tip-icon"
+          data-tip="Multiple path rules. Each --rule defines a separate path. Generates YAML without creating it for review/editing.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create ingress app-ingress --rule="wear.example.com/=wear-svc:80" --rule="watch.example.com/=watch-svc:80"</code><span
+          class="tip-icon"
+          data-tip="Host-based routing. Format: host/path=svc:port. Different subdomains route to different services.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k create ingress app-ingress --rule="webapp.example.com/=webapp-svc:80,tls=webapp-tls" --dry-run=client -o yaml</code><span
+          class="tip-icon"
+          data-tip="TLS/HTTPS rule. Format: host/path=svc:port,tls=secret-name. Secret must be of type kubernetes.io/tls.">i</span>
+      </div>
     </div>
     <p><strong>What to add manually after generation:</strong></p>
     <div class="cmd-table">
-      <div class="cmd-row\"><code>annotations</code><span class=\"tip-icon\" data-tip=\"Metadata for controller (e.g. rewrite-target). Can be added via --annotation flag or edited in YAML.\">i</span></div>
-      <div class=\"cmd-row\"><code>pathType</code><span class=\"tip-icon\" data-tip=\"Matching strategy: Exact (exact path), Prefix (prefix match), ImplementationSpecific (default). Generated as Exact, change to Prefix as needed.\">i</span></div>
+      <div class="cmd-row\"><code>annotations</code><span class=\"tip-icon\" data-tip=\"Metadata for controller (e.g.
+          rewrite-target). Can be added via --annotation flag or edited in YAML.\">i</span></div>
+      <div class=\"cmd-row\"><code>pathType</code><span class=\"tip-icon\" data-tip=\"Matching strategy: Exact (exact
+          path), Prefix (prefix match), ImplementationSpecific (default). Generated as Exact, change to Prefix as
+          needed.\">i</span></div>
     </div>
 
     <h2>Path-based Routing</h2>
@@ -2135,16 +2731,28 @@ k describe ingress app-ingress</code></pre>
 
     <h2>Backup</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>ETCDCTL_API=3 etcdctl snapshot save /tmp/etcd.db --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key</code><span class="tip-icon" data-tip="Backs up entire etcd database to snapshot file. ETCDCTL_API=3 enables v3 API. Must provide client certs for secure connection.">i</span></div>
-      <div class="cmd-row"><code>ETCDCTL_API=3 etcdctl snapshot status /tmp/etcd.db</code><span class="tip-icon" data-tip="Verifies snapshot integrity and shows metadata. Confirms backup succeeded.">i</span></div>
+      <div class="cmd-row">
+        <code>ETCDCTL_API=3 etcdctl snapshot save /tmp/etcd.db --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key</code><span
+          class="tip-icon"
+          data-tip="Backs up entire etcd database to snapshot file. ETCDCTL_API=3 enables v3 API. Must provide client certs for secure connection.">i</span>
+      </div>
+      <div class="cmd-row"><code>ETCDCTL_API=3 etcdctl snapshot status /tmp/etcd.db</code><span class="tip-icon"
+          data-tip="Verifies snapshot integrity and shows metadata. Confirms backup succeeded.">i</span></div>
     </div>
 
     <h2>Restore</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>etcdutl snapshot restore /tmp/etcd.db --data-dir=/var/lib/etcd-restored</code><span class="tip-icon" data-tip="Restores etcd from snapshot to new data directory. Old data-dir must be moved away first.">i</span></div>
-      <div class="cmd-row"><code>vi /etc/kubernetes/manifests/etcd.yaml</code><span class="tip-icon" data-tip="Edit etcd static pod manifest. Change hostPath.path to /var/lib/etcd-restored.">i</span></div>
-      <div class="cmd-row"><code>systemctl daemon-reload</code><span class="tip-icon" data-tip="Reloads systemd configuration. Required after editing unit files.">i</span></div>
-      <div class="cmd-row"><code>systemctl restart kubelet</code><span class="tip-icon" data-tip="Restarts kubelet. Detects etcd manifest change and restarts etcd pod with new data path.">i</span></div>
+      <div class="cmd-row"><code>etcdutl snapshot restore /tmp/etcd.db --data-dir=/var/lib/etcd-restored</code><span
+          class="tip-icon"
+          data-tip="Restores etcd from snapshot to new data directory. Old data-dir must be moved away first.">i</span>
+      </div>
+      <div class="cmd-row"><code>vi /etc/kubernetes/manifests/etcd.yaml</code><span class="tip-icon"
+          data-tip="Edit etcd static pod manifest. Change hostPath.path to /var/lib/etcd-restored.">i</span></div>
+      <div class="cmd-row"><code>systemctl daemon-reload</code><span class="tip-icon"
+          data-tip="Reloads systemd configuration. Required after editing unit files.">i</span></div>
+      <div class="cmd-row"><code>systemctl restart kubelet</code><span class="tip-icon"
+          data-tip="Restarts kubelet. Detects etcd manifest change and restarts etcd pod with new data path.">i</span>
+      </div>
     </div>
 
     <hr>
@@ -2155,28 +2763,47 @@ k describe ingress app-ingress</code></pre>
 
     <h2>Control Plane</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>apt-mark unhold kubeadm</code><span class="tip-icon" data-tip="Unlocks kubeadm. Allows apt to upgrade it.">i</span></div>
-      <div class="cmd-row"><code>apt-get update &amp;&amp; apt-get install -y kubeadm=1.XX.0-*</code><span class="tip-icon" data-tip="Updates repos and installs kubeadm version. Replace XX with target.">i</span></div>
-      <div class="cmd-row"><code>apt-mark hold kubeadm</code><span class="tip-icon" data-tip="Locks kubeadm to prevent accidental future upgrades.">i</span></div>
-      <div class="cmd-row"><code>kubeadm upgrade plan</code><span class="tip-icon" data-tip="Shows upgrade path and checklist. Displays what will be upgraded.">i</span></div>
-      <div class="cmd-row"><code>kubeadm upgrade apply v1.XX.0</code><span class="tip-icon" data-tip="Upgrades control plane components. One-time per node.">i</span></div>
-      <div class="cmd-row"><code>kubectl drain &lt;cp-node&gt; --ignore-daemonsets --delete-emptydir-data</code><span class="tip-icon" data-tip="Evicts pods from node. DaemonSet pods ignored, emptyDir volumes deleted.">i</span></div>
-      <div class="cmd-row"><code>apt-mark unhold kubelet kubectl</code><span class="tip-icon" data-tip="Unlocks kubelet and kubectl packages.">i</span></div>
-      <div class="cmd-row"><code>apt-get install -y kubelet=1.XX.0-* kubectl=1.XX.0-*</code><span class="tip-icon" data-tip="Installs target kubelet and kubectl versions.">i</span></div>
-      <div class="cmd-row"><code>apt-mark hold kubelet kubectl</code><span class="tip-icon" data-tip="Re-locks packages to prevent future upgrades.">i</span></div>
-      <div class="cmd-row"><code>systemctl daemon-reload &amp;&amp; systemctl restart kubelet</code><span class="tip-icon" data-tip="Reloads systemd and restarts kubelet with new version.">i</span></div>
-      <div class="cmd-row"><code>kubectl uncordon &lt;cp-node&gt;</code><span class="tip-icon" data-tip="Re-enables scheduling. Node returns to operational state.">i</span></div>
+      <div class="cmd-row"><code>apt-mark unhold kubeadm</code><span class="tip-icon"
+          data-tip="Unlocks kubeadm. Allows apt to upgrade it.">i</span></div>
+      <div class="cmd-row"><code>apt-get update &amp;&amp; apt-get install -y kubeadm=1.XX.0-*</code><span
+          class="tip-icon" data-tip="Updates repos and installs kubeadm version. Replace XX with target.">i</span></div>
+      <div class="cmd-row"><code>apt-mark hold kubeadm</code><span class="tip-icon"
+          data-tip="Locks kubeadm to prevent accidental future upgrades.">i</span></div>
+      <div class="cmd-row"><code>kubeadm upgrade plan</code><span class="tip-icon"
+          data-tip="Shows upgrade path and checklist. Displays what will be upgraded.">i</span></div>
+      <div class="cmd-row"><code>kubeadm upgrade apply v1.XX.0</code><span class="tip-icon"
+          data-tip="Upgrades control plane components. One-time per node.">i</span></div>
+      <div class="cmd-row"><code>kubectl drain &lt;cp-node&gt; --ignore-daemonsets --delete-emptydir-data</code><span
+          class="tip-icon" data-tip="Evicts pods from node. DaemonSet pods ignored, emptyDir volumes deleted.">i</span>
+      </div>
+      <div class="cmd-row"><code>apt-mark unhold kubelet kubectl</code><span class="tip-icon"
+          data-tip="Unlocks kubelet and kubectl packages.">i</span></div>
+      <div class="cmd-row"><code>apt-get install -y kubelet=1.XX.0-* kubectl=1.XX.0-*</code><span class="tip-icon"
+          data-tip="Installs target kubelet and kubectl versions.">i</span></div>
+      <div class="cmd-row"><code>apt-mark hold kubelet kubectl</code><span class="tip-icon"
+          data-tip="Re-locks packages to prevent future upgrades.">i</span></div>
+      <div class="cmd-row"><code>systemctl daemon-reload &amp;&amp; systemctl restart kubelet</code><span
+          class="tip-icon" data-tip="Reloads systemd and restarts kubelet with new version.">i</span></div>
+      <div class="cmd-row"><code>kubectl uncordon &lt;cp-node&gt;</code><span class="tip-icon"
+          data-tip="Re-enables scheduling. Node returns to operational state.">i</span></div>
     </div>
 
     <h2>Worker Nodes</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>kubectl drain &lt;worker&gt; --ignore-daemonsets --delete-emptydir-data</code><span class="tip-icon" data-tip="Run from control plane. Evicts all pods from worker node.">i</span></div>
-      <div class="cmd-row"><code>apt-mark unhold kubeadm kubelet</code><span class="tip-icon" data-tip="Unlocks packages on worker node.">i</span></div>
-      <div class="cmd-row"><code>apt-get install -y kubeadm=1.XX.0-* kubelet=1.XX.0-*</code><span class="tip-icon" data-tip="Installs target versions on worker.">i</span></div>
-      <div class="cmd-row"><code>kubeadm upgrade node</code><span class="tip-icon" data-tip="Upgrades kubelet configuration on worker node.">i</span></div>
-      <div class="cmd-row"><code>systemctl daemon-reload &amp;&amp; systemctl restart kubelet</code><span class="tip-icon" data-tip="Reloads and restarts kubelet with new config.">i</span></div>
-      <div class="cmd-row"><code>apt-mark hold kubeadm kubelet</code><span class="tip-icon" data-tip="Re-locks packages on worker.">i</span></div>
-      <div class="cmd-row"><code>kubectl uncordon &lt;worker&gt;</code><span class="tip-icon" data-tip="Run from control plane. Re-enables scheduling on worker.">i</span></div>
+      <div class="cmd-row"><code>kubectl drain &lt;worker&gt; --ignore-daemonsets --delete-emptydir-data</code><span
+          class="tip-icon" data-tip="Run from control plane. Evicts all pods from worker node.">i</span></div>
+      <div class="cmd-row"><code>apt-mark unhold kubeadm kubelet</code><span class="tip-icon"
+          data-tip="Unlocks packages on worker node.">i</span></div>
+      <div class="cmd-row"><code>apt-get install -y kubeadm=1.XX.0-* kubelet=1.XX.0-*</code><span class="tip-icon"
+          data-tip="Installs target versions on worker.">i</span></div>
+      <div class="cmd-row"><code>kubeadm upgrade node</code><span class="tip-icon"
+          data-tip="Upgrades kubelet configuration on worker node.">i</span></div>
+      <div class="cmd-row"><code>systemctl daemon-reload &amp;&amp; systemctl restart kubelet</code><span
+          class="tip-icon" data-tip="Reloads and restarts kubelet with new config.">i</span></div>
+      <div class="cmd-row"><code>apt-mark hold kubeadm kubelet</code><span class="tip-icon"
+          data-tip="Re-locks packages on worker.">i</span></div>
+      <div class="cmd-row"><code>kubectl uncordon &lt;worker&gt;</code><span class="tip-icon"
+          data-tip="Run from control plane. Re-enables scheduling on worker.">i</span></div>
     </div>
 
     <hr>
@@ -2188,10 +2815,18 @@ k describe ingress app-ingress</code></pre>
     <p>If node is down &gt; 5 min, pods may be terminated by controller.</p>
 
     <div class="cmd-table">
-      <div class="cmd-row"><code>kubectl cordon &lt;node&gt;</code><span class="tip-icon" data-tip="Marks node unschedulable. Prevents new pods. Existing pods unaffected.">i</span></div>
-      <div class="cmd-row"><code>kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data</code><span class="tip-icon" data-tip="Gracefully evicts all pods. Waits for graceful termination. Respects PDB. DaemonSets ignored, emptyDir volumes deleted.">i</span></div>
-      <div class="cmd-row"><code>kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data --force</code><span class="tip-icon" data-tip="Force drains without grace period. Use only when pods are stuck terminating.">i</span></div>
-      <div class="cmd-row"><code>kubectl uncordon &lt;node&gt;</code><span class="tip-icon" data-tip="Re-enables scheduling. Node accepts new pods.">i</span></div>
+      <div class="cmd-row"><code>kubectl cordon &lt;node&gt;</code><span class="tip-icon"
+          data-tip="Marks node unschedulable. Prevents new pods. Existing pods unaffected.">i</span></div>
+      <div class="cmd-row"><code>kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data</code><span
+          class="tip-icon"
+          data-tip="Gracefully evicts all pods. Waits for graceful termination. Respects PDB. DaemonSets ignored, emptyDir volumes deleted.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>kubectl drain &lt;node&gt; --ignore-daemonsets --delete-emptydir-data --force</code><span class="tip-icon"
+          data-tip="Force drains without grace period. Use only when pods are stuck terminating.">i</span>
+      </div>
+      <div class="cmd-row"><code>kubectl uncordon &lt;node&gt;</code><span class="tip-icon"
+          data-tip="Re-enables scheduling. Node accepts new pods.">i</span></div>
     </div>
 
     <hr>
@@ -2226,8 +2861,10 @@ k describe pdb myapp-pdb</code></pre>
     </div>
 
     <div class="cmd-table">
-      <div class="cmd-row"><code>k get pdb</code><span class="tip-icon" data-tip="Lists all PodDisruptionBudgets in namespace.">i</span></div>
-      <div class="cmd-row"><code>k describe pdb myapp-pdb</code><span class="tip-icon" data-tip="Shows PDB details: minAvailable, maxUnavailable, and status.">i</span></div>
+      <div class="cmd-row"><code>k get pdb</code><span class="tip-icon"
+          data-tip="Lists all PodDisruptionBudgets in namespace.">i</span></div>
+      <div class="cmd-row"><code>k describe pdb myapp-pdb</code><span class="tip-icon"
+          data-tip="Shows PDB details: minAvailable, maxUnavailable, and status.">i</span></div>
     </div>
 
     <span class="yaml-label">YAML</span>
@@ -2247,47 +2884,82 @@ spec:
 
     <h2>Application Failure</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k get pods -o wide</code><span class="tip-icon" data-tip="Lists pods with node assignments and IP addresses.">i</span></div>
-      <div class="cmd-row"><code>k describe pod &lt;name&gt;</code><span class="tip-icon" data-tip="Shows detailed pod events. Check Status, Conditions, and events section.">i</span></div>
-      <div class="cmd-row"><code>k logs &lt;pod&gt; -c &lt;container&gt; --previous</code><span class="tip-icon" data-tip="Shows logs from previous crashed container instance. Use when container restarted.">i</span></div>
-      <div class="cmd-row"><code>k get svc,endpoints &lt;svc-name&gt;</code><span class="tip-icon" data-tip="Lists service and its endpoints. Empty = no matching pods.">i</span></div>
-      <div class="cmd-row"><code>k describe svc &lt;name&gt;</code><span class="tip-icon" data-tip="Shows service selector. Compare to pod labels to verify match.">i</span></div>
-      <div class="cmd-row"><code>k get pods --show-labels</code><span class="tip-icon" data-tip="Lists pods with their labels. Use to debug selector mismatches.">i</span></div>
-      <div class="cmd-row"><code>k exec -it &lt;pod&gt; -- sh</code><span class="tip-icon" data-tip="Executes shell in pod. Use to debug application internals.">i</span></div>
+      <div class="cmd-row"><code>k get pods -o wide</code><span class="tip-icon"
+          data-tip="Lists pods with node assignments and IP addresses.">i</span></div>
+      <div class="cmd-row"><code>k describe pod &lt;name&gt;</code><span class="tip-icon"
+          data-tip="Shows detailed pod events. Check Status, Conditions, and events section.">i</span></div>
+      <div class="cmd-row"><code>k logs &lt;pod&gt; -c &lt;container&gt; --previous</code><span class="tip-icon"
+          data-tip="Shows logs from previous crashed container instance. Use when container restarted.">i</span></div>
+      <div class="cmd-row"><code>k get svc,endpoints &lt;svc-name&gt;</code><span class="tip-icon"
+          data-tip="Lists service and its endpoints. Empty = no matching pods.">i</span></div>
+      <div class="cmd-row"><code>k describe svc &lt;name&gt;</code><span class="tip-icon"
+          data-tip="Shows service selector. Compare to pod labels to verify match.">i</span></div>
+      <div class="cmd-row"><code>k get pods --show-labels</code><span class="tip-icon"
+          data-tip="Lists pods with their labels. Use to debug selector mismatches.">i</span></div>
+      <div class="cmd-row"><code>k exec -it &lt;pod&gt; -- sh</code><span class="tip-icon"
+          data-tip="Executes shell in pod. Use to debug application internals.">i</span></div>
     </div>
 
     <h2>Control Plane Failure</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k get pods -n kube-system</code><span class="tip-icon" data-tip="Lists control plane components as static pods.">i</span></div>
-      <div class="cmd-row"><code>k logs kube-apiserver-master -n kube-system</code><span class="tip-icon" data-tip="Shows API server logs. Check for startup or request errors.">i</span></div>
-      <div class="cmd-row"><code>k logs kube-scheduler-master -n kube-system</code><span class="tip-icon" data-tip="Shows scheduler logs. Check scheduling errors or pod pending issues.">i</span></div>
-      <div class="cmd-row"><code>k logs kube-controller-manager-master -n kube-system</code><span class="tip-icon" data-tip="Shows controller manager logs. Check for control loop errors.">i</span></div>
-      <div class="cmd-row"><code>ETCDCTL_API=3 etcdctl endpoint health --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key</code><span class="tip-icon" data-tip="Checks etcd health. etcd down = cluster unavailable.">i</span></div>
+      <div class="cmd-row"><code>k get pods -n kube-system</code><span class="tip-icon"
+          data-tip="Lists control plane components as static pods.">i</span></div>
+      <div class="cmd-row"><code>k logs kube-apiserver-master -n kube-system</code><span class="tip-icon"
+          data-tip="Shows API server logs. Check for startup or request errors.">i</span></div>
+      <div class="cmd-row"><code>k logs kube-scheduler-master -n kube-system</code><span class="tip-icon"
+          data-tip="Shows scheduler logs. Check scheduling errors or pod pending issues.">i</span></div>
+      <div class="cmd-row"><code>k logs kube-controller-manager-master -n kube-system</code><span class="tip-icon"
+          data-tip="Shows controller manager logs. Check for control loop errors.">i</span></div>
+      <div class="cmd-row">
+        <code>ETCDCTL_API=3 etcdctl endpoint health --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key</code><span
+          class="tip-icon" data-tip="Checks etcd health. etcd down = cluster unavailable.">i</span>
+      </div>
     </div>
 
     <h2>Worker Node Failure</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k get nodes</code><span class="tip-icon" data-tip="Lists node status and readiness.">i</span></div>
-      <div class="cmd-row"><code>k describe node &lt;node&gt;</code><span class="tip-icon" data-tip="Shows node conditions (Ready, MemoryPressure, etc) and events.">i</span></div>
-      <div class="cmd-row"><code>systemctl status kubelet</code><span class="tip-icon" data-tip="Run on the node. Check if kubelet service is running.">i</span></div>
-      <div class="cmd-row"><code>journalctl -u kubelet -f</code><span class="tip-icon" data-tip="Shows kubelet logs in real-time. Run on the node.">i</span></div>
-      <div class="cmd-row"><code>systemctl status containerd</code><span class="tip-icon" data-tip="Check container runtime status. Must be running for pods to start.">i</span></div>
-      <div class="cmd-row"><code>systemctl daemon-reload &amp;&amp; systemctl restart kubelet</code><span class="tip-icon" data-tip="Reloads systemd and restarts kubelet. Common fix for node issues.">i</span></div>
-      <div class="cmd-row"><code>cat /var/lib/kubelet/config.yaml</code><span class="tip-icon" data-tip="Shows kubelet configuration. Check for misconfigured settings.">i</span></div>
-      <div class="cmd-row"><code>cat /etc/kubernetes/kubelet.conf</code><span class="tip-icon" data-tip="Shows kubelet kubeconfig. Check server address and token.">i</span></div>
-      <div class="cmd-row"><code>openssl x509 -in /var/lib/kubelet/&lt;node&gt;.crt -text -noout</code><span class="tip-icon" data-tip="Examines node certificate. Check expiry and common name.">i</span></div>
+      <div class="cmd-row"><code>k get nodes</code><span class="tip-icon"
+          data-tip="Lists node status and readiness.">i</span></div>
+      <div class="cmd-row"><code>k describe node &lt;node&gt;</code><span class="tip-icon"
+          data-tip="Shows node conditions (Ready, MemoryPressure, etc) and events.">i</span></div>
+      <div class="cmd-row"><code>systemctl status kubelet</code><span class="tip-icon"
+          data-tip="Run on the node. Check if kubelet service is running.">i</span></div>
+      <div class="cmd-row"><code>journalctl -u kubelet -f</code><span class="tip-icon"
+          data-tip="Shows kubelet logs in real-time. Run on the node.">i</span></div>
+      <div class="cmd-row"><code>systemctl status containerd</code><span class="tip-icon"
+          data-tip="Check container runtime status. Must be running for pods to start.">i</span></div>
+      <div class="cmd-row"><code>systemctl daemon-reload &amp;&amp; systemctl restart kubelet</code><span
+          class="tip-icon" data-tip="Reloads systemd and restarts kubelet. Common fix for node issues.">i</span></div>
+      <div class="cmd-row"><code>cat /var/lib/kubelet/config.yaml</code><span class="tip-icon"
+          data-tip="Shows kubelet configuration. Check for misconfigured settings.">i</span></div>
+      <div class="cmd-row"><code>cat /etc/kubernetes/kubelet.conf</code><span class="tip-icon"
+          data-tip="Shows kubelet kubeconfig. Check server address and token.">i</span></div>
+      <div class="cmd-row"><code>openssl x509 -in /var/lib/kubelet/&lt;node&gt;.crt -text -noout</code><span
+          class="tip-icon" data-tip="Examines node certificate. Check expiry and common name.">i</span></div>
     </div>
 
     <h2>Network Troubleshooting</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k get pods -n kube-system</code><span class="tip-icon" data-tip="Verify CNI pods (Calico/Flannel/Weave) are running.">i</span></div>
-      <div class="cmd-row"><code>k get pods -n kube-system -l k8s-app=kube-dns</code><span class="tip-icon" data-tip="Lists CoreDNS. Not running = cluster DNS broken.">i</span></div>
-      <div class="cmd-row"><code>k run dns-test --image=busybox:1.28 --rm -it --restart=Never -- nslookup kubernetes</code><span class="tip-icon" data-tip="Tests DNS resolution. Must resolve kubernetes service.">i</span></div>
-      <div class="cmd-row"><code>k get ds kube-proxy -n kube-system</code><span class="tip-icon" data-tip="Verifies kube-proxy DaemonSet. Check if running on all nodes.">i</span></div>
-      <div class="cmd-row"><code>iptables -L -t nat | grep &lt;svc&gt;</code><span class="tip-icon" data-tip="Checks NAT rules for service. Missing rules = traffic not routed.">i</span></div>
-      <div class="cmd-row"><code>cat /proc/sys/net/ipv4/ip_forward</code><span class="tip-icon" data-tip="Must be 1. If 0, inter-pod communication fails.">i</span></div>
-      <div class="cmd-row"><code>k run netshoot --image=nicolaka/netshoot -it --rm --restart=Never -- bash</code><span class="tip-icon" data-tip="Advanced networking debug pod. Includes netstat, curl, nc, etc.">i</span></div>
-      <div class="cmd-row"><code>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -text -noout | grep -A2 Validity</code><span class="tip-icon" data-tip="Checks API server cert expiry. Expired cert = cluster can't authenticate.">i</span></div>
+      <div class="cmd-row"><code>k get pods -n kube-system</code><span class="tip-icon"
+          data-tip="Verify CNI pods (Calico/Flannel/Weave) are running.">i</span></div>
+      <div class="cmd-row"><code>k get pods -n kube-system -l k8s-app=kube-dns</code><span class="tip-icon"
+          data-tip="Lists CoreDNS. Not running = cluster DNS broken.">i</span></div>
+      <div class="cmd-row">
+        <code>k run dns-test --image=busybox:1.28 --rm -it --restart=Never -- nslookup kubernetes</code><span
+          class="tip-icon" data-tip="Tests DNS resolution. Must resolve kubernetes service.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get ds kube-proxy -n kube-system</code><span class="tip-icon"
+          data-tip="Verifies kube-proxy DaemonSet. Check if running on all nodes.">i</span></div>
+      <div class="cmd-row"><code>iptables -L -t nat | grep &lt;svc&gt;</code><span class="tip-icon"
+          data-tip="Checks NAT rules for service. Missing rules = traffic not routed.">i</span></div>
+      <div class="cmd-row"><code>cat /proc/sys/net/ipv4/ip_forward</code><span class="tip-icon"
+          data-tip="Must be 1. If 0, inter-pod communication fails.">i</span></div>
+      <div class="cmd-row"><code>k run netshoot --image=nicolaka/netshoot -it --rm --restart=Never -- bash</code><span
+          class="tip-icon" data-tip="Advanced networking debug pod. Includes netstat, curl, nc, etc.">i</span></div>
+      <div class="cmd-row">
+        <code>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -text -noout | grep -A2 Validity</code><span
+          class="tip-icon" data-tip="Checks API server cert expiry. Expired cert = cluster can't authenticate.">i</span>
+      </div>
     </div>
 
     <hr>
@@ -2296,20 +2968,44 @@ spec:
     <h1 id="jsonpath">30. JSONPath &amp; Output Formatting</h1>
 
     <div class="cmd-table">
-      <div class="cmd-row"><code>k get pod x -o jsonpath='{.spec.nodeName}'</code><span class="tip-icon" data-tip="Extracts single value from resource. Returns pod's assigned node.">i</span></div>
-      <div class="cmd-row"><code>k get pods -o jsonpath='{.items[*].metadata.name}'</code><span class="tip-icon" data-tip="Lists all pod names. [*] iterates all items.">i</span></div>
-      <div class="cmd-row"><code>k get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.capacity.cpu}{"\n"}{end}'</code><span class="tip-icon" data-tip="Range loop with formatting. Prints node name and CPU capacity.">i</span></div>
-      <div class="cmd-row"><code>k get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}'</code><span class="tip-icon" data-tip="Filters: ?() checks condition. Gets internal IPs only.">i</span></div>
-      <div class="cmd-row"><code>k get pods -A -o custom-columns=NAME:.metadata.name,NODE:.spec.nodeName,IMAGE:.spec.containers[0].image</code><span class="tip-icon" data-tip="Custom columns. Displays selected fields in table format.">i</span></div>
-      <div class="cmd-row"><code>k get pods --sort-by=.metadata.creationTimestamp</code><span class="tip-icon" data-tip="Sorts pods by creation time (oldest first).">i</span></div>
-      <div class="cmd-row"><code>k get nodes --sort-by=.status.capacity.cpu</code><span class="tip-icon" data-tip="Sorts nodes by CPU capacity.">i</span></div>
-      <div class="cmd-row"><code>k get pods --sort-by='.status.containerStatuses[0].restartCount'</code><span class="tip-icon" data-tip="Sorts by restart count. Finds problematic pods.">i</span></div>
-      <div class="cmd-row"><code>k get nodes -o json &gt; /opt/output.json</code><span class="tip-icon" data-tip="Exports full JSON output to file. Common exam task.">i</span></div>
-      <div class="cmd-row"><code>k get nodes -o jsonpath='{.items[*].status.nodeInfo.osImage}' &gt; /opt/os.txt</code><span class="tip-icon" data-tip="Exports extracted field to file. Exam: save specific data.">i</span></div>
-      <div class="cmd-row"><code>k get pods -A --no-headers | wc -l</code><span class="tip-icon" data-tip="Counts total pods. --no-headers removes header line.">i</span></div>
-      <div class="cmd-row"><code>k get pods -A -o jsonpath='{range .items[*]}{.spec.containers[*].image}{"\n"}{end}' | sort | uniq</code><span class="tip-icon" data-tip="Lists all unique images running in cluster.">i</span></div>
-      <div class="cmd-row"><code>k get pod &lt;name&gt; -o jsonpath='{.spec.nodeName}'</code><span class="tip-icon" data-tip="Finds which node a pod runs on.">i</span></div>
-      <div class="cmd-row"><code>k get secret &lt;name&gt; -o jsonpath='{.data.password}' | base64 --decode</code><span class="tip-icon" data-tip="Decodes secret value. Secrets stored base64-encoded in etcd.">i</span></div>
+      <div class="cmd-row"><code>k get pod x -o jsonpath='{.spec.nodeName}'</code><span class="tip-icon"
+          data-tip="Extracts single value from resource. Returns pod's assigned node.">i</span></div>
+      <div class="cmd-row"><code>k get pods -o jsonpath='{.items[*].metadata.name}'</code><span class="tip-icon"
+          data-tip="Lists all pod names. [*] iterates all items.">i</span></div>
+      <div class="cmd-row">
+        <code>k get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.capacity.cpu}{"\n"}{end}'</code><span
+          class="tip-icon" data-tip="Range loop with formatting. Prints node name and CPU capacity.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}'</code><span
+          class="tip-icon" data-tip="Filters: ?() checks condition. Gets internal IPs only.">i</span>
+      </div>
+      <div class="cmd-row">
+        <code>k get pods -A -o custom-columns=NAME:.metadata.name,NODE:.spec.nodeName,IMAGE:.spec.containers[0].image</code><span
+          class="tip-icon" data-tip="Custom columns. Displays selected fields in table format.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get pods --sort-by=.metadata.creationTimestamp</code><span class="tip-icon"
+          data-tip="Sorts pods by creation time (oldest first).">i</span></div>
+      <div class="cmd-row"><code>k get nodes --sort-by=.status.capacity.cpu</code><span class="tip-icon"
+          data-tip="Sorts nodes by CPU capacity.">i</span></div>
+      <div class="cmd-row"><code>k get pods --sort-by='.status.containerStatuses[0].restartCount'</code><span
+          class="tip-icon" data-tip="Sorts by restart count. Finds problematic pods.">i</span></div>
+      <div class="cmd-row"><code>k get nodes -o json &gt; /opt/output.json</code><span class="tip-icon"
+          data-tip="Exports full JSON output to file. Common exam task.">i</span></div>
+      <div class="cmd-row">
+        <code>k get nodes -o jsonpath='{.items[*].status.nodeInfo.osImage}' &gt; /opt/os.txt</code><span
+          class="tip-icon" data-tip="Exports extracted field to file. Exam: save specific data.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get pods -A --no-headers | wc -l</code><span class="tip-icon"
+          data-tip="Counts total pods. --no-headers removes header line.">i</span></div>
+      <div class="cmd-row">
+        <code>k get pods -A -o jsonpath='{range .items[*]}{.spec.containers[*].image}{"\n"}{end}' | sort | uniq</code><span
+          class="tip-icon" data-tip="Lists all unique images running in cluster.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get pod &lt;name&gt; -o jsonpath='{.spec.nodeName}'</code><span class="tip-icon"
+          data-tip="Finds which node a pod runs on.">i</span></div>
+      <div class="cmd-row"><code>k get secret &lt;name&gt; -o jsonpath='{.data.password}' | base64 --decode</code><span
+          class="tip-icon" data-tip="Decodes secret value. Secrets stored base64-encoded in etcd.">i</span></div>
     </div>
 
     <hr>
@@ -2320,18 +3016,30 @@ spec:
     </p>
 
     <div class="cmd-table">
-      <div class="cmd-row"><code>helm repo add bitnami https://charts.bitnami.com/bitnami</code><span class="tip-icon" data-tip="Adds chart repository. Required before using charts from it.">i</span></div>
-      <div class="cmd-row"><code>helm repo update</code><span class="tip-icon" data-tip="Updates chart repos. Gets latest chart versions.">i</span></div>
-      <div class="cmd-row"><code>helm install my-nginx bitnami/nginx</code><span class="tip-icon" data-tip="Installs chart release. 'my-nginx' = release name. Simple with defaults.">i</span></div>
-      <div class="cmd-row"><code>helm install my-nginx bitnami/nginx -f values.yaml</code><span class="tip-icon" data-tip="Installs with custom values from file. Overrides chart defaults.">i</span></div>
-      <div class="cmd-row"><code>helm install my-nginx bitnami/nginx --set service.port=8080</code><span class="tip-icon" data-tip="Installs with inline values. Useful for quick option changes.">i</span></div>
-      <div class="cmd-row"><code>helm list</code><span class="tip-icon" data-tip="Lists all releases in current namespace.">i</span></div>
-      <div class="cmd-row"><code>helm list -A</code><span class="tip-icon" data-tip="Lists releases across all namespaces.">i</span></div>
-      <div class="cmd-row"><code>helm upgrade my-nginx bitnami/nginx --set replicaCount=3</code><span class="tip-icon" data-tip="Upgrades existing release. Updates deployment to 3 replicas.">i</span></div>
-      <div class="cmd-row"><code>helm rollback my-nginx 1</code><span class="tip-icon" data-tip="Rolls back to previous release version. Returns to stable state.">i</span></div>
-      <div class="cmd-row"><code>helm uninstall my-nginx</code><span class="tip-icon" data-tip="Removes release. Deletes all deployed resources.">i</span></div>
-      <div class="cmd-row"><code>helm template my-nginx bitnami/nginx -f values.yaml</code><span class="tip-icon" data-tip="Renders YAML without installing. Preview what will be deployed.">i</span></div>
-      <div class="cmd-row"><code>helm show values bitnami/nginx</code><span class="tip-icon" data-tip="Shows all available chart settings and defaults.">i</span></div>
+      <div class="cmd-row"><code>helm repo add bitnami https://charts.bitnami.com/bitnami</code><span class="tip-icon"
+          data-tip="Adds chart repository. Required before using charts from it.">i</span></div>
+      <div class="cmd-row"><code>helm repo update</code><span class="tip-icon"
+          data-tip="Updates chart repos. Gets latest chart versions.">i</span></div>
+      <div class="cmd-row"><code>helm install my-nginx bitnami/nginx</code><span class="tip-icon"
+          data-tip="Installs chart release. 'my-nginx' = release name. Simple with defaults.">i</span></div>
+      <div class="cmd-row"><code>helm install my-nginx bitnami/nginx -f values.yaml</code><span class="tip-icon"
+          data-tip="Installs with custom values from file. Overrides chart defaults.">i</span></div>
+      <div class="cmd-row"><code>helm install my-nginx bitnami/nginx --set service.port=8080</code><span
+          class="tip-icon" data-tip="Installs with inline values. Useful for quick option changes.">i</span></div>
+      <div class="cmd-row"><code>helm list</code><span class="tip-icon"
+          data-tip="Lists all releases in current namespace.">i</span></div>
+      <div class="cmd-row"><code>helm list -A</code><span class="tip-icon"
+          data-tip="Lists releases across all namespaces.">i</span></div>
+      <div class="cmd-row"><code>helm upgrade my-nginx bitnami/nginx --set replicaCount=3</code><span class="tip-icon"
+          data-tip="Upgrades existing release. Updates deployment to 3 replicas.">i</span></div>
+      <div class="cmd-row"><code>helm rollback my-nginx 1</code><span class="tip-icon"
+          data-tip="Rolls back to previous release version. Returns to stable state.">i</span></div>
+      <div class="cmd-row"><code>helm uninstall my-nginx</code><span class="tip-icon"
+          data-tip="Removes release. Deletes all deployed resources.">i</span></div>
+      <div class="cmd-row"><code>helm template my-nginx bitnami/nginx -f values.yaml</code><span class="tip-icon"
+          data-tip="Renders YAML without installing. Preview what will be deployed.">i</span></div>
+      <div class="cmd-row"><code>helm show values bitnami/nginx</code><span class="tip-icon"
+          data-tip="Shows all available chart settings and defaults.">i</span></div>
     </div>
 
     <hr>
@@ -2366,8 +3074,10 @@ images:
     newTag: v2.0</code></pre>
 
     <div class="cmd-table">
-      <div class="cmd-row"><code>kubectl apply -k overlays/prod</code><span class="tip-icon" data-tip="Applies kustomized YAML. -k flag uses kustomization.yaml from directory.">i</span></div>
-      <div class="cmd-row"><code>kubectl kustomize overlays/prod</code><span class="tip-icon" data-tip="Previews final YAML without applying. Useful for debugging patches.">i</span></div>
+      <div class="cmd-row"><code>kubectl apply -k overlays/prod</code><span class="tip-icon"
+          data-tip="Applies kustomized YAML. -k flag uses kustomization.yaml from directory.">i</span></div>
+      <div class="cmd-row"><code>kubectl kustomize overlays/prod</code><span class="tip-icon"
+          data-tip="Previews final YAML without applying. Useful for debugging patches.">i</span></div>
     </div>
 
     <hr>
@@ -2377,29 +3087,52 @@ images:
 
     <h2>Prerequisites (All Nodes)</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>sudo swapoff -a</code><span class="tip-icon" data-tip="Disables swap immediately. Required for kubelet.">i</span></div>
-      <div class="cmd-row"><code>sed -i '/ swap / s/^/#/' /etc/fstab</code><span class="tip-icon" data-tip="Comments out swap partitions in fstab. Disables on reboot.">i</span></div>
-      <div class="cmd-row"><code>sudo modprobe overlay</code><span class="tip-icon" data-tip="Loads overlay filesystem module. Required for containerd.">i</span></div>
-      <div class="cmd-row"><code>sudo modprobe br_netfilter</code><span class="tip-icon" data-tip="Loads bridge netfilter module. Enables bridge traffic to iptables.">i</span></div>
-      <div class="cmd-row"><code>sudo sysctl --system</code><span class="tip-icon" data-tip="Applies kernel settings from /etc/sysctl.d/. Enables IP forwarding.">i</span></div>
-      <div class="cmd-row"><code>sudo apt-get update</code><span class="tip-icon" data-tip="Updates package lists.">i</span></div>
-      <div class="cmd-row"><code>sudo apt-get install -y kubelet kubeadm kubectl</code><span class="tip-icon" data-tip="Installs Kubernetes tools.">i</span></div>
-      <div class="cmd-row"><code>sudo apt-mark hold kubelet kubeadm kubectl</code><span class="tip-icon" data-tip="Prevents accidental upgrades during apt-get upgrade.">i</span></div>
+      <div class="cmd-row"><code>sudo swapoff -a</code><span class="tip-icon"
+          data-tip="Disables swap immediately. Required for kubelet.">i</span></div>
+      <div class="cmd-row"><code>sed -i '/ swap / s/^/#/' /etc/fstab</code><span class="tip-icon"
+          data-tip="Comments out swap partitions in fstab. Disables on reboot.">i</span></div>
+      <div class="cmd-row"><code>sudo modprobe overlay</code><span class="tip-icon"
+          data-tip="Loads overlay filesystem module. Required for containerd.">i</span></div>
+      <div class="cmd-row"><code>sudo modprobe br_netfilter</code><span class="tip-icon"
+          data-tip="Loads bridge netfilter module. Enables bridge traffic to iptables.">i</span></div>
+      <div class="cmd-row"><code>sudo sysctl --system</code><span class="tip-icon"
+          data-tip="Applies kernel settings from /etc/sysctl.d/. Enables IP forwarding.">i</span></div>
+      <div class="cmd-row"><code>sudo apt-get update</code><span class="tip-icon"
+          data-tip="Updates package lists.">i</span></div>
+      <div class="cmd-row"><code>sudo apt-get install -y kubelet kubeadm kubectl</code><span class="tip-icon"
+          data-tip="Installs Kubernetes tools.">i</span></div>
+      <div class="cmd-row"><code>sudo apt-mark hold kubelet kubeadm kubectl</code><span class="tip-icon"
+          data-tip="Prevents accidental upgrades during apt-get upgrade.">i</span></div>
     </div>
 
     <h2>Control Plane Init</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=&lt;master-ip&gt;</code><span class="tip-icon" data-tip="Initializes control plane. CIDR for pod network. Must match CNI plugin.">i</span></div>
-      <div class="cmd-row"><code>mkdir -p $HOME/.kube</code><span class="tip-icon" data-tip="Creates .kube directory for config files.">i</span></div>
-      <div class="cmd-row"><code>sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</code><span class="tip-icon" data-tip="Copies admin kubeconfig. Required to run kubectl commands.">i</span></div>
-      <div class="cmd-row"><code>sudo chown $(id -u):$(id -g) $HOME/.kube/config</code><span class="tip-icon" data-tip="Sets file ownership. Allows non-root user to use kubectl.">i</span></div>
-      <div class="cmd-row"><code>kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml</code><span class="tip-icon" data-tip="Installs Flannel CNI. Creates pod network. Required for pod communication.">i</span></div>
+      <div class="cmd-row">
+        <code>sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=&lt;master-ip&gt;</code><span
+          class="tip-icon" data-tip="Initializes control plane. CIDR for pod network. Must match CNI plugin.">i</span>
+      </div>
+      <div class="cmd-row"><code>mkdir -p $HOME/.kube</code><span class="tip-icon"
+          data-tip="Creates .kube directory for config files.">i</span></div>
+      <div class="cmd-row"><code>sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</code><span class="tip-icon"
+          data-tip="Copies admin kubeconfig. Required to run kubectl commands.">i</span></div>
+      <div class="cmd-row"><code>sudo chown $(id -u):$(id -g) $HOME/.kube/config</code><span class="tip-icon"
+          data-tip="Sets file ownership. Allows non-root user to use kubectl.">i</span></div>
+      <div class="cmd-row">
+        <code>kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml</code><span
+          class="tip-icon"
+          data-tip="Installs Flannel CNI. Creates pod network. Required for pod communication.">i</span>
+      </div>
     </div>
 
     <h2>Join Workers</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>sudo kubeadm join &lt;master-ip&gt;:6443 --token &lt;token&gt; --discovery-token-ca-cert-hash sha256:&lt;hash&gt;</code><span class="tip-icon" data-tip="Joins worker to cluster. Token from 'kubeadm init' output. Run on worker nodes.">i</span></div>
-      <div class="cmd-row"><code>kubeadm token create --print-join-command</code><span class="tip-icon" data-tip="Generates new join command if token expired. Run on control plane.">i</span></div>
+      <div class="cmd-row">
+        <code>sudo kubeadm join &lt;master-ip&gt;:6443 --token &lt;token&gt; --discovery-token-ca-cert-hash sha256:&lt;hash&gt;</code><span
+          class="tip-icon"
+          data-tip="Joins worker to cluster. Token from 'kubeadm init' output. Run on worker nodes.">i</span>
+      </div>
+      <div class="cmd-row"><code>kubeadm token create --print-join-command</code><span class="tip-icon"
+          data-tip="Generates new join command if token expired. Run on control plane.">i</span></div>
     </div>
 
     <hr>
@@ -2410,9 +3143,12 @@ images:
     <p>Operators = CRD + Controller that manages lifecycle (install, upgrade, backup).</p>
 
     <div class="cmd-table">
-      <div class="cmd-row"><code>k get crd</code><span class="tip-icon" data-tip="Lists all custom resource definitions installed in cluster.">i</span></div>
-      <div class="cmd-row"><code>k get &lt;custom-resource-name&gt;</code><span class="tip-icon" data-tip="Lists instances of custom resource. e.g. k get backups">i</span></div>
-      <div class="cmd-row"><code>k describe crd &lt;name&gt;</code><span class="tip-icon" data-tip="Shows CRD schema and structure. Helps understand custom resource properties.">i</span></div>
+      <div class="cmd-row"><code>k get crd</code><span class="tip-icon"
+          data-tip="Lists all custom resource definitions installed in cluster.">i</span></div>
+      <div class="cmd-row"><code>k get &lt;custom-resource-name&gt;</code><span class="tip-icon"
+          data-tip="Lists instances of custom resource. e.g. k get backups">i</span></div>
+      <div class="cmd-row"><code>k describe crd &lt;name&gt;</code><span class="tip-icon"
+          data-tip="Shows CRD schema and structure. Helps understand custom resource properties.">i</span></div>
     </div>
 
     <h2>Extension Interfaces</h2>
@@ -2430,18 +3166,25 @@ images:
       service nginx-svc on port 80.</p>
     <h3>Solution:</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create deployment nginx-deploy --image=nginx:1.21 --replicas=3 -n app</code><span class="tip-icon" data-tip="Creates deployment with 3 replicas in app namespace.">i</span></div>
-      <div class="cmd-row"><code>k expose deployment nginx-deploy --name=nginx-svc --port=80 -n app</code><span class="tip-icon" data-tip="Exposes deployment as ClusterIP service on port 80. Pods exposed internally.">i</span></div>
-      <div class="cmd-row"><code>k get deploy,svc -n app</code><span class="tip-icon" data-tip="Verifies deployment and service are created.">i</span></div>
+      <div class="cmd-row"><code>k create deployment nginx-deploy --image=nginx:1.21 --replicas=3 -n app</code><span
+          class="tip-icon" data-tip="Creates deployment with 3 replicas in app namespace.">i</span></div>
+      <div class="cmd-row"><code>k expose deployment nginx-deploy --name=nginx-svc --port=80 -n app</code><span
+          class="tip-icon"
+          data-tip="Exposes deployment as ClusterIP service on port 80. Pods exposed internally.">i</span></div>
+      <div class="cmd-row"><code>k get deploy,svc -n app</code><span class="tip-icon"
+          data-tip="Verifies deployment and service are created.">i</span></div>
     </div>
 
     <h2>Scenario 2: RBAC &mdash; read-only pods</h2>
     <p><strong>Task:</strong> Create Role allowing get,list on pods in dev namespace. Bind to user jane.</p>
     <h3>Solution:</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k create role pod-reader --verb=get,list --resource=pods -n dev</code><span class="tip-icon" data-tip="Creates role with get,list permissions on pods in dev namespace.">i</span></div>
-      <div class="cmd-row"><code>k create rolebinding jane-pod-reader --role=pod-reader --user=jane -n dev</code><span class="tip-icon" data-tip="Binds role to user jane. Jane can now get/list pods in dev.">i</span></div>
-      <div class="cmd-row"><code>k auth can-i get pods --as=jane -n dev</code><span class="tip-icon" data-tip="Tests if jane has permission. Should return 'yes'.">i</span></div>
+      <div class="cmd-row"><code>k create role pod-reader --verb=get,list --resource=pods -n dev</code><span
+          class="tip-icon" data-tip="Creates role with get,list permissions on pods in dev namespace.">i</span></div>
+      <div class="cmd-row"><code>k create rolebinding jane-pod-reader --role=pod-reader --user=jane -n dev</code><span
+          class="tip-icon" data-tip="Binds role to user jane. Jane can now get/list pods in dev.">i</span></div>
+      <div class="cmd-row"><code>k auth can-i get pods --as=jane -n dev</code><span class="tip-icon"
+          data-tip="Tests if jane has permission. Should return 'yes'.">i</span></div>
     </div>
 
     <h2>Scenario 3: Static Pod</h2>
@@ -2463,7 +3206,10 @@ EOF</code></pre>
     <p><strong>Task:</strong> Snapshot etcd to /tmp/etcd-snapshot.db with correct certs.</p>
     <h3>Solution:</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>ETCDCTL_API=3 etcdctl snapshot save /tmp/etcd-snapshot.db --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key</code><span class="tip-icon" data-tip="Creates etcd backup. Must include all 3 certs for production cluster.">i</span></div>
+      <div class="cmd-row">
+        <code>ETCDCTL_API=3 etcdctl snapshot save /tmp/etcd-snapshot.db --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key</code><span
+          class="tip-icon" data-tip="Creates etcd backup. Must include all 3 certs for production cluster.">i</span>
+      </div>
     </div>
 
     <h2>Scenario 5: PV + PVC + Pod</h2>
@@ -2522,17 +3268,28 @@ spec:
     <p><strong>Task:</strong> Upgrade control plane to v1.31.0.</p>
     <h3>Solution:</h3>
     <div class="cmd-table">
-      <div class="cmd-row"><code>sudo apt-mark unhold kubeadm</code><span class="tip-icon" data-tip="Unlock apt from holding kubeadm. Allows upgrade.">i</span></div>
-      <div class="cmd-row"><code>sudo apt-get update &amp;&amp; sudo apt-get install -y kubeadm=1.31.0-*</code><span class="tip-icon" data-tip="Updates and installs target kubeadm version.">i</span></div>
-      <div class="cmd-row"><code>sudo apt-mark hold kubeadm</code><span class="tip-icon" data-tip="Re-locks kubeadm to prevent accidental upgrades.">i</span></div>
-      <div class="cmd-row"><code>sudo kubeadm upgrade plan</code><span class="tip-icon" data-tip="Shows upgrade path and what will be updated.">i</span></div>
-      <div class="cmd-row"><code>sudo kubeadm upgrade apply v1.31.0</code><span class="tip-icon" data-tip="Upgrades control plane components to v1.31.0.">i</span></div>
-      <div class="cmd-row"><code>kubectl drain &lt;cp-node&gt; --ignore-daemonsets</code><span class="tip-icon" data-tip="Evicts pods so node can be maintained. Daemonsets ignored.">i</span></div>
-      <div class="cmd-row"><code>sudo apt-mark unhold kubelet kubectl</code><span class="tip-icon" data-tip="Unlocks kubelet and kubectl for upgrade.">i</span></div>
-      <div class="cmd-row"><code>sudo apt-get install -y kubelet=1.31.0-* kubectl=1.31.0-*</code><span class="tip-icon" data-tip="Installs target versions of kubelet and kubectl.">i</span></div>
-      <div class="cmd-row"><code>sudo apt-mark hold kubelet kubectl</code><span class="tip-icon" data-tip="Re-locks packages.">i</span></div>
-      <div class="cmd-row"><code>sudo systemctl daemon-reload &amp;&amp; sudo systemctl restart kubelet</code><span class="tip-icon" data-tip="Reloads systemd and restarts kubelet with new version.">i</span></div>
-      <div class="cmd-row"><code>kubectl uncordon &lt;cp-node&gt;</code><span class="tip-icon" data-tip="Re-enables scheduling. Node ready for pods again.">i</span></div>
+      <div class="cmd-row"><code>sudo apt-mark unhold kubeadm</code><span class="tip-icon"
+          data-tip="Unlock apt from holding kubeadm. Allows upgrade.">i</span></div>
+      <div class="cmd-row"><code>sudo apt-get update &amp;&amp; sudo apt-get install -y kubeadm=1.31.0-*</code><span
+          class="tip-icon" data-tip="Updates and installs target kubeadm version.">i</span></div>
+      <div class="cmd-row"><code>sudo apt-mark hold kubeadm</code><span class="tip-icon"
+          data-tip="Re-locks kubeadm to prevent accidental upgrades.">i</span></div>
+      <div class="cmd-row"><code>sudo kubeadm upgrade plan</code><span class="tip-icon"
+          data-tip="Shows upgrade path and what will be updated.">i</span></div>
+      <div class="cmd-row"><code>sudo kubeadm upgrade apply v1.31.0</code><span class="tip-icon"
+          data-tip="Upgrades control plane components to v1.31.0.">i</span></div>
+      <div class="cmd-row"><code>kubectl drain &lt;cp-node&gt; --ignore-daemonsets</code><span class="tip-icon"
+          data-tip="Evicts pods so node can be maintained. Daemonsets ignored.">i</span></div>
+      <div class="cmd-row"><code>sudo apt-mark unhold kubelet kubectl</code><span class="tip-icon"
+          data-tip="Unlocks kubelet and kubectl for upgrade.">i</span></div>
+      <div class="cmd-row"><code>sudo apt-get install -y kubelet=1.31.0-* kubectl=1.31.0-*</code><span class="tip-icon"
+          data-tip="Installs target versions of kubelet and kubectl.">i</span></div>
+      <div class="cmd-row"><code>sudo apt-mark hold kubelet kubectl</code><span class="tip-icon"
+          data-tip="Re-locks packages.">i</span></div>
+      <div class="cmd-row"><code>sudo systemctl daemon-reload &amp;&amp; sudo systemctl restart kubelet</code><span
+          class="tip-icon" data-tip="Reloads systemd and restarts kubelet with new version.">i</span></div>
+      <div class="cmd-row"><code>kubectl uncordon &lt;cp-node&gt;</code><span class="tip-icon"
+          data-tip="Re-enables scheduling. Node ready for pods again.">i</span></div>
     </div>
 
     <h2>Scenario 8: Ingress with TLS</h2>
@@ -2590,33 +3347,52 @@ k get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].ad
 
     <h2>Common Mistakes to Avoid</h2>
     <ul>
-      <li>Forgetting to switch context: 
+      <li>Forgetting to switch context:
         <div class="cmd-table" style="display:inline-block; margin: 5px 0;">
-          <div class="cmd-row" style="display:inline-block; margin: 0 5px;"><code>k config use-context &lt;context&gt;</code><span class="tip-icon" data-tip="Each exam question may use different cluster. Must switch!">i</span></div>
+          <div class="cmd-row" style="display:inline-block; margin: 0 5px;">
+            <code>k config use-context &lt;context&gt;</code><span class="tip-icon"
+              data-tip="Each exam question may use different cluster. Must switch!">i</span>
+          </div>
         </div>
-        — each question may use different cluster</li>
+        — each question may use different cluster
+      </li>
       <li>Wrong namespace — always check and use <code>-n &lt;ns&gt;</code></li>
       <li>YAML indentation errors — use <code>k apply -f</code> and read the error</li>
       <li>Not verifying — always <code>k get</code> / <code>k describe</code> to confirm</li>
       <li>Spending too long on one question — flag and move on</li>
-      <li>Forgetting 
+      <li>Forgetting
         <div class="cmd-table" style="display:inline-block; margin: 5px 0;">
-          <div class="cmd-row" style="display:inline-block; margin: 0 5px;"><code>--dry-run=client -o yaml</code><span class="tip-icon" data-tip="Fastest way to generate YAML templates without creating resources.">i</span></div>
+          <div class="cmd-row" style="display:inline-block; margin: 0 5px;"><code>--dry-run=client -o yaml</code><span
+              class="tip-icon" data-tip="Fastest way to generate YAML templates without creating resources.">i</span>
+          </div>
         </div>
-        — fastest way to generate templates</li>
+        — fastest way to generate templates
+      </li>
     </ul>
 
     <h2>Useful One-Liners</h2>
     <div class="cmd-table">
-      <div class="cmd-row"><code>k get pods -A -o wide</code><span class="tip-icon" data-tip="All pods with node info and internal IPs. Best overview.">i</span></div>
-      <div class="cmd-row"><code>k get events -A --sort-by='.lastTimestamp'</code><span class="tip-icon" data-tip="Cluster events sorted by timestamp. Find warnings and errors.">i</span></div>
-      <div class="cmd-row"><code>k get pods -w</code><span class="tip-icon" data-tip="Watch pods live. Shows pod changes in real-time.">i</span></div>
-      <div class="cmd-row"><code>k delete pod &lt;name&gt; --force --grace-period=0</code><span class="tip-icon" data-tip="Force delete stuck Terminating pod immediately.">i</span></div>
-      <div class="cmd-row"><code>k get pods -A -o jsonpath='{range .items[*]}{.spec.containers[*].image}{"\n"}{end}' | sort | uniq</code><span class="tip-icon" data-tip="Lists all unique images running in cluster.">i</span></div>
-      <div class="cmd-row"><code>k run tmp --image=busybox:1.28 --rm -it --restart=Never -- sh</code><span class="tip-icon" data-tip="Quick debug pod. Creates busybox, shells into it, auto-deletes on exit.">i</span></div>
-      <div class="cmd-row"><code>k get secret &lt;name&gt; -o jsonpath='{.data.password}' | base64 --decode</code><span class="tip-icon" data-tip="Decodes secret value. Secrets stored as base64 in etcd.">i</span></div>
-      <div class="cmd-row"><code>grep staticPodPath /var/lib/kubelet/config.yaml</code><span class="tip-icon" data-tip="Shows directory monitored for static pods. Run on node.">i</span></div>
-      <div class="cmd-row"><code>k get --raw='/readyz?verbose'</code><span class="tip-icon" data-tip="Checks component health. Shows if API server is ready.">i</span></div>
+      <div class="cmd-row"><code>k get pods -A -o wide</code><span class="tip-icon"
+          data-tip="All pods with node info and internal IPs. Best overview.">i</span></div>
+      <div class="cmd-row"><code>k get events -A --sort-by='.lastTimestamp'</code><span class="tip-icon"
+          data-tip="Cluster events sorted by timestamp. Find warnings and errors.">i</span></div>
+      <div class="cmd-row"><code>k get pods -w</code><span class="tip-icon"
+          data-tip="Watch pods live. Shows pod changes in real-time.">i</span></div>
+      <div class="cmd-row"><code>k delete pod &lt;name&gt; --force --grace-period=0</code><span class="tip-icon"
+          data-tip="Force delete stuck Terminating pod immediately.">i</span></div>
+      <div class="cmd-row">
+        <code>k get pods -A -o jsonpath='{range .items[*]}{.spec.containers[*].image}{"\n"}{end}' | sort | uniq</code><span
+          class="tip-icon" data-tip="Lists all unique images running in cluster.">i</span>
+      </div>
+      <div class="cmd-row"><code>k run tmp --image=busybox:1.28 --rm -it --restart=Never -- sh</code><span
+          class="tip-icon" data-tip="Quick debug pod. Creates busybox, shells into it, auto-deletes on exit.">i</span>
+      </div>
+      <div class="cmd-row"><code>k get secret &lt;name&gt; -o jsonpath='{.data.password}' | base64 --decode</code><span
+          class="tip-icon" data-tip="Decodes secret value. Secrets stored as base64 in etcd.">i</span></div>
+      <div class="cmd-row"><code>grep staticPodPath /var/lib/kubelet/config.yaml</code><span class="tip-icon"
+          data-tip="Shows directory monitored for static pods. Run on node.">i</span></div>
+      <div class="cmd-row"><code>k get --raw='/readyz?verbose'</code><span class="tip-icon"
+          data-tip="Checks component health. Shows if API server is ready.">i</span></div>
     </div>
 
     <h2>Priority Classes (Pod Scheduling)</h2>
@@ -2703,7 +3479,7 @@ k api-versions           # all API versions</code></pre>
   <script>
     (function () {
       var toggleBtn = document.getElementById('cka-nav-toggle');
-      var showBtn   = document.getElementById('cka-nav-show');
+      var showBtn = document.getElementById('cka-nav-show');
 
       function hideNav() {
         document.body.classList.add('cka-nav-hidden');
@@ -2714,7 +3490,159 @@ k api-versions           # all API versions</code></pre>
       }
 
       if (toggleBtn) toggleBtn.addEventListener('click', hideNav);
-      if (showBtn)   showBtn.addEventListener('click', showNav);
+      if (showBtn) showBtn.addEventListener('click', showNav);
+    })();
+  </script>
+
+  <!-- ── YAML Syntax Highlighting & Copy Buttons ── -->
+  <script>
+    (function () {
+      // Escape HTML special characters
+      function esc(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      // Simple YAML highlighter
+      function highlightYAML(raw) {
+        var lines = raw.split('\n');
+        var out = [];
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+
+          // Full-line comment
+          if (/^\s*#/.test(line)) {
+            out.push('<span class="hl-comment">' + esc(line) + '</span>');
+            continue;
+          }
+
+          // Lines with a key: value pattern
+          var m = line.match(/^(\s*)([\w\-\.\/]+)(\s*:\s*)(.*)/);
+          if (m) {
+            var indent = esc(m[1]);
+            var key = '<span class="hl-key">' + esc(m[2]) + '</span>';
+            var colon = '<span class="hl-punctuation">' + esc(m[3]) + '</span>';
+            var val = highlightValue(m[4]);
+            out.push(indent + key + colon + val);
+            continue;
+          }
+
+          // List item lines:  - key: value  or  - value
+          var lm = line.match(/^(\s*)(- )(.+)/);
+          if (lm) {
+            var indent2 = esc(lm[1]);
+            var dash = '<span class="hl-punctuation">' + esc(lm[2]) + '</span>';
+            var rest = lm[3];
+            // Check if rest is key: value
+            var km = rest.match(/^([\w\-\.\/]+)(\s*:\s*)(.*)/);
+            if (km) {
+              out.push(indent2 + dash + '<span class="hl-key">' + esc(km[1]) + '</span><span class="hl-punctuation">' + esc(km[2]) + '</span>' + highlightValue(km[3]));
+            } else {
+              out.push(indent2 + dash + highlightValue(rest));
+            }
+            continue;
+          }
+
+          // Default - just escape
+          out.push(esc(line));
+        }
+        return out.join('\n');
+      }
+
+      function highlightValue(val) {
+        if (!val || val.trim() === '') return esc(val);
+
+        // Inline comment at end
+        var comment = '';
+        var cm = val.match(/^(.*?)\s+(#.*)$/);
+        if (cm) {
+          val = cm[1];
+          comment = ' <span class="hl-comment">' + esc(cm[2]) + '</span>';
+        }
+
+        var trimmed = val.trim();
+
+        // Quoted strings
+        if (/^["'].*["']$/.test(trimmed)) {
+          return '<span class="hl-string">' + esc(val) + '</span>' + comment;
+        }
+        // Boolean
+        if (/^(true|false|yes|no|on|off)$/i.test(trimmed)) {
+          return '<span class="hl-bool">' + esc(val) + '</span>' + comment;
+        }
+        // Null
+        if (/^(null|~)$/i.test(trimmed)) {
+          return '<span class="hl-null">' + esc(val) + '</span>' + comment;
+        }
+        // Number
+        if (/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(trimmed) || /^\d+[mMgGkKiI]+$/.test(trimmed)) {
+          return '<span class="hl-number">' + esc(val) + '</span>' + comment;
+        }
+        // Anchor / alias
+        if (/^[&*]/.test(trimmed)) {
+          return '<span class="hl-anchor">' + esc(val) + '</span>' + comment;
+        }
+        // Tag (!!str etc)
+        if (/^!!/.test(trimmed)) {
+          return '<span class="hl-tag">' + esc(val) + '</span>' + comment;
+        }
+        // Inline objects/arrays { } or [ ]
+        if (/^\{.*\}$/.test(trimmed) || /^\[.*\]$/.test(trimmed)) {
+          return '<span class="hl-value">' + esc(val) + '</span>' + comment;
+        }
+        // General value
+        return '<span class="hl-value">' + esc(val) + '</span>' + comment;
+      }
+
+      // Detect if a code block is YAML-like
+      function isYAMLBlock(text) {
+        var lines = text.trim().split('\n');
+        var yamlPatterns = 0;
+        for (var i = 0; i < Math.min(lines.length, 10); i++) {
+          if (/^\s*[\w\-]+\s*:/.test(lines[i])) yamlPatterns++;
+          if (/^\s*-\s+/.test(lines[i])) yamlPatterns++;
+          if (/^\s*#/.test(lines[i])) yamlPatterns++;
+        }
+        return yamlPatterns >= 2;
+      }
+
+      // Process all <pre><code> blocks
+      var pres = document.querySelectorAll('pre');
+      pres.forEach(function (pre) {
+        var code = pre.querySelector('code');
+        if (!code) return;
+
+        var rawText = code.textContent || code.innerText;
+
+        // Check if preceded by a .yaml-label or if text looks like YAML
+        var prev = pre.previousElementSibling;
+        var hasYAMLLabel = prev && prev.classList && prev.classList.contains('yaml-label');
+        var looksLikeYAML = isYAMLBlock(rawText);
+
+        if (hasYAMLLabel || looksLikeYAML) {
+          code.innerHTML = highlightYAML(rawText);
+        }
+
+        // Wrap in .code-wrapper and add copy button
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.className = 'code-copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function () {
+          navigator.clipboard.writeText(rawText).then(function () {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function () {
+              btn.textContent = 'Copy';
+              btn.classList.remove('copied');
+            }, 1800);
+          });
+        });
+        wrapper.appendChild(btn);
+      });
     })();
   </script>
 
