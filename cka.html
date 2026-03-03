@@ -451,120 +451,325 @@
       }
     }
 
-    /* ── Responsive ── */
+    /* ── Mobile Nav Hamburger Button ── */
+    #cka-mobile-menu-btn {
+      display: none;
+      position: fixed;
+      top: 0.75rem;
+      left: 0.75rem;
+      z-index: 9999;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      width: 40px;
+      height: 40px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+      transition: background 0.2s, transform 0.2s;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #cka-mobile-menu-btn:hover {
+      background: #1565c0;
+      transform: scale(1.05);
+    }
+
+    #cka-mobile-menu-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* ── Mobile Nav Backdrop Overlay ── */
+    #cka-nav-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(2px);
+      z-index: 99;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    #cka-nav-backdrop.active {
+      display: block;
+      opacity: 1;
+    }
+
+    /* ── Responsive: Tablet & Small Desktop (≤900px) ── */
     @media (max-width: 900px) {
+      #cka-mobile-menu-btn {
+        display: flex;
+      }
+
       nav {
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 280px;
+        z-index: 200;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+      }
+
+      nav.mobile-open {
+        transform: translateX(0);
+      }
+
+      /* Hide the desktop toggle/show buttons on mobile */
+      #cka-nav-toggle {
         display: none;
+      }
+
+      #cka-nav-show {
+        display: none !important;
+      }
+
+      body.cka-nav-hidden nav {
+        width: 280px;
+        min-width: 280px;
+        padding: 1rem 0;
+        opacity: 1;
+        pointer-events: auto;
+        border-right: 1px solid var(--border);
       }
 
       main {
         margin-left: 0;
-        padding: 1rem;
+        padding: 1.5rem;
+        padding-top: 3.5rem;
+        max-width: 100%;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        word-break: break-word;
+      }
+
+      h2 {
+        font-size: 1.15rem;
+      }
+
+      pre {
+        font-size: 0.72rem;
+        padding: 0.75rem 0.9rem;
+      }
+
+      .cmd-row code {
+        font-size: 0.78rem;
+      }
+
+      .tip-icon::after {
+        width: 250px;
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%) translateY(-4px);
+      }
+
+      .tip-icon:hover::after {
+        transform: translateX(-50%) translateY(0);
       }
     }
 
-    /* ── Imperative Command Tooltip Tables ── */
-    .cmd-table {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: visible;
-      margin: 0.75rem 0 2.5rem;
+    /* ── Responsive: Tablet Portrait (≤768px) ── */
+    @media (max-width: 768px) {
+      main {
+        padding: 1rem;
+        padding-top: 3.5rem;
+      }
+
+      h1 {
+        font-size: 1.35rem;
+      }
+
+      .cmd-row {
+        flex-direction: column;
+        gap: 0.4rem;
+        padding: 0.6rem 0.75rem;
+      }
+
+      .cmd-row code {
+        font-size: 0.75rem;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+
+      .tip-icon {
+        align-self: flex-end;
+      }
+
+      .tip-icon::after {
+        width: 220px;
+        right: 0;
+        left: auto;
+        transform: translateY(-4px);
+      }
+
+      .tip-icon:hover::after {
+        transform: translateY(0);
+      }
+
+      .exam-note,
+      .tip {
+        font-size: 0.82rem;
+        padding: 0.4rem 0.75rem;
+      }
+
+      .imp-block {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.82rem;
+      }
     }
 
-    .cmd-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      padding: 0.45rem 1rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--code-bg);
-      transition: background 0.15s;
-      gap: 0.75rem;
+    /* ── Responsive: Mobile (≤480px) ── */
+    @media (max-width: 480px) {
+      html {
+        font-size: 14px;
+      }
+
+      main {
+        padding: 0.75rem;
+        padding-top: 3.5rem;
+      }
+
+      h1 {
+        font-size: 1.15rem;
+        margin-top: 1.8rem;
+      }
+
+      h2 {
+        font-size: 1rem;
+        margin-top: 1.3rem;
+      }
+
+      h3 {
+        font-size: 0.92rem;
+      }
+
+      pre {
+        font-size: 0.65rem;
+        padding: 0.6rem 0.7rem;
+        border-radius: 0 6px 6px 0;
+      }
+
+      .cmd-row code {
+        font-size: 0.68rem;
+      }
+
+      .code-copy-btn {
+        font-size: 0.6rem;
+        padding: 0.15rem 0.4rem;
+      }
+
+      .yaml-label {
+        font-size: 0.6rem;
+      }
+
+      .tip-icon::after {
+        position: fixed;
+        left: 5%;
+        right: 5%;
+        width: 90%;
+        top: auto;
+        bottom: 1rem;
+        transform: none;
+      }
+
+      .tip-icon:hover::after {
+        transform: none;
+      }
+
+      hr {
+        margin: 1.5rem 0;
+      }
+
+      ul {
+        padding-left: 1.1rem;
+      }
     }
 
-    .cmd-row:first-child {
-      border-radius: 7px 7px 0 0;
+    /* ── Title Section Responsive ── */
+    .cka-title-section {
+      text-align: center;
+      padding: 2rem 0 1rem;
     }
 
-    .cmd-row:last-child {
-      border-bottom: none;
-      border-radius: 0 0 7px 7px;
+    .cka-title-h1 {
+      border: none !important;
+      font-size: 2.5rem !important;
+      margin: 0 !important;
     }
 
-    .cmd-row:only-child {
-      border-radius: 7px;
+    .cka-title-subtitle {
+      font-size: 1.4rem;
+      color: var(--accent2);
+      font-weight: 600;
+      margin: 0.3rem 0;
     }
 
-    .cmd-row:hover {
-      background: var(--surface2);
+    .cka-title-desc {
+      color: var(--text-muted);
+      word-break: break-word;
     }
 
-    .cmd-row code {
-      background: none;
-      padding: 0;
-      flex: 1;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.875rem;
-      line-height: 1.55;
-      white-space: pre-wrap;
-      overflow-wrap: break-word;
-      color: #1e293b;
+    .cka-title-exam-info {
+      display: inline-block;
+      text-align: left;
+      margin-top: 1rem;
+      max-width: 100%;
+      word-break: break-word;
     }
 
-    .tip-icon {
-      flex-shrink: 0;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--accent2);
-      color: white;
-      font-size: 0.68rem;
-      font-family: sans-serif;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 3px;
-      cursor: help;
-      position: relative;
-      user-select: none;
+    @media (max-width: 900px) {
+      .cka-title-h1 {
+        font-size: 2rem !important;
+      }
+
+      .cka-title-subtitle {
+        font-size: 1.15rem;
+      }
+
+      .cka-title-desc {
+        font-size: 0.9rem;
+      }
     }
 
-    .tip-icon::after {
-      content: attr(data-tip);
-      position: absolute;
-      right: 0;
-      top: calc(100% + 7px);
-      background: #1e293b;
-      color: #e2e8f0;
-      font-size: 0.8rem;
-      font-family: 'Outfit', sans-serif;
-      font-weight: 400;
-      line-height: 1.6;
-      padding: 0.65rem 1rem;
-      border-radius: 8px;
-      width: 300px;
-      white-space: normal;
-      z-index: 1000;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      pointer-events: none;
-      opacity: 0;
-      transform: translateY(-4px);
-      transition: opacity 0.18s, transform 0.18s;
-    }
+    @media (max-width: 480px) {
+      .cka-title-section {
+        padding: 1rem 0 0.5rem;
+      }
 
-    .tip-icon:hover::after {
-      opacity: 1;
-      transform: translateY(0);
+      .cka-title-h1 {
+        font-size: 1.5rem !important;
+      }
+
+      .cka-title-subtitle {
+        font-size: 1rem;
+      }
+
+      .cka-title-desc {
+        font-size: 0.82rem;
+      }
+
+      .cka-title-exam-info {
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
 
 <body>
 
+  <!-- ═══════════ MOBILE MENU BUTTON ═══════════ -->
+  <button id="cka-mobile-menu-btn" aria-label="Open navigation menu">☰</button>
+
+  <!-- ═══════════ MOBILE NAV BACKDROP ═══════════ -->
+  <div id="cka-nav-backdrop"></div>
+
   <!-- ═══════════ BACK TO HOME (fixed top-right) ═══════════ -->
-  <a href="index.html"
-    style="position:fixed;top:0.75rem;right:1rem;z-index:9999;background:var(--accent);color:#fff;text-decoration:none;padding:0.4rem 0.85rem;border-radius:6px;font-family:'Outfit',sans-serif;font-size:0.85rem;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.18);display:inline-flex;align-items:center;gap:0.35rem;">&larr;
+  <a href="index.html" id="cka-home-link"
+    style="position:fixed;top:0.75rem;right:1rem;z-index:9999;background:var(--accent);color:#fff;text-decoration:none;padding:0.4rem 0.85rem;border-radius:6px;font-family:'Outfit',sans-serif;font-size:0.85rem;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.18);display:inline-flex;align-items:center;gap:0.35rem;">←
     Home</a>
 
   <!-- ═══════════ SIDEBAR NAV ═══════════ -->
@@ -618,12 +823,12 @@
   <main>
 
     <!-- TITLE -->
-    <div style="text-align:center; padding: 2rem 0 1rem;">
-      <h1 style="border:none; font-size:2.5rem; margin:0;">CKA EXAM</h1>
-      <p style="font-size:1.4rem; color:var(--accent2); font-weight:600; margin:.3rem 0;">Comprehensive Cheat Sheet</p>
-      <p style="color:var(--text-muted);">Certified Kubernetes Administrator &mdash; All Imperative Commands | YAML
+    <div class="cka-title-section">
+      <h1 class="cka-title-h1">CKA EXAM</h1>
+      <p class="cka-title-subtitle">Comprehensive Cheat Sheet</p>
+      <p class="cka-title-desc">Certified Kubernetes Administrator &mdash; All Imperative Commands | YAML
         Configs | Troubleshooting</p>
-      <div class="exam-note" style="display:inline-block; text-align:left; margin-top:1rem;">
+      <div class="exam-note cka-title-exam-info">
         <strong>Exam:</strong> 2 hours | 66% to pass | One tab: kubernetes.io/docs<br>
         <strong>Domains:</strong> Architecture 25% | Workloads 15% | Networking 20% | Storage 10% | Troubleshooting 30%
       </div>
@@ -3475,12 +3680,45 @@ k api-versions           # all API versions</code></pre>
     });
   </script>
 
-  <!-- ── CKA Nav Toggle ── -->
+  <!-- ── CKA Nav Toggle + Mobile Menu ── -->
   <script>
     (function () {
+      var nav = document.querySelector('nav');
+      var backdrop = document.getElementById('cka-nav-backdrop');
+      var mobileMenuBtn = document.getElementById('cka-mobile-menu-btn');
       var toggleBtn = document.getElementById('cka-nav-toggle');
       var showBtn = document.getElementById('cka-nav-show');
+      var navLinks = document.querySelectorAll('nav a');
 
+      // Check if we're in mobile/tablet mode
+      function isMobile() {
+        return window.innerWidth <= 900;
+      }
+
+      // ── Mobile Menu Functions ──
+      function openMobileMenu() {
+        nav.classList.add('mobile-open');
+        backdrop.classList.add('active');
+        mobileMenuBtn.innerHTML = '✕';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMobileMenu() {
+        nav.classList.remove('mobile-open');
+        backdrop.classList.remove('active');
+        mobileMenuBtn.innerHTML = '☰';
+        document.body.style.overflow = '';
+      }
+
+      function toggleMobileMenu() {
+        if (nav.classList.contains('mobile-open')) {
+          closeMobileMenu();
+        } else {
+          openMobileMenu();
+        }
+      }
+
+      // ── Desktop Nav Functions ──
       function hideNav() {
         document.body.classList.add('cka-nav-hidden');
       }
@@ -3489,8 +3727,44 @@ k api-versions           # all API versions</code></pre>
         document.body.classList.remove('cka-nav-hidden');
       }
 
-      if (toggleBtn) toggleBtn.addEventListener('click', hideNav);
-      if (showBtn) showBtn.addEventListener('click', showNav);
+      // ── Event Listeners ──
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+      }
+
+      if (backdrop) {
+        backdrop.addEventListener('click', closeMobileMenu);
+      }
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function () {
+          if (isMobile()) {
+            closeMobileMenu();
+          } else {
+            hideNav();
+          }
+        });
+      }
+
+      if (showBtn) {
+        showBtn.addEventListener('click', showNav);
+      }
+
+      // Close mobile menu when a nav link is clicked
+      navLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+          if (isMobile()) {
+            closeMobileMenu();
+          }
+        });
+      });
+
+      // Handle window resize — close mobile menu if resizing to desktop
+      window.addEventListener('resize', function () {
+        if (!isMobile()) {
+          closeMobileMenu();
+        }
+      });
     })();
   </script>
 
