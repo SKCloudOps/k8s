@@ -4,8 +4,131 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CKA Exam — Comprehensive Cheat Sheet</title>
+  <title>CKA Exam Cheat Sheet 2026 | Comprehensive Certified Kubernetes Administrator Reference</title>
+  <meta name="description"
+    content="Free comprehensive CKA exam cheat sheet for 2026: all kubectl imperative commands, YAML configs, RBAC, etcd backup/restore, scheduling, networking, storage, Helm, Kustomize, and troubleshooting. Optimized for the Certified Kubernetes Administrator exam.">
+  <meta name="keywords"
+    content="CKA Cheat Sheet, CKA Exam 2026, Certified Kubernetes Administrator, kubectl commands, Kubernetes YAML, CKA RBAC, etcd backup restore, Kubernetes networking, CKA troubleshooting, Helm Kustomize CKA, CKA practice, K8s cheat sheet">
+  <meta name="author" content="SK CloudOps">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://skcloudops.github.io/k8s/cka.html">
+  <meta name="theme-color" content="#0d47a1">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="CKA Exam Cheat Sheet 2026 | Comprehensive Kubernetes Admin Reference">
+  <meta property="og:description"
+    content="Free CKA comprehensive cheat sheet covering all 36 exam domains: imperative commands, YAML configs, scheduling, RBAC, storage, networking, etcd, Helm, Kustomize, troubleshooting and practice scenarios.">
+  <meta property="og:url" content="https://skcloudops.github.io/k8s/cka.html">
+  <meta property="og:site_name" content="CKA Study Guide">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://skcloudops.github.io/k8s/assets/cka-og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="CKA Exam Comprehensive Cheat Sheet — Certified Kubernetes Administrator">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CKA Exam Cheat Sheet 2026 | Certified Kubernetes Administrator">
+  <meta name="twitter:description"
+    content="Free CKA comprehensive cheat sheet: 36 sections covering kubectl, YAML, RBAC, etcd, Helm, troubleshooting and more for the CKA exam.">
+  <meta name="twitter:image" content="https://skcloudops.github.io/k8s/assets/cka-og-image.png">
+  <meta name="twitter:creator" content="@CKAStudyGuide">
+
+  <!-- Structured Data: Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "CKA Exam Comprehensive Cheat Sheet 2026",
+    "description": "Complete reference guide with 36 sections covering imperative commands, YAML configurations, RBAC, etcd backup/restore, scheduling, networking, storage, Helm, Kustomize, and troubleshooting for the Certified Kubernetes Administrator exam.",
+    "author": {
+      "@type": "Organization",
+      "name": "SK CloudOps",
+      "url": "https://skcloudops.github.io/k8s/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "SK CloudOps"
+    },
+    "datePublished": "2026-02-20",
+    "dateModified": "2026-03-04",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://skcloudops.github.io/k8s/cka.html"
+    },
+    "keywords": ["CKA", "Certified Kubernetes Administrator", "kubectl", "cheat sheet", "Kubernetes exam", "RBAC", "etcd", "Helm", "Kustomize"],
+    "articleSection": "Technology",
+    "inLanguage": "en-US"
+  }
+  </script>
+
+  <!-- Structured Data: BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "CKA Study Guide",
+        "item": "https://skcloudops.github.io/k8s/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "CKA Comprehensive Cheat Sheet",
+        "item": "https://skcloudops.github.io/k8s/cka.html"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Structured Data: FAQPage (boosts rich results) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What topics does the CKA exam cover?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The CKA exam covers Cluster Architecture, Installation & Validation (25%), Workloads & Scheduling (15%), Services & Networking (20%), Storage (10%), and Troubleshooting (30%). The 2025-2026 curriculum also includes Helm, Kustomize, Gateway API, CRDs, HPA, PodDisruptionBudgets, and CoreDNS."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What kubectl aliases should I set up for the CKA exam?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Set alias k=kubectl, export do='--dry-run=client -o yaml', and enable bash completion with source <(kubectl completion bash) and complete -o default -F __start_kubectl k. This saves significant time during the 2-hour exam."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I backup and restore etcd for the CKA exam?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Backup: ETCDCTL_API=3 etcdctl snapshot save /tmp/etcd.db --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key. Restore: etcdutl snapshot restore /tmp/etcd.db --data-dir=/var/lib/etcd-restored, then update the etcd manifest hostPath and restart kubelet."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the fastest way to create Kubernetes resources in the CKA exam?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use imperative commands with --dry-run=client -o yaml to generate YAML quickly, then edit as needed. For example: kubectl run nginx --image=nginx --dry-run=client -o yaml > pod.yaml. This is much faster than writing YAML from scratch."
+        }
+      }
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet">

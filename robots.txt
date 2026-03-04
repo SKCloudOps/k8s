@@ -1,8 +1,46 @@
+# robots.txt for https://skcloudops.github.io/k8s/
+# Last updated: 2026-03-04
+
+# Sitemap declaration (primary)
 Sitemap: https://skcloudops.github.io/k8s/sitemap.xml
 
+# Default rule — allow all crawlers
 User-agent: *
 Allow: /
+Allow: /cka.html
+Allow: /cheat-sheet.html
+Allow: /lab.html
+Allow: /index.html
+
+# Block non-content directories and files
 Disallow: /tmp/
 Disallow: /.gemini/
-Disallow: /*.py
-Disallow: /*.sh
+Disallow: /.git/
+Disallow: /.github/
+Disallow: /.venv/
+Disallow: /*.py$
+Disallow: /*.sh$
+Disallow: /*.docx$
+
+# Googlebot-specific — enable all features
+User-agent: Googlebot
+Allow: /
+Allow: /assets/
+
+# Googlebot Image — allow image indexing
+User-agent: Googlebot-Image
+Allow: /assets/
+
+# Bingbot
+User-agent: Bingbot
+Allow: /
+
+# Crawl-delay for less common bots (prevents server overload)
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
