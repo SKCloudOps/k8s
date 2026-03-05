@@ -286,9 +286,12 @@
         <p class="subtitle">Complete reference guide for the CKA exam. Use the navigation to jump between topics.</p>
 
         <figure class="diagram">
-          <img src="assets/k8s-enterprise-white.png"
-            alt="Kubernetes enterprise architecture and request workflow lifecycle diagram with white background"
-            width="1024" height="1024" style="max-width:100%;height:auto;display:block;">
+          <div style="display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap;">
+            <img src="assets/k8s-enterprise-white.png" alt="Kubernetes enterprise architecture"
+              style="flex: 1; min-width: 300px; max-width:100%; height:auto; display:block; object-fit: contain;">
+            <img src="assets/k8s-request-workflow.png" alt="Kubernetes request workflow lifecycle diagram"
+              style="flex: 1; min-width: 300px; max-width:100%; height:auto; display:block; object-fit: contain;">
+          </div>
           <figcaption><strong>Kubernetes Request Flow</strong> — What happens when you run
             <code>kubectl apply -f deployment.yaml</code>. 1) kubectl → API Server (auth, RBAC, admission). 2) API
             Server → etcd (persist desired state). 3) Controller creates Pod. 4) Scheduler assigns node. 5) kubelet
@@ -496,8 +499,12 @@ crictl logs &lt;container-id&gt;          # view logs directly from runtime
 crictl inspect &lt;container-id&gt;       # deep dive into container status</code></pre>
 
       <figure class="diagram">
-        <img src="assets/k8s-enterprise-white.png" alt="Kubernetes Enterprise Cluster Architecture" width="960"
-          height="560" style="max-width:100%;height:auto;display:block;">
+        <div style="display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap;">
+          <img src="assets/k8s-enterprise-white.png" alt="Kubernetes Enterprise Cluster Architecture"
+            style="flex: 1; min-width: 300px; max-width:100%; height:auto; display:block; object-fit: contain;">
+          <img src="assets/k8s-request-workflow.png" alt="Kubernetes Request Workflow"
+            style="flex: 1; min-width: 300px; max-width:100%; height:auto; display:block; object-fit: contain;">
+        </div>
         <figcaption>
           <strong>Kubernetes Cluster Architecture</strong> — The <strong>kube-apiserver</strong> is the single gateway:
           every component communicates exclusively through it. <strong>etcd</strong> is the sole persistent store and is
