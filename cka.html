@@ -974,7 +974,1647 @@
         font-size: 0.8rem;
       }
     }
+
+    /* ── HPA Simulator Widget ── */
+    .hpa-sim {
+      padding: 1.5rem;
+      max-width: 420px;
+      margin: 1.5rem auto;
+      background: #0f172a;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      border: 1px solid #1e293b;
+      color: #e2e8f0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .hpa-sim-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 1rem;
+    }
+
+    .hpa-sim-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #818cf8;
+      margin: 0;
+    }
+
+    .hpa-sim-config {
+      font-size: 0.7rem;
+      color: #475569;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 0.3rem;
+    }
+
+    .hpa-sim-replica-count {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      line-height: 1;
+    }
+
+    .hpa-sim-replica-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #475569;
+    }
+
+    .hpa-sim-pods {
+      margin-bottom: 1.8rem;
+      background: rgba(2, 6, 23, 0.5);
+      padding: 1rem;
+      border-radius: 8px;
+      min-height: 80px;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .hpa-sim-pod {
+      width: 40px;
+      height: 40px;
+      background: #4f46e5;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(79, 70, 229, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      border: 1px solid #818cf8;
+      animation: hpaPodIn 0.3s ease-out;
+    }
+
+    @keyframes hpaPodIn {
+      from {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .hpa-sim-slider-row {
+      margin-bottom: 1.5rem;
+    }
+
+    .hpa-sim-slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hpa-sim-slider-header .label {
+      color: #94a3b8;
+    }
+
+    .hpa-sim-slider-header .value-high {
+      color: #f87171;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
+
+    .hpa-sim-slider-header .value-low {
+      color: #4ade80;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
+
+    .hpa-sim input[type=range] {
+      width: 100%;
+      height: 6px;
+      border-radius: 4px;
+      background: #1e293b;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .hpa-sim input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #818cf8;
+      border: 2px solid #c7d2fe;
+      cursor: pointer;
+    }
+
+    .hpa-sim input[type=range]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #818cf8;
+      border: 2px solid #c7d2fe;
+      cursor: pointer;
+    }
+
+    .hpa-sim-slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.6rem;
+      color: #334155;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 0.3rem;
+    }
+
+    .hpa-sim-slider-labels .target {
+      color: #818cf8;
+    }
+
+    .hpa-sim-logic {
+      background: #1e293b;
+      border-radius: 6px;
+      padding: 0.75rem;
+      border: 1px solid #334155;
+      margin-bottom: 1.5rem;
+    }
+
+    .hpa-sim-logic-title {
+      font-size: 0.6rem;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.3rem;
+    }
+
+    .hpa-sim-logic-formula {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      margin-bottom: 0.5rem;
+      color: #cbd5e1;
+    }
+
+    .hpa-sim-action {
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hpa-sim-action .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      animation: hpaPulse 1.5s infinite;
+    }
+
+    @keyframes hpaPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+    }
+
+    .hpa-sim-action.scale-up {
+      color: #4ade80;
+    }
+
+    .hpa-sim-action.scale-up .dot {
+      background: #4ade80;
+    }
+
+    .hpa-sim-action.scale-down {
+      color: #fb923c;
+    }
+
+    .hpa-sim-action.scale-down .dot {
+      background: #fb923c;
+    }
+
+    .hpa-sim-action.stable {
+      color: #94a3b8;
+    }
+
+    .hpa-sim-action.stable .dot {
+      background: #94a3b8;
+    }
+
+    .hpa-sim-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: #4f46e5;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: background 0.15s, transform 0.1s;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+    }
+
+    .hpa-sim-btn:hover {
+      background: #6366f1;
+    }
+
+    .hpa-sim-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* ── Probe Simulator Widget ── */
+    .probe-sim {
+      padding: 1.5rem;
+      max-width: 480px;
+      margin: 1.5rem auto;
+      background: #0f172a;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      border: 1px solid #1e293b;
+      color: #e2e8f0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .probe-sim-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 1rem;
+    }
+
+    .probe-sim-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #818cf8;
+      margin: 0;
+    }
+
+    .probe-sim-subtitle {
+      font-size: 0.7rem;
+      color: #475569;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 0.3rem;
+    }
+
+    .probe-sim-pod-visual {
+      background: rgba(2, 6, 23, 0.5);
+      border-radius: 8px;
+      padding: 1.2rem;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .probe-sim-pod-box {
+      width: 100px;
+      height: 100px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.8rem;
+      transition: all 0.5s ease;
+      position: relative;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border: 2px solid;
+    }
+
+    .probe-sim-pod-box.running {
+      background: rgba(74, 222, 128, 0.15);
+      border-color: #4ade80;
+      color: #4ade80;
+      box-shadow: 0 0 20px rgba(74, 222, 128, 0.2);
+    }
+
+    .probe-sim-pod-box.starting {
+      background: rgba(251, 191, 36, 0.15);
+      border-color: #fbbf24;
+      color: #fbbf24;
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+      animation: probePulseYellow 1.5s infinite;
+    }
+
+    .probe-sim-pod-box.failing {
+      background: rgba(248, 113, 113, 0.15);
+      border-color: #f87171;
+      color: #f87171;
+      box-shadow: 0 0 20px rgba(248, 113, 113, 0.3);
+      animation: probeShake 0.4s ease;
+    }
+
+    .probe-sim-pod-box.restarting {
+      background: rgba(251, 146, 60, 0.15);
+      border-color: #fb923c;
+      color: #fb923c;
+      box-shadow: 0 0 20px rgba(251, 146, 60, 0.2);
+      animation: probeSpin 0.8s ease;
+    }
+
+    .probe-sim-pod-box.not-ready {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: #a855f7;
+      color: #a855f7;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+    }
+
+    @keyframes probePulseYellow {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+    }
+
+    @keyframes probeShake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-6px);
+      }
+
+      50% {
+        transform: translateX(6px);
+      }
+
+      75% {
+        transform: translateX(-4px);
+      }
+    }
+
+    @keyframes probeSpin {
+      0% {
+        transform: rotate(0deg) scale(0.8);
+        opacity: 0.5;
+      }
+
+      100% {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .probe-sim-pod-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .probe-sim-pod-state {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    .probe-sim-status-badges {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+
+    .probe-sim-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .probe-sim-badge.pass {
+      background: rgba(74, 222, 128, 0.12);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.3);
+    }
+
+    .probe-sim-badge.fail {
+      background: rgba(248, 113, 113, 0.12);
+      color: #f87171;
+      border: 1px solid rgba(248, 113, 113, 0.3);
+    }
+
+    .probe-sim-badge.pending {
+      background: rgba(148, 163, 184, 0.12);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .probe-sim-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .probe-sim-badge.pass .probe-sim-badge-dot {
+      background: #4ade80;
+    }
+
+    .probe-sim-badge.fail .probe-sim-badge-dot {
+      background: #f87171;
+      animation: hpaPulse 1s infinite;
+    }
+
+    .probe-sim-badge.pending .probe-sim-badge-dot {
+      background: #94a3b8;
+    }
+
+    .probe-sim-controls {
+      margin-bottom: 1.2rem;
+    }
+
+    .probe-sim-control-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.8rem;
+    }
+
+    .probe-sim-control-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #475569;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+
+    .probe-sim-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #1e293b;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex: 1;
+      min-width: 130px;
+    }
+
+    .probe-sim-toggle:hover {
+      border-color: #475569;
+    }
+
+    .probe-sim-toggle.active {
+      border-color: #818cf8;
+      background: rgba(129, 140, 248, 0.08);
+    }
+
+    .probe-sim-toggle-switch {
+      width: 32px;
+      height: 18px;
+      border-radius: 10px;
+      background: #334155;
+      position: relative;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .probe-sim-toggle.active .probe-sim-toggle-switch {
+      background: #4f46e5;
+    }
+
+    .probe-sim-toggle-switch::after {
+      content: '';
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #94a3b8;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: all 0.2s;
+    }
+
+    .probe-sim-toggle.active .probe-sim-toggle-switch::after {
+      left: 16px;
+      background: #e2e8f0;
+    }
+
+    .probe-sim-toggle-text {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+
+    .probe-sim-toggle.active .probe-sim-toggle-text {
+      color: #e2e8f0;
+    }
+
+    .probe-sim-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .probe-sim-btn {
+      flex: 1;
+      padding: 0.6rem 0.8rem;
+      font-weight: 700;
+      font-size: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: all 0.15s;
+    }
+
+    .probe-sim-btn.fail-liveness {
+      background: #dc2626;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
+    }
+
+    .probe-sim-btn.fail-liveness:hover {
+      background: #ef4444;
+    }
+
+    .probe-sim-btn.fail-readiness {
+      background: #9333ea;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(147, 51, 234, 0.3);
+    }
+
+    .probe-sim-btn.fail-readiness:hover {
+      background: #a855f7;
+    }
+
+    .probe-sim-btn.reset {
+      background: #334155;
+      color: #e2e8f0;
+      flex: 0.5;
+    }
+
+    .probe-sim-btn.reset:hover {
+      background: #475569;
+    }
+
+    .probe-sim-btn:active {
+      transform: scale(0.97);
+    }
+
+    .probe-sim-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .probe-sim-log {
+      background: #1e293b;
+      border-radius: 6px;
+      padding: 0.75rem;
+      border: 1px solid #334155;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+
+    .probe-sim-log-title {
+      font-size: 0.6rem;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+    }
+
+    .probe-sim-log-entry {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      padding: 0.2rem 0;
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+    }
+
+    .probe-sim-log-entry:last-child {
+      border-bottom: none;
+    }
+
+    .probe-sim-log-time {
+      color: #475569;
+      flex-shrink: 0;
+    }
+
+    .probe-sim-log-msg {
+      flex: 1;
+    }
+
+    .probe-sim-log-msg.success {
+      color: #4ade80;
+    }
+
+    .probe-sim-log-msg.warning {
+      color: #fbbf24;
+    }
+
+    .probe-sim-log-msg.error {
+      color: #f87171;
+    }
+
+    .probe-sim-log-msg.info {
+      color: #60a5fa;
+    }
+
+    .probe-sim-log-msg.purple {
+      color: #a855f7;
+    }
+
+    .probe-sim-restart-counter {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 0.6rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .probe-sim-restart-counter .count {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fb923c;
+    }
+
+    .probe-sim-endpoint {
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 0.5rem;
+    }
+
+    .probe-sim-endpoint.in-service {
+      color: #4ade80;
+    }
+
+    .probe-sim-endpoint.removed {
+      color: #f87171;
+    }
+
+    /* ── Rolling Update Simulator Widget ── */
+    .rs-container {
+      padding: 1.5rem;
+      max-width: 550px;
+      margin: 1.5rem auto;
+      background: #0f172a;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      border: 1px solid #1e293b;
+      color: #e2e8f0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .rs-header {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #38bdf8;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .rs-toolbar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .rs-btn {
+      padding: 0.6rem 0.8rem;
+      font-weight: 600;
+      font-size: 0.75rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.15s;
+      flex: 1;
+      white-space: nowrap;
+    }
+
+    .rs-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .rs-btn.update {
+      background: #0284c7;
+      color: #fff;
+    }
+
+    .rs-btn.update:hover:not(:disabled) {
+      background: #0369a1;
+    }
+
+    .rs-btn.pause {
+      background: #f59e0b;
+      color: #fff;
+    }
+
+    .rs-btn.pause:hover:not(:disabled) {
+      background: #d97706;
+    }
+
+    .rs-btn.undo {
+      background: #64748b;
+      color: #fff;
+    }
+
+    .rs-btn.undo:hover:not(:disabled) {
+      background: #475569;
+    }
+
+    .rs-info {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .rs-badge {
+      background: #1e293b;
+      padding: 0.3rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #94a3b8;
+      font-family: 'JetBrains Mono', monospace;
+      border: 1px solid #334155;
+    }
+
+    .rs-pods {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      min-height: 120px;
+    }
+
+    .rs-pod {
+      width: 90px;
+      height: 100px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #1e293b;
+      border: 2px solid #334155;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .rs-pod-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .rs-pod-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .rs-pod-state {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 0.3rem;
+    }
+
+    .rs-pod.v1 {
+      color: #94a3b8;
+      border-color: #475569;
+    }
+
+    .rs-pod.v2 {
+      color: #4ade80;
+      border-color: #22c55e;
+      box-shadow: 0 0 15px rgba(74, 222, 128, 0.1);
+    }
+
+    .rs-pod.v3 {
+      color: #a78bfa;
+      border-color: #8b5cf6;
+      box-shadow: 0 0 15px rgba(167, 139, 250, 0.1);
+    }
+
+    .rs-pod.v4 {
+      color: #f472b6;
+      border-color: #ec4899;
+      box-shadow: 0 0 15px rgba(244, 114, 182, 0.1);
+    }
+
+    .rs-pod.creating {
+      opacity: 0.6;
+      border-style: dashed;
+      animation: rsPulse 1s infinite alternate;
+    }
+
+    .rs-pod.terminating {
+      opacity: 0.5;
+      transform: scale(0.9);
+      filter: grayscale(1);
+    }
+
+    @keyframes rsPulse {
+      0% {
+        transform: scale(0.95);
+        opacity: 0.5;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+    }
+
+    /* ── Scheduling Simulator Widget ── */
+    .sch-container {
+      padding: 1.5rem;
+      max-width: 600px;
+      margin: 1.5rem auto;
+      background: #0f172a;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      border: 1px solid #1e293b;
+      color: #e2e8f0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .sch-header {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f472b6;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .sch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .sch-nodes,
+    .sch-pods {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .sch-item {
+      background: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 8px;
+      padding: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .sch-item:hover {
+      border-color: #475569;
+    }
+
+    .sch-item.active {
+      border-color: #f472b6;
+      box-shadow: 0 0 10px rgba(244, 114, 182, 0.2);
+    }
+
+    .sch-item-title {
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sch-tag {
+      font-size: 0.65rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      font-family: 'JetBrains Mono', monospace;
+      display: inline-block;
+      margin-top: 0.3rem;
+      margin-right: 0.3rem;
+    }
+
+    .sch-tag.label {
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.15);
+      border: 1px solid rgba(74, 222, 128, 0.3);
+    }
+
+    .sch-tag.taint {
+      color: #f87171;
+      background: rgba(248, 113, 113, 0.15);
+      border: 1px solid rgba(248, 113, 113, 0.3);
+    }
+
+    .sch-tag.tolerate {
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.15);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+    .sch-status {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #1e293b;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      text-align: center;
+      font-weight: 600;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #334155;
+    }
+
+    .sch-status.success {
+      color: #4ade80;
+      border-color: #4ade80;
+      background: rgba(74, 222, 128, 0.1);
+    }
+
+    .sch-status.fail {
+      color: #f87171;
+      border-color: #f87171;
+      background: rgba(248, 113, 113, 0.1);
+    }
+
+    /* ── Init Container Simulator Widget ── */
+    .ic-container {
+      padding: 1.5rem;
+      max-width: 600px;
+      margin: 1.5rem auto;
+      background: #0f172a;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      border: 1px solid #1e293b;
+      color: #e2e8f0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .ic-header {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #a78bfa;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 1rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ic-btn {
+      background: #8b5cf6;
+      color: #fff;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .ic-btn:hover:not(:disabled) {
+      background: #7c3aed;
+    }
+
+    .ic-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .ic-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+    }
+
+    .ic-timeline::before {
+      content: '';
+      position: absolute;
+      left: 16px;
+      top: 20px;
+      bottom: 20px;
+      width: 2px;
+      background: #334155;
+    }
+
+    .ic-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ic-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 3px solid #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      transition: all 0.3s;
+      color: #fff;
+    }
+
+    .ic-step.running .ic-dot {
+      border-color: #60a5fa;
+      background: #2563eb;
+      animation: icPulse 1.5s infinite;
+    }
+
+    .ic-step.done .ic-dot {
+      border-color: #34d399;
+      background: #059669;
+    }
+
+    .ic-step.pending .ic-dot {
+      color: #475569;
+    }
+
+    @keyframes icPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(96, 165, 250, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(96, 165, 250, 0);
+      }
+    }
+
+    /* ── Resource Simulator Widget ── */
+    .res-container {
+      padding: 1.5rem;
+      max-width: 600px;
+      margin: 1.5rem auto;
+      background: #0f172a;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      border: 1px solid #1e293b;
+      color: #e2e8f0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .res-header {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f59e0b;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .res-bar {
+      width: 100%;
+      height: 24px;
+      background: #1e293b;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+      border: 1px solid #334155;
+    }
+
+    .res-fill-req {
+      height: 100%;
+      background: #3b82f6;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transition: width 0.3s;
+      z-index: 1;
+    }
+
+    .res-fill-lim {
+      height: 100%;
+      background: rgba(245, 158, 11, 0.4);
+      border-right: 2px dashed #f59e0b;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transition: width 0.3s;
+    }
+
+    .res-fill-used {
+      height: 100%;
+      background: transparent;
+      background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255, 0.2) 5px, rgba(255, 255, 255, 0.2) 10px);
+      position: absolute;
+      left: 0;
+      top: 0;
+      transition: width 0.3s;
+      z-index: 2;
+      border-right: 3px solid #fff;
+    }
+
+    .res-marks {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 1.5rem;
+    }
+
+    .res-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .res-control-group {
+      background: #1e293b;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #334155;
+    }
+
+    .res-cg-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .res-slider {
+      width: 100%;
+      accent-color: #3b82f6;
+      margin-bottom: 0.5rem;
+    }
+
+    .res-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #60a5fa;
+      font-weight: 700;
+      float: right;
+    }
+
+    .res-slider-lim {
+      accent-color: #f59e0b;
+    }
+
+    .res-val-lim {
+      color: #fcd34d;
+    }
+
+    .res-slider-used {
+      accent-color: #ef4444;
+    }
+
+    .res-val-used {
+      color: #fca5a5;
+    }
+
+    .res-status {
+      text-align: center;
+      padding: 1rem;
+      background: #020617;
+      border-radius: 8px;
+      font-weight: 700;
+      min-height: 40px;
+      border: 1px solid #1e293b;
+    }
+
+    .res-status.guaranteed {
+      color: #4ade80;
+      border-color: rgba(74, 222, 128, 0.3);
+      background: rgba(74, 222, 128, 0.05);
+    }
+
+    .res-status.burstable {
+      color: #f59e0b;
+      border-color: rgba(245, 158, 11, 0.3);
+      background: rgba(245, 158, 11, 0.05);
+    }
+
+    .res-status.besteffort {
+      color: #a78bfa;
+      border-color: rgba(167, 139, 250, 0.3);
+      background: rgba(167, 139, 250, 0.05);
+    }
+
+    .res-status.oom {
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.5);
+      background: rgba(239, 68, 68, 0.1);
+      animation: resShake 0.4s ease;
+    }
+
+    @keyframes resShake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+      }
+
+      50% {
+        transform: translateX(5px);
+      }
+
+      75% {
+        transform: translateX(-3px);
+      }
+    }
+
+    .res-legend {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: #94a3b8;
+      margin-bottom: 1rem;
+    }
+
+    .res-leg-item {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .res-leg-box {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+
+    /* ── Multi-Container Simulator Widget ── */
+    .mc-container {
+      padding: 1.5rem;
+      max-width: 600px;
+      margin: 1.5rem auto;
+      background: #0f172a;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      border: 1px solid #1e293b;
+      color: #e2e8f0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .mc-header {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #14b8a6;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .mc-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .mc-tab {
+      flex: 1;
+      text-align: center;
+      padding: 0.6rem;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .mc-tab:hover {
+      background: #334155;
+    }
+
+    .mc-tab.active {
+      background: #0d9488;
+      color: #fff;
+      border-color: #0f766e;
+    }
+
+    .mc-pod {
+      background: #020617;
+      border: 2px dashed #475569;
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 2rem;
+      min-height: 200px;
+    }
+
+    .mc-pod-label {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #475569;
+      color: #fff;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .mc-container-box {
+      width: 130px;
+      border-radius: 8px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      font-weight: 600;
+    }
+
+    .mc-container-box.main {
+      background: rgba(59, 130, 246, 0.15);
+      border: 2px solid #3b82f6;
+      color: #60a5fa;
+    }
+
+    .mc-container-box.side {
+      background: rgba(20, 184, 166, 0.15);
+      border: 2px solid #14b8a6;
+      color: #2dd4bf;
+    }
+
+    .mc-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .mc-name {
+      font-size: 0.85rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .mc-role {
+      font-size: 0.65rem;
+      opacity: 0.8;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .mc-volume {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 50%);
+      background: #f59e0b;
+      color: #fff;
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 2px solid #b45309;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      z-index: 2;
+    }
+
+    .mc-arrows {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 1.5rem;
+      width: 100%;
+      pointer-events: none;
+    }
+
+    .mc-flow-txt {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-family: 'JetBrains Mono', monospace;
+      background: #020617;
+      padding: 0 0.4rem;
+    }
+
+    .mc-desc {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #1e293b;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      border-left: 4px solid #14b8a6;
+    }
+
+    /* ── NetworkPolicy Simulator Widget ── */
+    .np-container {
+      padding: 1.5rem;
+      max-width: 600px;
+      margin: 1.5rem auto;
+      background: #0f172a;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      border: 1px solid #1e293b;
+      color: #e2e8f0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .np-header {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fbbf24;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .np-pods {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .np-pod {
+      width: 80px;
+      height: 90px;
+      background: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 2;
+    }
+
+    .np-pod:hover {
+      background: #334155;
+    }
+
+    .np-pod-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .np-pod-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .np-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      background: #1e293b;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .np-controls {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .np-policy-toggle {
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      margin-bottom: 0.4rem;
+    }
+
+    .np-policy-toggle input {
+      accent-color: #fbbf24;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .np-action {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .np-btn {
+      background: #fbbf24;
+      color: #0f172a;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.8rem;
+    }
+
+    .np-btn:hover:not(:disabled) {
+      background: #f59e0b;
+    }
+
+    .np-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .np-result {
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 1px;
+      font-size: 0.85rem;
+    }
+
+    .np-result.allowed {
+      background: rgba(74, 222, 128, 0.1);
+      color: #4ade80;
+      border: 1px solid #4ade80;
+    }
+
+    .np-result.denied {
+      background: rgba(248, 113, 113, 0.1);
+      color: #f87171;
+      border: 1px solid #f87171;
+    }
+
+    .np-result.idle {
+      background: rgba(148, 163, 184, 0.1);
+      color: #94a3b8;
+      border: 1px solid #475569;
+    }
   </style>
+
+  <!-- React CDN (for HPA Simulator) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 
 <body>
@@ -1586,7 +3226,8 @@
     <h1 id="pod-yaml">5. Pod YAML Skeleton (Complete)</h1>
     <div class="tip"><strong>Quick Def:</strong> A <strong>Pod</strong> is the smallest deployable unit in Kubernetes —
       one or more containers sharing network (same IP) and storage. Pod YAML has 4 required top-level fields:
-      <code>apiVersion</code>, <code>kind</code>, <code>metadata</code>, <code>spec</code>.</div>
+      <code>apiVersion</code>, <code>kind</code>, <code>metadata</code>, <code>spec</code>.
+    </div>
 
     <h3>⚡ Imperative → YAML Workflow</h3>
     <div class="imp-block">
@@ -1814,7 +3455,8 @@ spec:
     <div class="tip"><strong>Quick Def:</strong> The <strong>Scheduler</strong> assigns Pods to nodes via Filter → Score
       → Bind. <strong>Taints</strong> repel pods from nodes; <strong>Tolerations</strong> allow exceptions.
       <strong>nodeSelector</strong> pins pods by label; <strong>Node Affinity</strong> offers flexible set-based
-      expressions.</div>
+      expressions.
+    </div>
 
     <h2>Taints &amp; Tolerations</h2>
     <p>Taints on <strong>NODES</strong> repel pods. Tolerations on <strong>PODS</strong> allow them onto tainted nodes.
@@ -1921,6 +3563,116 @@ k apply -f pod.yaml</code></pre>
       </div>
     </div>
 
+    <h3 style="margin-top: 2rem;">🗓️ Interactive Scheduler Simulator</h3>
+    <div id="sched-simulator-root"></div>
+
+    <script type="text/babel">
+      (() => {
+        const { useState } = React;
+
+        const SchedSimulator = () => {
+          const [selectedNode, setSelectedNode] = useState(null);
+          const [selectedPod, setSelectedPod] = useState(null);
+
+          const nodes = [
+            { id: 'nodeA', title: 'Node 01', labels: [{ k: 'env', v: 'prod' }], taints: [] },
+            { id: 'nodeB', title: 'Node 02', labels: [{ k: 'gpu', v: 'true' }], taints: [{ k: 'gpu', v: 'true', e: 'NoSchedule' }] }
+          ];
+
+          const pods = [
+            { id: 'pod1', title: 'Basic Pod', labels: [], tolerations: [] },
+            { id: 'pod2', title: 'DB Pod (nodeSelector)', labels: [{ k: 'env', v: 'prod' }], tolerations: [] },
+            { id: 'pod3', title: 'AI Pod (Toleration)', labels: [], tolerations: [{ k: 'gpu', v: 'true', e: 'NoSchedule' }] },
+          ];
+
+          let result = null;
+          let rClass = '';
+
+          if (selectedNode && selectedPod) {
+            const n = nodes.find(x => x.id === selectedNode);
+            const p = pods.find(x => x.id === selectedPod);
+
+            let passedTaint = true;
+            let taintReason = '';
+            for (let t of n.taints) {
+              const matches = p.tolerations.some(tol => tol.k === t.k && tol.v === t.v && tol.e === t.e);
+              if (!matches) {
+                passedTaint = false;
+                taintReason = `Pod does not tolerate taint '${t.k}=${t.v}:${t.e}'`;
+                break;
+              }
+            }
+
+            let passedSelector = true;
+            let selectorReason = '';
+            if (p.labels.length > 0) {
+              for (let pl of p.labels) {
+                const matches = n.labels.some(nl => nl.k === pl.k && nl.v === pl.v);
+                if (!matches) {
+                  passedSelector = false;
+                  selectorReason = `Node misses required label '${pl.k}=${pl.v}'`;
+                  break;
+                }
+              }
+            }
+
+            if (!passedTaint) {
+              result = `DENIED: ${taintReason}`;
+              rClass = 'fail';
+            } else if (!passedSelector) {
+              result = `DENIED: ${selectorReason}`;
+              rClass = 'fail';
+            } else {
+              result = 'SCHEDULED: Pod satisfies Node taints and labels.';
+              rClass = 'success';
+            }
+          } else {
+            result = 'Select 1 Node and 1 Pod to evaluate scheduling';
+          }
+
+          return (
+            <div className="sch-container">
+              <div className="sch-header">🗓️ Taints, Tolerations & nodeSelector</div>
+              <div className="sch-grid">
+                <div className="sch-nodes">
+                  <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>NODES</div>
+                  {nodes.map(n => (
+                    <div key={n.id} className={`sch-item ${selectedNode === n.id ? 'active' : ''}`} onClick={() => setSelectedNode(n.id)}>
+                      <div className="sch-item-title">🖥️ {n.title}</div>
+                      <div>
+                        {n.labels.map(l => <span key={l.k} className="sch-tag label">L: {l.k}={l.v}</span>)}
+                        {n.taints.map(t => <span key={t.k} className="sch-tag taint">T: {t.k}={t.v}:{t.e}</span>)}
+                        {n.labels.length === 0 && n.taints.length === 0 && <span className="sch-tag">No strict rules</span>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="sch-pods">
+                  <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>PODS</div>
+                  {pods.map(p => (
+                    <div key={p.id} className={`sch-item ${selectedPod === p.id ? 'active' : ''}`} onClick={() => setSelectedPod(p.id)}>
+                      <div className="sch-item-title">📦 {p.title}</div>
+                      <div>
+                        {p.labels.map(l => <span key={l.k} className="sch-tag label">Req: {l.k}={l.v}</span>)}
+                        {p.tolerations.map(t => <span key={t.k} className="sch-tag tolerate">Tol: {t.k}={t.v}:{t.e}</span>)}
+                        {p.labels.length === 0 && p.tolerations.length === 0 && <span className="sch-tag">No strict requests</span>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className={`sch-status ${rClass}`}>
+                {result}
+              </div>
+            </div>
+          );
+        };
+
+        const root1 = ReactDOM.createRoot(document.getElementById('sched-simulator-root'));
+        root1.render(<SchedSimulator />);
+      })();
+    </script>
+
     <hr>
 
     <!-- ═══════════════════════════════════════════ -->
@@ -2011,6 +3763,103 @@ spec:
     services: "5"
     persistentvolumeclaims: "4"</code></pre>
 
+    <h3 style="margin-top: 2rem;">📊 Interactive Resource/QoS Simulator</h3>
+    <div id="res-simulator-root"></div>
+
+    <script type="text/babel">
+      (() => {
+        const { useState } = React;
+
+        const ResSimulator = () => {
+          const maxMem = 512; // Mi
+          const [req, setReq] = useState(128);
+          const [lim, setLim] = useState(256);
+          const [used, setUsed] = useState(64);
+
+          // Enforce lim >= req interactively
+          const handleReqChange = (val) => {
+            setReq(val);
+            if (lim !== 0 && val > lim) setLim(val);
+          };
+
+          const handleLimChange = (val) => {
+            setLim(val);
+            if (val !== 0 && val < req) setReq(val);
+          };
+
+          let qos = '';
+          if (req === 0 && lim === 0) qos = 'besteffort';
+          else if (req === lim) qos = 'guaranteed';
+          else qos = 'burstable';
+
+          let statusText = `QoS Class: ${qos.toUpperCase()}`;
+          let statusClass = qos;
+
+          if (used > lim && lim !== 0) {
+            statusText = '💥 OOMKilled (Out of Memory - Pod Exceeded Limit)';
+            statusClass = 'oom';
+          } else if (used > req && lim !== 0) {
+            statusText += ` — Bursting (Using above Requested allocation)`;
+          }
+
+          const reqPct = Math.min(100, (req / maxMem) * 100);
+          const limPct = Math.min(100, (lim / maxMem) * 100);
+          const usedPct = Math.min(100, (used / maxMem) * 100);
+
+          return (
+            <div className="res-container">
+              <div className="res-header">📊 Resources & QoS Simulator (Memory)</div>
+
+              <div className="res-legend">
+                <div className="res-leg-item"><div className="res-leg-box" style={{ background: '#3b82f6' }}></div> Requests</div>
+                <div className="res-leg-item"><div className="res-leg-box" style={{ background: 'rgba(245,158,11,0.4)', border: '1px dashed #f59e0b' }}></div> Limits</div>
+                <div className="res-leg-item"><div className="res-leg-box" style={{ background: 'repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(255,255,255,0.4) 3px, rgba(255,255,255,0.4) 6px)', border: '1px solid #fff' }}></div> Actual Usage</div>
+              </div>
+
+              <div className="res-bar">
+                <div className="res-fill-lim" style={{ width: `${limPct}%`, display: lim === 0 ? 'none' : 'block' }}></div>
+                <div className="res-fill-req" style={{ width: `${reqPct}%` }}></div>
+                <div className="res-fill-used" style={{ width: `${usedPct}%` }}></div>
+              </div>
+              <div className="res-marks">
+                <span>0 Mi</span>
+                <span>Node Max ({maxMem} Mi)</span>
+              </div>
+
+              <div className="res-controls">
+                <div className="res-control-group">
+                  <div className="res-cg-title">Pod Specifications</div>
+
+                  <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginBottom: '0.2rem' }}>REQUESTS <span className="res-val">{req} Mi</span></div>
+                  <input type="range" className="res-slider" min="0" max={maxMem} step="32" value={req} onChange={(e) => handleReqChange(parseInt(e.target.value))} />
+
+                  <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginBottom: '0.2rem', marginTop: '0.6rem' }}>LIMITS <span className="res-val res-val-lim">{lim === 0 ? 'Unlimited' : `${lim} Mi`}</span></div>
+                  <input type="range" className="res-slider res-slider-lim" min="0" max={maxMem} step="32" value={lim} onChange={(e) => handleLimChange(parseInt(e.target.value))} />
+                  <div style={{ fontSize: '0.65rem', color: '#64748b', marginTop: '0.3rem' }}>* Set both to 0 for BestEffort.</div>
+                </div>
+
+                <div className="res-control-group">
+                  <div className="res-cg-title">Runtime Simulation</div>
+                  <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginBottom: '0.2rem' }}>ACTUAL APP USAGE <span className="res-val res-val-used">{used} Mi</span></div>
+                  <input type="range" className="res-slider res-slider-used" min="0" max={maxMem + 64} step="8" value={used} onChange={(e) => setUsed(parseInt(e.target.value))} />
+                  <p style={{ fontSize: '0.7rem', color: '#94a3b8', lineHeight: '1.4', marginTop: '1rem' }}>
+                    Drag usage past the limits line to trigger an OOMKill. Notice how the requested tier sets the QoS Class.
+                  </p>
+                </div>
+              </div>
+
+              <div className={`res-status ${statusClass}`}>
+                {statusText}
+              </div>
+            </div>
+          );
+        };
+
+        const root2 = ReactDOM.createRoot(document.getElementById('res-simulator-root'));
+        root2.render(<ResSimulator />);
+      })();
+    </script>
+
     <hr>
 
     <!-- ═══════════════════════════════════════════ -->
@@ -2018,7 +3867,8 @@ spec:
     <div class="tip"><strong>Quick Def:</strong> <strong>DaemonSet</strong> — ensures one pod runs on every node (e.g.,
       log collectors, monitoring agents). <strong>Job</strong> — runs a pod to completion (batch task).
       <strong>CronJob</strong> — creates Jobs on a schedule (cron syntax). Key fields: <code>completions</code>,
-      <code>parallelism</code>, <code>backoffLimit</code>.</div>
+      <code>parallelism</code>, <code>backoffLimit</code>.
+    </div>
 
     <h2>DaemonSet</h2>
     <p>One pod per node (all or subset via nodeSelector). Use for: log collectors, node monitoring, CNI/CSI plugins.</p>
@@ -2152,7 +4002,8 @@ spec:
     <div class="tip"><strong>Quick Def:</strong> <strong>Static Pods</strong> are managed directly by the kubelet on a
       specific node, without the API Server. Defined as YAML files in a directory (default:
       <code>/etc/kubernetes/manifests/</code>). Control plane components (apiserver, scheduler, controller-manager,
-      etcd) run as static pods on kubeadm clusters.</div>
+      etcd) run as static pods on kubeadm clusters.
+    </div>
     <p>Managed by kubelet directly from <code>/etc/kubernetes/manifests/</code>. Not through API server. Control-plane
       components are static pods via kubeadm.</p>
     <p>To delete: remove the manifest file. <code>kubectl delete</code> will NOT work permanently.</p>
@@ -2322,7 +4173,8 @@ data:
     <div class="tip"><strong>Quick Def:</strong> Multiple containers in one Pod share network and storage. Patterns:
       <strong>Sidecar</strong> (helper, e.g. log shipper), <strong>Ambassador</strong> (proxy), <strong>Adapter</strong>
       (transforms output). <strong>Init Containers</strong> run sequentially before app containers start — used for
-      setup tasks.</div>
+      setup tasks.
+    </div>
 
     <h2>Patterns</h2>
     <p><strong>Sidecar:</strong> auxiliary (log shipper, proxy). <strong>Ambassador:</strong> proxy to external.
@@ -2376,6 +4228,114 @@ spec:
   - name: log-volume
     emptyDir: {}</code></pre>
 
+    <h3 style="margin-top: 2rem;">🧰 Interactive Multi-Container Simulator</h3>
+    <div id="mc-simulator-root"></div>
+
+    <script type="text/babel">
+      (() => {
+        const { useState } = React;
+
+        const McSimulator = () => {
+          const [activeTab, setActiveTab] = useState('sidecar');
+
+          const patterns = {
+            sidecar: {
+              title: 'Sidecar',
+              mainName: 'Web Server',
+              mainIcon: '🌐',
+              mainRole: 'Writes app logs',
+              sideName: 'Log Shipper',
+              sideIcon: '🚚',
+              sideRole: 'Forwards logs',
+              hasVolume: true,
+              flowText: 'Logs',
+              arrow: '→',
+              desc: 'Sidecar enhances the main container without changing its code. They share an emptyDir volume. The main app writes to it, and the sidecar reads and ships identical data to a central system (e.g., Fluentd, Filebeat).'
+            },
+            ambassador: {
+              title: 'Ambassador',
+              mainName: 'App',
+              mainIcon: '💻',
+              mainRole: 'Localhost request',
+              sideName: 'DB Proxy',
+              sideIcon: '🛡️',
+              sideRole: 'Routes to external DB',
+              hasVolume: false,
+              flowText: 'localhost:5432',
+              arrow: '↔',
+              desc: 'Ambassador acts as a proxy to the outside world. The main app is hardcoded to connect to localhost. The ambassador container securely forwards this localhost request to external production databases or complex APIs.'
+            },
+            adapter: {
+              title: 'Adapter',
+              mainName: 'Legacy App',
+              mainIcon: '📉',
+              mainRole: 'Custom metrics format',
+              sideName: 'Adapter',
+              sideIcon: '🔌',
+              sideRole: 'Converts to Prometheus',
+              hasVolume: true,
+              flowText: 'Raw Data',
+              arrow: '→',
+              desc: 'Adapter transforms the main container\'s output into a standard format. For example, a legacy app generates metrics in a weird format; the adapter parses it and exposes a Prometheus-compatible endpoint on the pod.'
+            }
+          };
+
+          const p = patterns[activeTab];
+
+          return (
+            <div className="mc-container">
+              <div className="mc-header">🧰 Pod Design Patterns</div>
+              <div className="mc-tabs">
+                {Object.keys(patterns).map(key => (
+                  <div
+                    key={key}
+                    className={`mc-tab ${activeTab === key ? 'active' : ''}`}
+                    onClick={() => setActiveTab(key)}
+                  >
+                    {patterns[key].title}
+                  </div>
+                ))}
+              </div>
+
+              <div className="mc-pod">
+                <div className="mc-pod-label">POD: {p.title.toLowerCase()}-pod</div>
+
+                <div className="mc-container-box main">
+                  <div className="mc-icon">{p.mainIcon}</div>
+                  <div className="mc-name">{p.mainName}</div>
+                  <div className="mc-role">{p.mainRole}</div>
+                </div>
+
+                <div className="mc-arrows">
+                  <span className="mc-flow-txt">{p.flowText}</span>
+                  {p.arrow}
+                </div>
+
+                <div className="mc-container-box side">
+                  <div className="mc-icon">{p.sideIcon}</div>
+                  <div className="mc-name">{p.sideName}</div>
+                  <div className="mc-role">{p.sideRole}</div>
+                </div>
+
+                {p.hasVolume && (
+                  <div className="mc-volume">
+                    📁 Shared emptyDir Volume
+                  </div>
+                )}
+              </div>
+
+              <div className="mc-desc">
+                {p.desc}
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('mc-simulator-root'));
+        root.render(<McSimulator />);
+      })();
+    </script>
+
     <h2>Init Containers</h2>
     <p>Run to completion <strong>BEFORE</strong> main containers. Sequential. Failure → pod restarts.</p>
     <div class="imp-block">
@@ -2406,6 +4366,83 @@ k apply -f pod.yaml</code></pre>
   - name: myapp
     image: busybox:1.28
     command: ['sh', '-c', 'echo running &amp;&amp; sleep 3600']</code></pre>
+
+    <h3 style="margin-top: 2rem;">⚙️ Interactive Init Container Sequence</h3>
+    <div id="init-simulator-root"></div>
+
+    <script type="text/babel">
+      (() => {
+        const { useState, useEffect } = React;
+
+        const InitSimulator = () => {
+          const [stepIdx, setStepIdx] = useState(0); // 0=idle, 1=init1, 2=init2, 3=main
+          const [isRunning, setIsRunning] = useState(false);
+
+          const sequence = [
+            { id: 'init-mydb', type: 'Init', icon: '⏳', desc: 'until nslookup mydb; do sleep 2; done' },
+            { id: 'init-redis', type: 'Init', icon: '⏳', desc: 'until nslookup redis; do sleep 2; done' },
+            { id: 'myapp', type: 'Main', icon: '🚀', desc: 'echo running && sleep 3600' }
+          ];
+
+          useEffect(() => {
+            if (!isRunning) return;
+            if (stepIdx > sequence.length) {
+              setIsRunning(false);
+              return;
+            }
+
+            const timer = setTimeout(() => {
+              setStepIdx(prev => prev + 1);
+            }, 1800);
+            return () => clearTimeout(timer);
+          }, [isRunning, stepIdx]);
+
+          const triggerFlow = () => {
+            setStepIdx(1);
+            setIsRunning(true);
+          };
+
+          return (
+            <div className="ic-container">
+              <div className="ic-header">
+                ⚙️ Pod Startup Sequence
+                <button className="ic-btn" onClick={triggerFlow} disabled={isRunning}>
+                  {stepIdx > sequence.length ? 'Restart Pod' : 'Deploy Pod'}
+                </button>
+              </div>
+              <p style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '1rem', lineHeight: '1.4' }}>
+                Init containers run sequentially. The next init container doesn't start until the previous one succeeds. Main containers only start when ALL init containers complete.
+              </p>
+
+              <div className="ic-timeline">
+                {sequence.map((item, idx) => {
+                  const sNum = idx + 1;
+                  let st = 'pending';
+                  let iconState = item.icon;
+                  if (sNum < stepIdx) { st = 'done'; iconState = '✓'; }
+                  else if (sNum === stepIdx) { st = 'running'; iconState = '⚙'; }
+
+                  return (
+                    <div key={item.id} className={`ic-step ${st}`}>
+                      <div className="ic-dot">{iconState}</div>
+                      <div className="ic-card">
+                        <div className="ic-title" style={{ color: st === 'running' ? '#60a5fa' : st === 'done' ? '#34d399' : '#e2e8f0' }}>
+                          [{item.type}] {item.id} {st === 'running' && '(Running...)'}
+                        </div>
+                        <div className="ic-desc"><code>{item.desc}</code></div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('init-simulator-root'));
+        root.render(<InitSimulator />);
+      })();
+    </script>
 
     <hr>
 
@@ -2476,6 +4513,204 @@ k explain pod.spec.containers.readinessProbe</code></pre>
       port: 3306
     initialDelaySeconds: 10</code></pre>
 
+    <h3>🎮 Interactive Probe Simulator</h3>
+    <p>Toggle probes on/off, simulate failures, and watch how Kubernetes responds in real-time:</p>
+    <div id="probe-simulator-root"></div>
+
+    <script type="text/babel">
+      (() => {
+        const { useState, useRef, useCallback } = React;
+
+        const ProbeSimulator = () => {
+          const [livenessEnabled, setLivenessEnabled] = useState(true);
+          const [readinessEnabled, setReadinessEnabled] = useState(true);
+          const [livenessOk, setLivenessOk] = useState(true);
+          const [readinessOk, setReadinessOk] = useState(true);
+          const [podState, setPodState] = useState('running');  // running | starting | failing | restarting | not-ready
+          const [inService, setInService] = useState(true);
+          const [restartCount, setRestartCount] = useState(0);
+          const [logs, setLogs] = useState([{ time: '0s', msg: 'Pod created — containers starting...', type: 'info' }]);
+          const timerRef = useRef(null);
+          const tickRef = useRef(0);
+
+          const addLog = useCallback((msg, type) => {
+            tickRef.current += 1;
+            setLogs(prev => {
+              const next = [...prev, { time: `${tickRef.current}s`, msg, type }];
+              return next.slice(-20);
+            });
+          }, []);
+
+          const failLiveness = () => {
+            if (!livenessEnabled) return;
+            setLivenessOk(false);
+            setPodState('failing');
+            addLog('Liveness probe FAILED — /healthz returned 500', 'error');
+            addLog('kubelet: Container failed liveness probe, will be restarted', 'warning');
+
+            if (timerRef.current) clearTimeout(timerRef.current);
+            timerRef.current = setTimeout(() => {
+              setPodState('restarting');
+              addLog('kubelet: Killing container with restart policy "Always"', 'error');
+
+              setTimeout(() => {
+                setRestartCount(c => c + 1);
+                setLivenessOk(true);
+                setReadinessOk(prev => readinessEnabled ? prev : true);
+                setPodState('starting');
+                addLog('Container restarted — running initialDelaySeconds...', 'info');
+
+                setTimeout(() => {
+                  setPodState('running');
+                  if (readinessEnabled) {
+                    setReadinessOk(true);
+                    setInService(true);
+                    addLog('Readiness probe PASSED — pod added back to Service endpoints', 'success');
+                  }
+                  addLog('Liveness probe PASSED — /healthz returned 200 OK', 'success');
+                }, 1500);
+              }, 1200);
+            }, 1500);
+          };
+
+          const failReadiness = () => {
+            if (!readinessEnabled) return;
+            setReadinessOk(false);
+            setPodState('not-ready');
+            setInService(false);
+            addLog('Readiness probe FAILED — /ready returned 503', 'purple');
+            addLog('kube-proxy: Removing pod from Service endpoints (no traffic)', 'warning');
+          };
+
+          const resetSim = () => {
+            if (timerRef.current) clearTimeout(timerRef.current);
+            setLivenessOk(true);
+            setReadinessOk(true);
+            setPodState('running');
+            setInService(true);
+            setRestartCount(0);
+            tickRef.current = 0;
+            setLogs([{ time: '0s', msg: 'Pod reset — all probes passing ✓', type: 'success' }]);
+          };
+
+          const podIcon = {
+            running: '🟢', starting: '🟡', failing: '🔴', restarting: '🔄', 'not-ready': '🟣'
+          }[podState];
+
+          const podLabel = {
+            running: 'Running', starting: 'Starting', failing: 'Failing',
+            restarting: 'Restarting', 'not-ready': 'Not Ready'
+          }[podState];
+
+          return (
+            <div className="probe-sim">
+              <div className="probe-sim-header">
+                <div>
+                  <div className="probe-sim-title">Probe Simulator</div>
+                  <div className="probe-sim-subtitle">
+                    livenessProbe: httpGet /healthz :8080 | readinessProbe: httpGet /ready :8080
+                  </div>
+                </div>
+              </div>
+
+              {/* Pod Visualization */}
+              <div className="probe-sim-pod-visual">
+                <div className={`probe-sim-pod-box ${podState}`}>
+                  <span className="probe-sim-pod-icon">{podIcon}</span>
+                  <span className="probe-sim-pod-state">{podLabel}</span>
+                </div>
+                <div className="probe-sim-status-badges">
+                  <span className={`probe-sim-badge ${!livenessEnabled ? 'pending' : livenessOk ? 'pass' : 'fail'}`}>
+                    <span className="probe-sim-badge-dot"></span>
+                    Liveness {!livenessEnabled ? 'OFF' : livenessOk ? 'PASS' : 'FAIL'}
+                  </span>
+                  <span className={`probe-sim-badge ${!readinessEnabled ? 'pending' : readinessOk ? 'pass' : 'fail'}`}>
+                    <span className="probe-sim-badge-dot"></span>
+                    Readiness {!readinessEnabled ? 'OFF' : readinessOk ? 'PASS' : 'FAIL'}
+                  </span>
+                </div>
+                <div className={`probe-sim-endpoint ${inService ? 'in-service' : 'removed'}`}>
+                  {inService ? '● In Service endpoints — receiving traffic' : '○ Removed from endpoints — no traffic'}
+                </div>
+              </div>
+
+              {/* Toggle Controls */}
+              <div className="probe-sim-controls">
+                <div className="probe-sim-control-label">Configure Probes</div>
+                <div className="probe-sim-control-group">
+                  <div
+                    className={`probe-sim-toggle ${livenessEnabled ? 'active' : ''}`}
+                    onClick={() => {
+                      setLivenessEnabled(!livenessEnabled);
+                      addLog(`Liveness probe ${!livenessEnabled ? 'ENABLED' : 'DISABLED'}`, 'info');
+                    }}
+                  >
+                    <div className="probe-sim-toggle-switch"></div>
+                    <span className="probe-sim-toggle-text">Liveness</span>
+                  </div>
+                  <div
+                    className={`probe-sim-toggle ${readinessEnabled ? 'active' : ''}`}
+                    onClick={() => {
+                      setReadinessEnabled(!readinessEnabled);
+                      if (readinessEnabled) {
+                        setInService(true);
+                        setReadinessOk(true);
+                      }
+                      addLog(`Readiness probe ${!readinessEnabled ? 'ENABLED' : 'DISABLED'}`, 'info');
+                    }}
+                  >
+                    <div className="probe-sim-toggle-switch"></div>
+                    <span className="probe-sim-toggle-text">Readiness</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="probe-sim-actions">
+                <button
+                  className="probe-sim-btn fail-liveness"
+                  onClick={failLiveness}
+                  disabled={!livenessEnabled || podState === 'restarting' || podState === 'starting'}
+                >
+                  💀 Fail Liveness
+                </button>
+                <button
+                  className="probe-sim-btn fail-readiness"
+                  onClick={failReadiness}
+                  disabled={!readinessEnabled || podState === 'restarting' || podState === 'starting'}
+                >
+                  🚫 Fail Readiness
+                </button>
+                <button className="probe-sim-btn reset" onClick={resetSim}>
+                  ↻ Reset
+                </button>
+              </div>
+
+              {/* Restart Counter */}
+              <div className="probe-sim-restart-counter">
+                Restart Count: <span className="count">{restartCount}</span>
+                {restartCount > 0 && <span style={{ color: '#fb923c', fontSize: '0.65rem' }}>← visible in kubectl get pods RESTARTS column</span>}
+              </div>
+
+              {/* Event Log */}
+              <div className="probe-sim-log">
+                <div className="probe-sim-log-title">kubectl describe pod — Events</div>
+                {logs.map((l, i) => (
+                  <div key={i} className="probe-sim-log-entry">
+                    <span className="probe-sim-log-time">{l.time}</span>
+                    <span className={`probe-sim-log-msg ${l.type}`}>{l.msg}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('probe-simulator-root'));
+        root.render(<ProbeSimulator />);
+      })();
+    </script>
+
     <hr>
 
     <!-- ═══════════════════════════════════════════ -->
@@ -2532,6 +4767,8 @@ k explain pod.spec.containers.readinessProbe</code></pre>
     rollingUpdate:
       maxSurge: 1           # max extra pods during rollout
       maxUnavailable: 0     # all existing pods stay until new ones ready</code></pre>
+    <h3 style="margin-top: 2rem;">🎮 Interactive Rollout Simulator</h3>
+    <div id="rollout-simulator-root"></div>
 
     <hr>
 
@@ -2540,7 +4777,8 @@ k explain pod.spec.containers.readinessProbe</code></pre>
     <div class="tip"><strong>Quick Def:</strong> <strong>HPA</strong> automatically scales the number of
       Deployment/ReplicaSet replicas based on observed CPU/memory utilization or custom metrics. Requires
       <strong>Metrics Server</strong> installed and <code>resources.requests</code> set on pods. Checks metrics every
-      15s by default.</div>
+      15s by default.
+    </div>
     <p>Scales Deployment replicas based on CPU/memory. Requires Metrics Server. Pods <strong>MUST</strong> have
       <code>resources.requests</code>.
     </p>
@@ -2589,6 +4827,249 @@ spec:
       target:
         type: Utilization
         averageUtilization: 80</code></pre>
+
+    <h3>🎮 Interactive HPA Simulator</h3>
+    <p>Drag the CPU slider and watch how the HPA control loop calculates the desired replica count:</p>
+    <div id="hpa-simulator-root"></div>
+
+    <script type="text/babel">
+      (() => {
+        const { useState, useEffect } = React;
+
+        const HPASimulator = () => {
+          const CONFIG = { minReplicas: 2, maxReplicas: 10, targetCpu: 80 };
+
+          const [replicas, setReplicas] = useState(2);
+          const [currentCpu, setCurrentCpu] = useState(120);
+          const [action, setAction] = useState({ type: 'STABLE', details: '' });
+
+          useEffect(() => {
+            const ratio = currentCpu / CONFIG.targetCpu;
+            const rawDesired = replicas * ratio;
+            let desired = Math.ceil(rawDesired);
+
+            if (desired < CONFIG.minReplicas) desired = CONFIG.minReplicas;
+            if (desired > CONFIG.maxReplicas) desired = CONFIG.maxReplicas;
+
+            if (ratio > 1.1) {
+              setAction({ type: 'SCALE_UP', details: `Load High (${ratio.toFixed(2)}x). Scaling to ${desired}.` });
+            } else if (ratio < 0.9) {
+              const final = Math.max(CONFIG.minReplicas, desired);
+              setAction({ type: 'SCALE_DOWN', details: `Load Low (${ratio.toFixed(2)}x). Scaling to ${final}.` });
+            } else {
+              setAction({ type: 'STABLE', details: 'Within 10% tolerance. No change.' });
+            }
+          }, [currentCpu, replicas]);
+
+          const applyScale = () => {
+            const ratio = currentCpu / CONFIG.targetCpu;
+            let desired = Math.ceil(replicas * ratio);
+            if (desired < CONFIG.minReplicas) desired = CONFIG.minReplicas;
+            if (desired > CONFIG.maxReplicas) desired = CONFIG.maxReplicas;
+            setReplicas(desired);
+          };
+
+          const actionClass = action.type === 'SCALE_UP' ? 'scale-up' : action.type === 'SCALE_DOWN' ? 'scale-down' : 'stable';
+
+          return (
+            <div className="hpa-sim">
+              <div className="hpa-sim-header">
+                <div>
+                  <div className="hpa-sim-title">HPA Simulator</div>
+                  <div className="hpa-sim-config">
+                    --min={CONFIG.minReplicas} --max={CONFIG.maxReplicas} --cpu={CONFIG.targetCpu}%
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div className="hpa-sim-replica-count">{replicas}</div>
+                  <div className="hpa-sim-replica-label">Replicas</div>
+                </div>
+              </div>
+
+              <div className="hpa-sim-pods">
+                {[...Array(replicas)].map((_, i) => (
+                  <div key={i} className="hpa-sim-pod">P{i + 1}</div>
+                ))}
+              </div>
+
+              <div className="hpa-sim-slider-row">
+                <div className="hpa-sim-slider-header">
+                  <span className="label">Current Avg CPU Load</span>
+                  <span className={currentCpu > CONFIG.targetCpu ? 'value-high' : 'value-low'}>
+                    {currentCpu}%
+                  </span>
+                </div>
+                <input
+                  type="range" min="0" max="200" value={currentCpu}
+                  onChange={(e) => setCurrentCpu(parseInt(e.target.value))}
+                />
+                <div className="hpa-sim-slider-labels">
+                  <span>0%</span>
+                  <span className="target">Target: {CONFIG.targetCpu}%</span>
+                  <span>200%</span>
+                </div>
+              </div>
+
+              <div className="hpa-sim-logic">
+                <div className="hpa-sim-logic-title">Kube-Controller Logic</div>
+                <div className="hpa-sim-logic-formula">
+                  ceil({replicas} × ({currentCpu} / {CONFIG.targetCpu}))
+                </div>
+                <div className={`hpa-sim-action ${actionClass}`}>
+                  <span className="dot"></span>
+                  {action.details}
+                </div>
+              </div>
+
+              <button className="hpa-sim-btn" onClick={applyScale}>
+                Execute Scaling
+              </button>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('hpa-simulator-root'));
+        root.render(<HPASimulator />);
+      })();
+
+      // --- Rollout Simulator ---
+      (() => {
+        const { useState, useEffect } = React;
+        const MAX_REPLICAS = 3;
+        const MAX_SURGE = 1;
+
+        const RolloutSimulator = () => {
+          const [pods, setPods] = useState([
+            { id: 'p-1', version: 1, state: 'Running' },
+            { id: 'p-2', version: 1, state: 'Running' },
+            { id: 'p-3', version: 1, state: 'Running' },
+          ]);
+          const [targetVersion, setTargetVersion] = useState(1);
+          const [status, setStatus] = useState('Idle'); // Idle, Rolling, Paused
+          const [history, setHistory] = useState([1]);
+          const [nextId, setNextId] = useState(4);
+          const [revision, setRevision] = useState(1);
+
+          useEffect(() => {
+            if (status !== 'Rolling') return;
+
+            const timer = setTimeout(() => {
+              let newPods = [...pods];
+              const targetPods = newPods.filter(p => p.version === targetVersion);
+              const oldPods = newPods.filter(p => p.version !== targetVersion);
+              const readyTargetCount = targetPods.filter(p => p.state === 'Running').length;
+
+              let stateChanged = false;
+              newPods = newPods.filter(p => {
+                if (p.state === 'Terminating') {
+                  stateChanged = true;
+                  return false;
+                }
+                return true;
+              });
+
+              newPods = newPods.map(p => {
+                if (p.state === 'Creating') {
+                  stateChanged = true;
+                  return { ...p, state: 'Running' };
+                }
+                return p;
+              });
+
+              if (stateChanged) {
+                setPods(newPods);
+                return;
+              }
+
+              if (readyTargetCount === MAX_REPLICAS && oldPods.length === 0) {
+                setStatus('Idle');
+                return;
+              }
+
+              if (newPods.length < MAX_REPLICAS + MAX_SURGE && targetPods.length < MAX_REPLICAS) {
+                newPods.push({ id: `p-${nextId}`, version: targetVersion, state: 'Creating' });
+                setNextId(prev => prev + 1);
+                setPods(newPods);
+                return;
+              }
+
+              if (newPods.length > MAX_REPLICAS || readyTargetCount > 0) {
+                const oldToTerminate = newPods.find(p => p.version !== targetVersion && p.state === 'Running');
+                if (oldToTerminate) {
+                  oldToTerminate.state = 'Terminating';
+                  setPods(newPods);
+                  return;
+                }
+              }
+
+              setPods(newPods);
+            }, 1200);
+
+            return () => clearTimeout(timer);
+          }, [pods, status, targetVersion, nextId]);
+
+          const triggerUpdate = () => {
+            const newV = targetVersion + 1;
+            setTargetVersion(newV);
+            setRevision(r => r + 1);
+            setHistory([newV, ...history]);
+            setStatus('Rolling');
+          };
+
+          const triggerUndo = () => {
+            if (history.length > 1) {
+              const prevV = history[1];
+              setTargetVersion(prevV);
+              setRevision(r => r + 1);
+              setHistory([prevV, ...history]);
+              setStatus('Rolling');
+            }
+          };
+
+          return (
+            <div className="rs-container">
+              <div className="rs-header">🚀 Rolling Update Simulator</div>
+              <div className="rs-toolbar">
+                <button className="rs-btn update" disabled={status === 'Rolling'} onClick={triggerUpdate}>
+                  k set image (v{targetVersion + 1})
+                </button>
+                <button className="rs-btn pause" disabled={status === 'Idle'} onClick={() => setStatus(s => s === 'Rolling' ? 'Paused' : 'Rolling')}>
+                  {status === 'Paused' ? 'k rollout resume' : 'k rollout pause'}
+                </button>
+                <button className="rs-btn undo" disabled={status === 'Rolling' || history.length <= 1} onClick={triggerUndo}>
+                  k rollout undo
+                </button>
+              </div>
+
+              <div className="rs-info">
+                <span className="rs-badge">Revision: {revision}</span>
+                <span className="rs-badge">Status: {status}</span>
+                <span className="rs-badge">Target: v{targetVersion}</span>
+              </div>
+
+              <div className="rs-pods">
+                {pods.map(p => {
+                  const vClass = `v${p.version % 4 || 4}`;
+                  return (
+                    <div key={p.id} className={`rs-pod ${vClass} ${p.state.toLowerCase()}`}>
+                      <div className="rs-pod-icon">📦</div>
+                      <div className="rs-pod-label">{p.id} (v{p.version})</div>
+                      <div className="rs-pod-state">{p.state}</div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div style={{ marginTop: '1rem', fontSize: '0.75rem', color: '#64748b', textAlign: 'center' }}>
+                Simulates maxSurge=1, maxUnavailable=0
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('rollout-simulator-root'));
+        root.render(<RolloutSimulator />);
+      })();
+    </script>
 
     <hr>
 
@@ -2753,7 +5234,8 @@ k certificate deny bad-user</code></pre>
     <h1 id="kubeconfig">18. kubeconfig</h1>
     <div class="tip"><strong>Quick Def:</strong> <strong>kubeconfig</strong> (<code>~/.kube/config</code>) defines
       clusters, users, and contexts. A <strong>context</strong> = cluster + user + namespace. Switch with
-      <code>kubectl config use-context</code>. CKA exam: always switch context at the start of every question.</div>
+      <code>kubectl config use-context</code>. CKA exam: always switch context at the start of every question.
+    </div>
     <p>Default: <code>~/.kube/config</code>. Contains: clusters (API server + CA), users (certs/tokens), contexts
       (cluster + user + ns).</p>
 
@@ -2924,6 +5406,158 @@ k run test --rm -it --image=busybox:1.28 --restart=Never -- sh
 nc -zv db 3306
 wget -qO- http://web.default.svc.cluster.local:80</code></pre>
 
+    <h3 style="margin-top: 2rem;">🛡️ Interactive NetworkPolicy Simulator</h3>
+    <div id="netpol-simulator-root"></div>
+
+    <script type="text/babel">
+      (() => {
+        const { useState } = React;
+
+        const NetworkPolicySimulator = () => {
+          const [source, setSource] = useState(null);
+          const [target, setTarget] = useState(null);
+          const [policies, setPolicies] = useState({
+            defaultDenyAll: false,
+            allowDevToBackend: false,
+            allowBackendToDb: false,
+          });
+          const [testResult, setTestResult] = useState(null);
+
+          const pods = [
+            { id: 'ext', label: 'Internet', icon: '🌍' },
+            { id: 'dev', label: 'Frontend', icon: '📱' },
+            { id: 'backend', label: 'Backend', icon: '⚙️' },
+            { id: 'db', label: 'Database', icon: '💾' }
+          ];
+
+          const togglePolicy = (key) => {
+            setPolicies(p => ({ ...p, [key]: !p[key] }));
+            setTestResult(null);
+          };
+
+          const handlePodClick = (id) => {
+            setTestResult(null);
+            if (!source) {
+              setSource(id);
+            } else if (!target && id !== source) {
+              setTarget(id);
+            } else {
+              setSource(id);
+              setTarget(null);
+            }
+          };
+
+          const runTest = () => {
+            if (!source || !target) return;
+
+            let allowed = true;
+            let targetHasPolicy = false;
+
+            // If defaultDenyAll is true, ALL targets are selected so they deny all non-whitelisted traffic
+            if (policies.defaultDenyAll) {
+              targetHasPolicy = true;
+              allowed = false;
+            }
+
+            // Specific policies explicitly SELECT a target, enabling implicit deny for it
+            if (policies.allowDevToBackend) {
+              if (target === 'backend') {
+                targetHasPolicy = true;
+                if (source === 'dev') allowed = true;
+                else allowed = false;
+              }
+            }
+
+            if (policies.allowBackendToDb) {
+              if (target === 'db') {
+                targetHasPolicy = true;
+                if (source === 'backend') allowed = true;
+                else allowed = false;
+              }
+            }
+
+            // If a pod is NOT selected by ANY policy, implicitly allow all
+            if (!targetHasPolicy) {
+              allowed = true;
+            } else {
+              // If it IS selected, we must combine rules. If any rule allowed it, it's allowed.
+              // We just re-check if it's explicitly allowed.
+              if (policies.defaultDenyAll) allowed = false;
+
+              if (target === 'backend' && policies.allowDevToBackend && source === 'dev') allowed = true;
+              if (target === 'db' && policies.allowBackendToDb && source === 'backend') allowed = true;
+            }
+
+            setTestResult(allowed ? 'ALLOWED' : 'DENIED');
+          };
+
+          return (
+            <div className="np-container">
+              <div className="np-header">🛡️ NetworkPolicy Simulator</div>
+              <p style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '1rem', lineHeight: '1.4' }}>
+                By default, all pods can talk to each other. Once a policy applies to a pod, it drops all traffic not explicitly whitelisted.
+              </p>
+
+              <div className="np-pods">
+                {pods.map(p => {
+                  let borderCol = '';
+                  let indicator = null;
+                  if (source === p.id) { borderCol = '#4ade80'; indicator = <div style={{ fontSize: '0.6rem', color: '#4ade80', fontWeight: 'bold' }}>SOURCE</div>; }
+                  else if (target === p.id) { borderCol = '#f87171'; indicator = <div style={{ fontSize: '0.6rem', color: '#f87171', fontWeight: 'bold' }}>TARGET</div>; }
+
+                  return (
+                    <div
+                      key={p.id}
+                      className="np-pod"
+                      onClick={() => handlePodClick(p.id)}
+                      style={borderCol ? { borderColor: borderCol } : {}}
+                    >
+                      <div className="np-pod-icon">{p.icon}</div>
+                      <div className="np-pod-label">{p.label}</div>
+                      {indicator}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="np-controls">
+                <div>
+                  <div style={{ fontSize: '0.68rem', color: '#94a3b8', marginBottom: '0.6rem', fontWeight: 700, letterSpacing: '0.5px' }}>ACTIVE POLICIES</div>
+                  <label className="np-policy-toggle">
+                    <input type="checkbox" checked={policies.defaultDenyAll} onChange={() => togglePolicy('defaultDenyAll')} />
+                    Default Deny All
+                  </label>
+                  <label className="np-policy-toggle">
+                    <input type="checkbox" checked={policies.allowDevToBackend} onChange={() => togglePolicy('allowDevToBackend')} />
+                    Allow Frontend ➔ Backend
+                  </label>
+                  <label className="np-policy-toggle">
+                    <input type="checkbox" checked={policies.allowBackendToDb} onChange={() => togglePolicy('allowBackendToDb')} />
+                    Allow Backend ➔ DB
+                  </label>
+                </div>
+                <div className="np-action">
+                  <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginBottom: '0.8rem' }}>
+                    Click 2 pods above to set Source and Target.
+                  </div>
+                  <button className="np-btn" onClick={runTest} disabled={!source || !target}>
+                    TEST CONNECTION
+                  </button>
+                </div>
+              </div>
+
+              <div className={`np-result ${testResult ? testResult.toLowerCase() : 'idle'}`}>
+                {testResult ? `Connection from ${source.toUpperCase()} to ${target.toUpperCase()}: ${testResult}` : 'Awaiting Test...'}
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('netpol-simulator-root'));
+        root.render(<NetworkPolicySimulator />);
+      })();
+    </script>
+
     <hr>
 
     <!-- ═══════════════════════════════════════════ -->
@@ -2931,7 +5565,8 @@ wget -qO- http://web.default.svc.cluster.local:80</code></pre>
     <div class="tip"><strong>Quick Def:</strong> <strong>PersistentVolume (PV)</strong> = cluster-level storage
       resource. <strong>PersistentVolumeClaim (PVC)</strong> = user's request for storage (bound to a PV).
       <strong>StorageClass</strong> = enables dynamic provisioning. Access modes: ReadWriteOnce, ReadOnlyMany,
-      ReadWriteMany. Reclaim policies: Retain, Delete, Recycle.</div>
+      ReadWriteMany. Reclaim policies: Retain, Delete, Recycle.
+    </div>
 
     <h3>⚡ Imperative → YAML Workflow</h3>
     <div class="imp-block">
@@ -3097,7 +5732,8 @@ k describe pvc pvc1</code></pre>
     <div class="tip"><strong>Quick Def:</strong> <strong>CoreDNS</strong> is the cluster DNS server (runs as a
       Deployment in <code>kube-system</code>). It resolves Service names:
       <code>&lt;svc&gt;.&lt;ns&gt;.svc.cluster.local</code>. Pods get DNS entries too. Config stored in ConfigMap
-      <code>coredns</code>. Debug: <code>nslookup kubernetes.default</code>.</div>
+      <code>coredns</code>. Debug: <code>nslookup kubernetes.default</code>.
+    </div>
     <p><strong>CoreDNS:</strong> cluster internal DNS. Runs as pods in kube-system. Config in coredns ConfigMap
       (Corefile).</p>
     <p><strong>FQDN:</strong> Service → <code>my-svc.my-ns.svc.cluster.local</code> | Pod →
@@ -3277,7 +5913,8 @@ k describe ingress app-ingress</code></pre>
     <h1 id="upgrade">26. Cluster Upgrade (kubeadm)</h1>
     <div class="tip"><strong>Quick Def:</strong> Upgrade one minor version at a time (e.g., 1.29 → 1.30). Order: upgrade
       <strong>kubeadm</strong> → <code>kubeadm upgrade plan/apply</code> → drain node → upgrade <strong>kubelet +
-        kubectl</strong> → restart kubelet → uncordon. Control plane first, then worker nodes one by one.</div>
+        kubectl</strong> → restart kubelet → uncordon. Control plane first, then worker nodes one by one.
+    </div>
     <p><strong>Rule:</strong> Upgrade one minor version at a time. Control plane first, then workers.</p>
 
     <h2>Control Plane</h2>
@@ -3332,7 +5969,8 @@ k describe ingress app-ingress</code></pre>
     <div class="tip"><strong>Quick Def:</strong> <strong>Cordon</strong> = mark node unschedulable (no new pods).
       <strong>Drain</strong> = cordon + evict all pods (gracefully moves workloads to other nodes).
       <strong>Uncordon</strong> = mark schedulable again. Use <code>--ignore-daemonsets --delete-emptydir-data</code>
-      with drain.</div>
+      with drain.
+    </div>
     <p><strong>cordon</strong> = no new pods | <strong>drain</strong> = cordon + evict | <strong>uncordon</strong> =
       allow scheduling again</p>
     <p>If node is down &gt; 5 min, pods may be terminated by controller.</p>
@@ -3411,7 +6049,8 @@ spec:
       approach: check <strong>nodes</strong> → <strong>control plane pods</strong> → <strong>kubelet status</strong> →
       <strong>service/endpoints</strong> → <strong>pod logs/events</strong> → <strong>DNS</strong> →
       <strong>certificates</strong>. Key tools: <code>kubectl describe</code>, <code>kubectl logs</code>,
-      <code>journalctl -u kubelet</code>.</div>
+      <code>journalctl -u kubelet</code>.
+    </div>
 
     <h2>Application Failure</h2>
     <div class="cmd-table">
@@ -3500,7 +6139,8 @@ spec:
     <div class="tip"><strong>Quick Def:</strong> <strong>JSONPath</strong> extracts specific fields from kubectl output:
       <code>-o jsonpath='{.items[*].metadata.name}'</code>. Also: <code>-o custom-columns</code> for tables,
       <code>--sort-by</code> for ordering, and <code>range</code> for iteration. Essential for CKA questions that ask to
-      write output to a file.</div>
+      write output to a file.
+    </div>
 
     <div class="cmd-table">
       <div class="cmd-row"><code>k get pod x -o jsonpath='{.spec.nodeName}'</code><span class="tip-icon"
@@ -3550,7 +6190,8 @@ spec:
     <div class="tip"><strong>Quick Def:</strong> <strong>Helm</strong> is the package manager for Kubernetes. A
       <strong>Chart</strong> = collection of templated YAML manifests. A <strong>Release</strong> = a deployed instance
       of a chart. Helm 3 (no Tiller). Key commands: <code>helm install</code>, <code>helm upgrade</code>,
-      <code>helm rollback</code>, <code>helm uninstall</code>.</div>
+      <code>helm rollback</code>, <code>helm uninstall</code>.
+    </div>
     <p>Package manager for Kubernetes. Charts = templated YAML. Helm 3 (no Tiller). Release = deployed chart instance.
     </p>
 
@@ -3588,7 +6229,8 @@ spec:
     <div class="tip"><strong>Quick Def:</strong> <strong>Kustomize</strong> customizes Kubernetes YAML without templates
       — uses overlays and patches. Built into kubectl: <code>kubectl apply -k ./</code>. Define a
       <code>kustomization.yaml</code> with resources, patches, namePrefix, commonLabels, etc. Great for
-      environment-specific configs (dev/staging/prod).</div>
+      environment-specific configs (dev/staging/prod).
+    </div>
     <p>Built into kubectl. Patch-based customization without templating. Uses <code>kustomization.yaml</code>.</p>
 
     <span class="yaml-label">YAML</span>
@@ -3630,7 +6272,8 @@ images:
     <div class="tip"><strong>Quick Def:</strong> <strong>kubeadm</strong> bootstraps a Kubernetes cluster:
       <code>kubeadm init</code> (control plane) → <code>kubeadm join</code> (workers). It sets up certs, static pod
       manifests, and kubeconfig files. Must install container runtime + kubeadm + kubelet + kubectl on all nodes first.
-      CNI plugin installed separately.</div>
+      CNI plugin installed separately.
+    </div>
 
     <h2>Prerequisites (All Nodes)</h2>
     <div class="cmd-table">
@@ -3714,7 +6357,8 @@ images:
     <div class="tip"><strong>Quick Def:</strong> Hands-on practice is the most effective CKA prep. Use
       <strong>Killercoda</strong> and <strong>killer.sh</strong> (included with exam registration) for realistic
       environments. Focus on the highest-weighted domains: Troubleshooting (30%), Architecture (25%), and Networking
-      (20%).</div>
+      (20%).
+    </div>
 
     <h2>Scenario 1: Deployment + Service</h2>
     <p><strong>Task:</strong> Create deployment nginx-deploy --image=nginx:1.21 --replicas=3 -n app. Expose as ClusterIP
