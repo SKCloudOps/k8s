@@ -6449,6 +6449,98 @@ spec:
     persistentVolumeClaim:
       claimName: pvc1</code></pre>
 
+    <h3 style="margin-top: 2rem;">💾 Interactive PV/PVC Binding Simulator</h3>
+    <div id="pv-simulator-root"></div>
+    <script type="text/babel">
+      (() => {
+        const { useState } = React;
+        const PVSimulator = () => {
+          const [selectedPV, setSelectedPV] = useState(null);
+          const [selectedPVC, setSelectedPVC] = useState(null);
+          const [result, setResult] = useState('');
+          const [bound, setBound] = useState(false);
+
+          const pvs = [
+            { id: 'pv-1', name: 'pv-fast', size: '1Gi', mode: 'RWO' },
+            { id: 'pv-2', name: 'pv-large', size: '5Gi', mode: 'RWX' }
+          ];
+
+          const pvcs = [
+            { id: 'pvc-1', name: 'pvc-app', size: '1Gi', mode: 'RWO' },
+            { id: 'pvc-2', name: 'pvc-db', size: '10Gi', mode: 'RWO' }
+          ];
+
+          const tryBind = () => {
+            if (!selectedPV || !selectedPVC) {
+              setResult('Please select 1 PV and 1 PVC');
+              return;
+            }
+            if (selectedPV.mode !== selectedPVC.mode) {
+              setResult(`Failed: AccessModes mismatch (${selectedPV.mode} vs ${selectedPVC.mode})`);
+              setBound(false);
+              return;
+            }
+            const pvSize = parseInt(selectedPV.size);
+            const pvcSize = parseInt(selectedPVC.size);
+            if (pvSize < pvcSize) {
+              setResult(`Failed: PV capacity (${selectedPV.size}) < PVC request (${selectedPVC.size})`);
+              setBound(false);
+              return;
+            }
+            setResult(`Success: ${selectedPVC.name} bound to ${selectedPV.name}`);
+            setBound(true);
+          };
+
+          const reset = () => {
+            setSelectedPV(null); setSelectedPVC(null); setResult(''); setBound(false);
+          };
+
+          return (
+            <div className="pv-sim">
+              <div className="pv-sim-header">💾 PersistentVolume Binding</div>
+              
+              <div style={{ marginBottom: '.5rem', fontWeight: 600 }}>Available PVs:</div>
+              <div className="pv-cards">
+                {pvs.map(pv => (
+                  <div key={pv.id} className={`pv-card ${selectedPV?.id === pv.id ? 'sel' : ''}`} onClick={() => setSelectedPV(pv)}>
+                    <div className="pv-card-type pv">PV</div>
+                    <div className="pv-card-name">{pv.name}</div>
+                    <div className="pv-card-attr"><span>Capacity:</span> {pv.size}</div>
+                    <div className="pv-card-attr"><span>Access:</span> {pv.mode}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ marginBottom: '.5rem', fontWeight: 600, marginTop: '1rem' }}>Pending PVCs:</div>
+              <div className="pv-cards">
+                {pvcs.map(pvc => (
+                  <div key={pvc.id} className={`pv-card ${selectedPVC?.id === pvc.id ? 'sel' : ''}`} onClick={() => setSelectedPVC(pvc)}>
+                    <div className="pv-card-type pvc">PVC</div>
+                    <div className="pv-card-name">{pvc.name}</div>
+                    <div className="pv-card-attr"><span>Request:</span> {pvc.size}</div>
+                    <div className="pv-card-attr"><span>Access:</span> {pvc.mode}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pv-sim-row" style={{ marginTop: '1.5rem' }}>
+                <button className="pv-sim-btn" onClick={tryBind} disabled={!selectedPV || !selectedPVC}>🔗 ATTEMPT BIND</button>
+                <button className="pv-sim-reset" onClick={reset}>Reset</button>
+              </div>
+
+              {result && (
+                <div className={`pv-binding-result ${bound ? 'bound' : 'failed'}`}>
+                  {bound ? '✅ ' : '❌ '}{result}
+                </div>
+              )}
+            </div>
+          );
+        };
+        const root = ReactDOM.createRoot(document.getElementById('pv-simulator-root'));
+        root.render(<PVSimulator />);
+      })();
+    </script>
+
     <h2>StorageClass (Dynamic Provisioning)</h2>
     <span class="yaml-label">YAML</span>
     <pre><code>apiVersion: storage.k8s.io/v1
@@ -6719,6 +6811,86 @@ k describe ingress app-ingress</code></pre>
     <hr>
 
     <!-- ═══════════════════════════════════════════ -->
+    <h3 style="margin-top: 2rem;">💾 Interactive etcd Backup/Restore Simulator</h3>
+    <div id="etcd-simulator-root"></div>
+    <script type="text/babel">
+      (() => {
+        const { useState } = React;
+        const EtcdSimulator = () => {
+          const [state, setState] = useState('healthy'); 
+          const [logs, setLogs] = useState([]);
+
+          const addLog = (msg, type) => setLogs(prev => [...prev.slice(-3), { msg, type }]);
+
+          const simulateBackup = () => {
+            setState('backedup');
+            addLog('> etcdctl snapshot save /tmp/snapshot.db', 'cmd');
+            addLog('Snapshot saved at /tmp/snapshot.db successfully.', 'ok');
+          };
+
+          const simulateBreak = () => {
+            setState('broken');
+            addLog('> rm -rf /var/lib/etcd', 'cmd');
+            addLog('simulating disaster: etcd data wiped.', 'err');
+          };
+
+          const simulateRestore = () => {
+            if (state !== 'broken') {
+              addLog('Cannot restore a healthy cluster. Break it first!', 'warn');
+              return;
+            }
+            if (logs.findIndex(l => l.msg.includes('snapshot.db')) === -1) {
+              addLog('Disaster! No backup available to restore.', 'err');
+              return;
+            }
+            setState('restored');
+            addLog('> etcdutl snapshot restore /tmp/snapshot.db', 'cmd');
+            addLog('Snapshot restored to new data-dir.', 'ok');
+          };
+
+          const simulateRestart = () => {
+            if (state === 'restored') {
+              setState('healthy');
+              addLog('> systemctl restart kubelet', 'cmd');
+              addLog('kubelet restarted. etcd is back online!', 'ok');
+            } else if (state === 'broken') {
+              addLog('kubelet restarts... etcd crashLoopBackOff.', 'err');
+            } else {
+              addLog('Cluster is running normally.', 'info');
+            }
+          };
+
+          return (
+            <div className="etcd-sim">
+              <div className="etcd-sim-header">💾 etcd Disaster Recovery</div>
+              
+              <div className="etcd-state-bar">
+                <div className={`etcd-state-chip ${(state === 'healthy' || state === 'backedup') ? 'done' : ''}`}>Health: {state === 'broken' || state === 'restored' ? 'OFFLINE' : 'OK'}</div>
+                <div className={`etcd-state-chip ${state === 'broken' ? 'active' : ''}`}>Data: {state === 'broken' ? 'LOST' : 'INTACT'}</div>
+                <div className={`etcd-state-chip ${state === 'backedup' || state === 'restored' || state === 'broken' ? 'active' : ''}`}>Backup: {logs.findIndex(l => l.msg.includes('snapshot.db')) !== -1 ? 'EXISTS' : 'NONE'}</div>
+              </div>
+
+              <div className="etcd-btn-row">
+                <button className="etcd-btn backup" onClick={simulateBackup}>1. Backup</button>
+                <button className="etcd-btn reset" onClick={simulateBreak}>2. Break etcd</button>
+                <button className="etcd-btn restore" onClick={simulateRestore}>3. Restore</button>
+                <button className="etcd-btn restart" onClick={simulateRestart}>4. Restart Node</button>
+              </div>
+
+              <div className="etcd-output">
+                {logs.length === 0 && <span style={{color:'#64748b'}}>System ready for backup...</span>}
+                {logs.map((L, i) => (
+                  <div key={i} className={L.type}>{L.msg}</div>
+                ))}
+              </div>
+            </div>
+          );
+        };
+        const root = ReactDOM.createRoot(document.getElementById('etcd-simulator-root'));
+        root.render(<EtcdSimulator />);
+      })();
+    </script>
+
     <h1 id="upgrade">26. Cluster Upgrade (kubeadm)</h1>
     <div class="tip"><strong>Quick Def:</strong> Upgrade one minor version at a time (e.g., 1.29 → 1.30). Order: upgrade
       <strong>kubeadm</strong> → <code>kubeadm upgrade plan/apply</code> → drain node → upgrade <strong>kubelet +
@@ -6916,6 +7088,96 @@ spec:
       <div class="cmd-row"><code>openssl x509 -in /var/lib/kubelet/&lt;node&gt;.crt -text -noout</code><span
           class="tip-icon" data-tip="Examines node certificate. Check expiry and common name.">i</span></div>
     </div>
+
+    <h3 style="margin-top: 2rem;">🔍 Interactive Pod Troubleshooting Simulator</h3>
+    <div id="ts-simulator-root"></div>
+    <script type="text/babel">
+      (() => {
+        const { useState } = React;
+        const TsSimulator = () => {
+          const [scenario, setScenario] = useState('crash'); // crash, pending, image
+          const [logs, setLogs] = useState([]);
+          const [showingDiag, setShowingDiag] = useState(false);
+
+          const scenarios = {
+            crash: { name: 'app-pod', state: 'crash', label: 'CrashLoopBackOff', icon: '💥', diag: 'Application is exiting immediately due to a configuration error or fatal exception.' },
+            pending: { name: 'db-pod', state: 'pending', label: 'Pending', icon: '⏳', diag: 'Scheduler cannot find a node with enough resources, or nodeSelector is missing.' },
+            image: { name: 'web-pod', state: 'error', label: 'ErrImagePull', icon: '🚫', diag: 'Container runtime cannot fetch the specified image. Typo in image name or missing credentials.' }
+          };
+
+          const setScen = (k) => {
+            setScenario(k);
+            setLogs([]);
+            setShowingDiag(false);
+          };
+
+          const addLog = (msg, type) => setLogs(p => [...p, {msg, type}]);
+
+          const cmdDescribe = () => {
+            addLog(`> kubectl describe pod ${scenarios[scenario].name}`, 'cmd-echo');
+            if (scenario === 'crash') addLog('Reason: CrashLoopBackOff. Events: Liveness probe failed.', 'bad');
+            if (scenario === 'pending') addLog('Events: FailedScheduling... 0/3 nodes are available: insufficient cpu.', 'hint');
+            if (scenario === 'image') addLog('Events: Failed to pull image "ngnxx:latest": rpc error: NotFound.', 'bad');
+            setShowingDiag(true);
+          };
+
+          const cmdLogs = () => {
+            addLog(`> kubectl logs ${scenarios[scenario].name}`, 'cmd-echo');
+            if (scenario === 'crash') addLog('FATAL: Database connection refused. Exiting(1).', 'bad');
+            if (scenario === 'pending') addLog('Error: Pod is in Pending state. No logs available yet.', 'info');
+            if (scenario === 'image') addLog('Error: Container not created. No logs available.', 'info');
+          };
+
+          const cur = scenarios[scenario];
+
+          return (
+            <div className="ts-sim">
+              <div className="ts-sim-header">🔍 Pod Troubleshooting</div>
+              
+              <div className="ts-scenario-select">
+                {Object.keys(scenarios).map(k => (
+                  <button key={k} className={`ts-scen-btn ${scenario === k ? 'active' : ''}`} onClick={() => setScen(k)}>
+                    {scenarios[k].label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="ts-pod-display">
+                <div className="ts-pod-icon">{cur.icon}</div>
+                <div className="ts-pod-info">
+                  <div className="ts-pod-name">{cur.name}</div>
+                  <div className={`ts-pod-status ${cur.state}`}>{cur.label}</div>
+                </div>
+              </div>
+
+              <div className="ts-cmd-list">
+                <div className="ts-cmd" onClick={cmdDescribe}>
+                  <div className="ts-cmd-text">kubectl describe pod {cur.name}</div>
+                  <button className="ts-cmd-run">RUN</button>
+                </div>
+                <div className="ts-cmd" onClick={cmdLogs}>
+                  <div className="ts-cmd-text">kubectl logs {cur.name}</div>
+                  <button className="ts-cmd-run">RUN</button>
+                </div>
+              </div>
+
+              <div className="ts-output">
+                {logs.length === 0 && <span style={{color:'#64748b'}}>Run a command to investigate...</span>}
+                {logs.map((L, i) => (
+                  <div key={i} className={L.type}>{L.msg}</div>
+                ))}
+              </div>
+
+              <div className={`ts-diagnosis ${showingDiag ? 'show' : ''}`}>
+                💡 <strong>Diagnosis:</strong> {cur.diag}
+              </div>
+            </div>
+          );
+        };
+        const root = ReactDOM.createRoot(document.getElementById('ts-simulator-root'));
+        root.render(<TsSimulator />);
+      })();
+    </script>
 
     <h2>Network Troubleshooting</h2>
     <div class="cmd-table">
